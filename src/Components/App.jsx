@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Menu from './Menu'
 import Tom from './Tom'
 import Test from './Test'
+import Fred from './Fred'
 
 const App = (props) => {
   const [game, setGame] = useState('')
@@ -15,6 +16,9 @@ const App = (props) => {
       }
       {game === 'Test' &&
         <Test />
+      }
+      {game === 'Fred' && 
+        <Fred />
       }
     </>
   )
