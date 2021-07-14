@@ -1,15 +1,10 @@
 import React from 'react'
 
-const Menu = (props) => {
+const Menu = ({ setGame }) => {
   return (
     <>
-      <ul>
-        <li>Game</li>
-        <li>Game</li>
-        <li>Game</li>
-        <li>Game</li>
-        <li>Game</li>
-      </ul>
+      <button onClick={() => setGame('Tom')}>Tom</button>
+      <button onClick={() => setGame('Test')}>Test</button>
     </>
   )
 }
