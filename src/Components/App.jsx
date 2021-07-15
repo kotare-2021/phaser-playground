@@ -11,7 +11,7 @@ const App = (props) => {
   return (
     <>
       <h1>Phaser Playground</h1>
-      <Menu setGame={setGame} />
+      {/* <Menu setGame={setGame} />
       {game === 'Tom' &&
         <Tom />
       }
@@ -22,7 +22,8 @@ const App = (props) => {
     }
     {game === 'Ymmij' &&
     <Ymmij />
-    }
+    } */}
+    <Tom />
     </>
   )
 }
