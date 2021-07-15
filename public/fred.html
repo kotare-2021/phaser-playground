@@ -26,31 +26,40 @@
 
     function preload () 
     {
+
       this.load.image('stadium', 'assets/stadium.png')
       this.load.image('ground', 'assets/platform.png')
+      this.load.image('ball', 'assets/football.png')
       this.load.spritesheet('dude', 'assets/test-sprite.png',{
         frameWidth: 108, frameHeight: 140
       });
+      
 
       
       
     }
-    var platforms;
-    var player;
+    
     function create () 
+    
     {
+      
+      
+
       this.add.image(400, 300, 'stadium');
       
       //this sets the physics characteristic for the platrom (ground)
       platforms = this.physics.add.staticGroup()
 
-      platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-
+      var floor = platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+      floor.setVisible(false)
       player = this.physics.add.sprite(300, 450, 'dude');
 
       player.setBounce(0.2);
       player.setCollideWorldBounds(true);
 
+       
+
+      
       
 
       this.anims.create({
@@ -70,10 +79,46 @@
         frameRate: 10,
         repeat: -1
       })
-      player.body.setGravityY(300)
-      this.physics.add.collider(player, platforms);
+      player.body.setGravityY(150)
+      
+      this.physics.add.collider(player, floor);
+      
+      
 
+      ball = this.physics.add.group({})
+  
+      
+
+      // ball = game.add.sprite(400, 200, 'ball');
+
+    
+
+      this.physics.add.collider(ball, player)
+      this.physics.add.collider(ball, floor)
+      this.physics.add.collider(ball, game)
+      ball.create(100, 50, 'ball').setScale(0.05).setVelocityY(200).setBounce(0.7).setCollideWorldBounds(true)
       cursors = this.input.keyboard.createCursorKeys();
+      
+
+    
+
+      
+      // ball.body.velocity.setTo(200, 200);
+
+//  This makes the game world bounce-able
+      // ball.body.collideWorldBounds = true;
+
+//  This sets the image bounce energy for the horizontal 
+//  and vertical vectors (as an x,y point). "1" is 100% energy return
+   
+      
+
+    
+      
+     
+      
+      
+      
     }
 function update() {
   if (cursors.left.isDown)
