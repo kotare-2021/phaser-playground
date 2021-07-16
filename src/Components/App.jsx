@@ -6,11 +6,13 @@ import Test from './Test'
 import Megan from './Megan'
 
 const App = (props) => {
-  const [game, setGame] = useState('')
+  const [game, setGame] = useState('Menu')
   return (
     <>
       <h1>Phaser Playground</h1>
+      {game === "Menu" &&
       <Menu setGame={setGame} />
+      }
       {game === 'Tom' &&
         <Tom />
       }
