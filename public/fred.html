@@ -30,6 +30,11 @@
       this.load.image('stadium', 'assets/stadium.png')
       this.load.image('ground', 'assets/platform.png')
       this.load.image('ball', 'assets/football.png')
+      this.load.image('goalOne', 'assets/goal.png')
+      this.load.image('goalTwo', 'assets/goalTwo.png')
+      this.load.spritesheet('secondPlayer', 'assets/secondPlayer.png', {
+        frameWidth: 137, frameHeight: 137
+      });
       this.load.spritesheet('dude', 'assets/test-sprite.png',{
         frameWidth: 108, frameHeight: 140
       });
@@ -49,11 +54,23 @@
       
       //this sets the physics characteristic for the platrom (ground)
       platforms = this.physics.add.staticGroup()
+      goalOne = this.physics.add.staticGroup()
+      goalTwo = this.physics.add.staticGroup()
 
       var floor = platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+      var goalOne = goalOne.create(5, 450, 'goalOne').setScale(0.1).refreshBody()
+      var crossBarOne = platforms.create(-30, 350, 'ground').setScale(0.5).refreshBody()
+      var crossBarTwo = platforms.create(805, 350, 'ground').setScale(0.5).refreshBody()
+      var goalTwo = goalTwo.create(770, 450, 'goalTwo').setScale(0.095).refreshBody()
+      
       floor.setVisible(false)
+      crossBarTwo.setVisible(false)
+      crossBarOne.setVisible(false)
       player = this.physics.add.sprite(300, 450, 'dude');
+      player2 = this.physics.add.sprite(300, 300, 'secondPlayer')
 
+      player2.setCollideWorldBounds(true)
+      player2.setBounce(0.2);
       player.setBounce(0.2);
       player.setCollideWorldBounds(true);
 
@@ -61,7 +78,7 @@
 
       
       
-
+//player
       this.anims.create({
         key: 'left',
         frames: this.anims.generateFrameNumbers('dude', {start: 8, end: 16}),
@@ -80,8 +97,28 @@
         repeat: -1
       })
       player.body.setGravityY(150)
+
+//player 2
+      // this.anims.create({
+      //   key: 'left',
+      //   frames: this.anims.generateFrameNumbers('secondPlayer', {start: 8, end: 16}),
+      //   frameRate: 10, 
+      //   repeat: -1
+      // });
+      // this.anims.create({
+      //   key: 'turn',
+      //   frames: [{key: 'secondPlayer', frame: 4}],
+      //   frameRate: 20
+      // })
+      // this.anims.create({
+      //   key: 'right',
+      //   frames: this.anims.generateFrameNumbers('secondPlayer', {start: 0, end: 8}),
+      //   frameRate: 10,
+      //   repeat: -1
+      // })
+      // player2.body.setGravityY(150)
       
-      this.physics.add.collider(player, floor);
+      
       
       
 
@@ -90,14 +127,21 @@
       
 
       // ball = game.add.sprite(400, 200, 'ball');
-
-    
-
+      this.physics.add.collider(ball, crossBarOne)
+      this.physics.add.collider(ball, crossBarTwo)
+      this.physics.add.collider(player, floor);
       this.physics.add.collider(ball, player)
       this.physics.add.collider(ball, floor)
       this.physics.add.collider(ball, game)
-      ball.create(100, 50, 'ball').setScale(0.05).setVelocityY(200).setBounce(0.7).setCollideWorldBounds(true)
+      this.physics.add.collider(ball, goalOne, goalScoreOne, null, this)
+      this.physics.add.collider(ball, goalTwo, goalScoreTwo, null, this)
+      this.physics.add.collider(floor, player2)
+      ball.create(100, 50, 'ball').setScale(0.05).setVelocityY(500).setBounce(1).setCollideWorldBounds(true)
+    
       cursors = this.input.keyboard.createCursorKeys();
+
+      // awds = this.input.keyboard.addKeys({up:KeyCodes.W,down:KeyCodes.S,left:KeyCodes.A,right:KeyCodes.S});
+      
       
 
     
@@ -116,11 +160,31 @@
     
       
      
+     
       
+      var score1 = 0;
+      var score2 = 0; 
+      var scoreText1
+      var scoreText2
+      scoreText2 = this.add.text(16, 50, 'score: 0', {fontSize: '32px', fill: '#000'})
+      scoreText1 = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
       
-      
+      function goalScoreOne (player, goalOne)
+       {
+
+           score1 += 1;
+           scoreText1.setText('Score: ' + score1);
+        }
+
+      function goalScoreTwo(player, goalTwo) 
+       {
+          score2 += 1;
+          scoreText2.setText('Score: ' + score2)
+       }
     }
 function update() {
+
+  //player
   if (cursors.left.isDown)
 {
     player.setVelocityX(-120);
@@ -145,7 +209,38 @@ if (cursors.up.isDown && player.body.touching.down)
     player.setVelocityY(-330);
 }
   
-}    
+   
+
+//player 2
+
+this.input.keyboard.on('keydown', function(event) {
+  if (event.code === 'KeyW')
+{
+  console.log('hello')
+    // player2.setVelocityX(-120);
+
+    // player2.anims.play('left', true);
+}})
+}
+//  if (cursors.right.isDown)
+// {
+//     player2.setVelocityX(120);
+
+//     player2.anims.play('right', true);
+// }
+// else
+// {
+//     player2.setVelocityX(0);
+
+//     player2.anims.play('turn');
+// }
+
+// if (cursors.up.isDown && player.body.touching.down)
+// {
+//     player.setVelocityY(-330);
+//}
+  
+
   </script>
   
 </body>
