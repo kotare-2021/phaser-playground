@@ -5,6 +5,7 @@ const Menu = ({ setGame }) => {
     <>
       <button onClick={() => setGame('Tom')}>Tom</button>
       <button onClick={() => setGame('Test')}>Test</button>
+      <button onClick={() => setGame('Casey')}>Casey</button>
     </>
   )
 }

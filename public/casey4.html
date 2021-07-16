@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser-arcade-physics.min.js"></script>
+</head>
+<body>
+
+    <script>
+
+    let CollisionLayer, BackgroundLayer, SheepLayer, sheeps, car;
+    let coinScore = 0;
+    let hit = false
+
+    var config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 576,
+        audio: {
+            disableWebAudio: true
+        },
+        physics: {
+            default: 'arcade',
+            arcade: {
+                // gravity: { y: 300 },
+                debug: true
+            }
+        },
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+    };
+
+    var game = new Phaser.Game(config);
+
+    function preload () {
+        this.load.tilemapTiledJSON('test5', 'assets/maps/test5.json');
+        this.load.image("roadEW", "assets/maps/roadEW.png")
+        this.load.image("roadNE", "assets/maps/roadNE.png")
+        this.load.image('car', 'assets/maps/Daco_4361360.png')
+        this.load.spritesheet('sheep', 'assets/images/sheep_walk.png', { frameWidth: 128, frameHeight: 128 } )
+        this.load.audio('sheepSound', 'assets/sounds/sheep.wav')
+        this.load.audio('crash', 'assets/sounds/151624__qubodup__clank-car-crash-collision.wav')
+    }
+
+    function create () {
+        this.physics.world.setBounds(0, 0, 3200, 1920);
+        
+        const map = this.make.tilemap({key: 'test5'});   
+        const tileset = map.addTilesetImage('roadEW', 'roadEW')
+        const tileset2 = map.addTilesetImage('roadNE', 'roadNE')
+        const allTiles = [tileset, tileset2]
+        
+        BackgroundLayer = map.createLayer('Road', allTiles)
+        CollisionLayer = map.createLayer('Footpath', allTiles)
+        SheepLayer = map.getObjectLayer('Sheep')['objects']
+
+        sheeps = this.physics.add.group()
+        
+        this.anims.create ({
+            key: 'up',
+            frames: this.anims.generateFrameNumbers('sheep', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        })
+
+        this.anims.create ({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('sheep', { start: 4, end: 7 }),
+            frameRate: 10,
+            repeat: -1
+        })
+
+        this.anims.create ({
+            key: 'down',
+            frames: this.anims.generateFrameNumbers('sheep', { start: 8, end: 11 }),
+            frameRate: 10,
+            repeat: -1
+        })
+
+        this.anims.create ({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('sheep', { start: 12, end: 15 }),
+            frameRate: 10,
+            repeat: -1
+        })
+    
+        SheepLayer.forEach(object => {
+            let obj = sheeps.create(object.x, object.y, 'sheep')
+            obj.setOrigin(0, 1)
+            obj.setSize(50, 50, true)
+            obj.setName('alive')
+            obj.setVelocity(Phaser.Math.Between(-20, 20), Phaser.Math.Between(-20, 20))
+            obj.setBounce(1)
+        })
+
+        car = this.physics.add.image(300, 100, 'car').setScale(0.04)
+        car.setSize(1200, 1200, true)
+        car.angle = 180
+        
+        map.setCollisionBetween(0, 923, true, 'Footpath')
+        this.physics.add.collider(car, CollisionLayer)
+        let sheepCollider = this.physics.add.collider(sheeps, CollisionLayer)
+        let sheepOverlap = this.physics.add.overlap(car, sheeps, hitSheep, null, this)
+
+        this.cameras.main.setBounds(0, 0, 3200, 1920);
+        this.cameras.main.startFollow(car);
+        
+        car.setCollideWorldBounds(true);
+
+        cursors = this.input.keyboard.createCursorKeys();
+
+        var score = 0;
+        var scoreText;
+
+        scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#ffffff' });
+        scoreText.setScrollFactor(0)
+
+        function hitSheep (car, sheep) {
+            if (sheep.name === 'alive') {
+                this.sound.play('sheepSound')
+                this.sound.play('crash')
+                sheep.setVelocity(Phaser.Math.Between(-600, 600), Phaser.Math.Between(-600, 600))
+                sheep.setAngularVelocity(30)
+                sheep.name = 'dead'
+                score += 10;
+                scoreText.setText('Score: ' + score);
+                sheep.setBounce(0.1)
+                // sheep.removeCollider(sheepCollider)
+            }
+    }
+    }
+
+    function update () {
+        if (cursors.left.isDown && cursors.up.isDown) {
+            car.setVelocityX(-500)
+            car.setVelocityY(-500)
+            car.angle = 45
+        } else if (cursors.right.isDown && cursors.up.isDown) {
+            car.setVelocityX(500)
+            car.setVelocityY(-500)
+            car.angle = 135
+        } else if (cursors.right.isDown && cursors.down.isDown) {
+            car.setVelocityX(500)
+            car.setVelocityY(500)
+            car.angle = 225
+        } else if (cursors.left.isDown && cursors.down.isDown) {
+            car.setVelocityX(-500)
+            car.setVelocityY(500)
+            car.angle = 315
+        } else if (cursors.left.isDown) {
+            car.setVelocityX(-500)
+            car.angle = 0
+        } else if (cursors.right.isDown) {
+            car.setVelocityX(500)
+            car.angle = 180
+        } else if (cursors.up.isDown) {
+            car.setVelocityY(-500)
+            car.angle = 90
+        } else if (cursors.down.isDown) {
+            car.setVelocityY(500)
+            car.angle = 270
+        } else {
+            car.setVelocityX(0)
+            car.setVelocityY(0)
+        }     
+        sheeps.children.entries.forEach(sheep => {
+            // console.log(sheep)
+            if (sheep.body.velocity.x > 0) {
+                sheep.anims.play('right', true)
+            } else if (sheep.body.velocity.x < 0) {
+                sheep.anims.play('left', true)
+            } else if (sheep.body.velocity.y > 0) {
+                sheep.anims.play('down', true)
+            } else if (sheep.body.velocity.y < 0) {
+                sheep.anims.play('up', true)
+            }
+            // if (sheep.body.onFloor()) {
+            //     sheep.setVelocity(Phaser.Math.Between(-20, 20), Phaser.Math.Between(-20, 20))
+            //     console.log('firing')
+            // }
+
+            // if (sheep.body.onFloor() && sheep.body.velocity.x > 0) {
+            //     sheep.body.setVelocityX(Phaser.Math.Between(-20, -1))
+            //     console.log('firing right')
+            // } else if (sheep.body.onFloor() && sheep.body.velocity.x < 0) {
+            //     sheep.body.setVelocityX(Phaser.Math.Between(20, 1))
+            //     console.log('firing left')
+            // } else if (sheep.body.onFloor() && sheep.body.velocity.y > 0) {
+            //     sheep.body.setVelocityY(Phaser.Math.Between(-20, -1))
+            // } else if (sheep.body.onFloor() && sheep.body.velocity.y < 0) {
+            //     sheep.body.setVelocityY(Phaser.Math.Between(20, 1))
+            // }
+        })
+    }
+
+    
+
+    </script>
+
+</body>
+</html>
