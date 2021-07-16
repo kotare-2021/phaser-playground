@@ -5,12 +5,13 @@ import Tom from './Tom'
 import Test from './Test'
 import Megan from './Megan'
 import Ymmij from './Ymmij'
+import Header from './Header'
 
 const App = (props) => {
   const [game, setGame] = useState('Menu')
   return (
     <>
-      <h1>Phaser Playground</h1>
+      <Header/>
       {game === "Menu" &&
       <Menu setGame={setGame} />
       }
