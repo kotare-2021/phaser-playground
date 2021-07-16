@@ -4,6 +4,7 @@ import Menu from './Menu'
 import Tom from './Tom'
 import Test from './Test'
 import Megan from './Megan'
+import Ymmij from './Ymmij'
 
 const App = (props) => {
   const [game, setGame] = useState('Menu')
@@ -20,6 +21,9 @@ const App = (props) => {
         <Test />
       }{game === 'Megan' &&
       <Megan />
+    }
+    {game === 'Ymmij' &&
+    <Ymmij />
     }
     </>
   )
