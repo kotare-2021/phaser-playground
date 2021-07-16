@@ -12,7 +12,18 @@ code {
     monospace;
 }
 
+iframe {
+  height: 600px;
+  width: 800px;
+}
+
 .game-frame {
   height: 600px;
   width: 800px;
+}
+
+.scene {
+  height: 600px;
+  width: 800px;
+  border: 5px solid black;
 }
