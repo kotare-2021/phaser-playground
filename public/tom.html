@@ -25,61 +25,90 @@
 
         var game = new Phaser.Game(config) // initialise game variable
 
-        function preload ()
+        function preload () // preloads game assets
         {
             this.load.image('sky', 'assets/sky.png')
             this.load.image('wall', 'assets/platform.png')
             
             this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48})
+
+            this.load.spritesheet('robot', 'assets/future4.png', {frameWidth: 26, frameHeight: 36})
+
+            this.load.spritesheet('enemy', 'assets/future4.png', {frameWidth: 26, frameHeight: 36})
         }
 
-        function create ()
+        function create () 
         {
-            this.add.image(400, 300, 'sky') //add sky background
+            this.physics.world.setBounds(0, 0, 3200, 3200)
+
+            this.add.image(400, 300, 'sky')//add sky background
 
             walls = this.physics.add.staticGroup() // create walls
 
             walls.create(400, 568, 'wall').setScale(2).refreshBody()
-            
-            player = this.physics.add.sprite(100, 450, 'dude') // create player
 
-            // creates the animations for the sprites
+            player = this.physics.add.sprite(300, 450, 'robot') // create player
+
+            enemy = this.physics.add.sprite(500, 450, 'enemy') //create enemy
+
+            // creates the animations for the player
 
             this.anims.create({
                 key: 'left',
-                frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+                frames: this.anims.generateFrameNumbers('robot', { start: 63, end: 65 }),
                 frameRate: 10,
                 repeat: -1
             })
 
             this.anims.create({
-                key: 'turn',
-                frames: [ { key: 'dude', frame: 4 } ],
-                frameRate: 20
-            })
-
-            this.anims.create({
                 key: 'right',
-                frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+                frames: this.anims.generateFrameNumbers('robot', { start: 75, end: 77 }),
                 frameRate: 10,
                 repeat: -1
             })
 
             this.anims.create({
                 key: 'up',
-                frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+                frames: this.anims.generateFrameNumbers('robot', { start: 87, end: 89 }),
                 frameRate: 10,
                 repeat: -1
             })
             
             this.anims.create({
                 key: 'down',
-                frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+                frames: this.anims.generateFrameNumbers('robot', { start: 51, end: 53 }),
                 frameRate: 10,
                 repeat: -1
             })
 
+            this.anims.create({
+                key: 'face',
+                frames: [ {key: 'robot', frame: 52}],
+                frameRate: 20
+            })
+
+            // create enemy anims
+
+            //anims
+
             this.physics.add.collider(player, walls) // creates collision with player and walls
+
+            this.physics.moveToObject(enemy, player, 200)
+
+            // Move to arrive within 2 seconds:
+            // this.physics.moveTo(clown, block, null, 2000);
+
+            console.log('velocity', enemy.body.velocity.x)
+
+            var collider = this.physics.add.overlap(enemy, player, function (clownOnBlock)
+            {
+                clownOnBlock.body.stop();
+
+                this.physics.world.removeCollider(collider)
+            }, null, this)
+
+            this.cameras.main.setBounds(0, 0, 3200, 3200) // sets the camera boundary
+            this.cameras.main.startFollow(player) // sets the camera to follow the player
 
             cursors = this.input.keyboard.createCursorKeys() // initialise keyboard controls
         }
@@ -146,7 +175,7 @@
 
                 player.setVelocityY(0)
 
-                player.anims.play('turn')
+                player.anims.play('face')
             }
         }
     </script>
