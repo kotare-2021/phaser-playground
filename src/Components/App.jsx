@@ -10,8 +10,8 @@ import Header from './Header'
 const App = (props) => {
   const [game, setGame] = useState('Menu')
   return (
-    <>
-      <Header/>
+    <div className='page'>
+      <Header setGame={setGame}/>
       {game === "Menu" &&
       <Menu setGame={setGame} />
       }
@@ -26,7 +26,7 @@ const App = (props) => {
     {game === 'Ymmij' &&
     <Ymmij />
     }
-    </>
+    </div>
   )
 }
 
