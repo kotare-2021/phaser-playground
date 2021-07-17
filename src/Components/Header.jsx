@@ -3,7 +3,9 @@ import React from 'react'
 const Header = ({ setScene }) => {
   return (
     <>
-      <h1 onClick={() => setScene('classroom')}>EDA</h1>
+    <div className="container">
+      <h1 onClick={() => setScene('classroom')} className='heading-main clickable'>EDA</h1>
+    </div>
     </>
   )
 }
