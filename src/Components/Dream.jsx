@@ -9,7 +9,7 @@ const Dream = ({ dream, setScene }) => {
     </div>
     <div className="container">
       <div className="scene">
-        <iframe src={`./${dream}.html`} title={dream} className='game-frame'></iframe>
+        <iframe src={`./${dream}.html`} title={dream} className='game-frame' frameBorder='0'></iframe>
       </div>
     </div>
     </>

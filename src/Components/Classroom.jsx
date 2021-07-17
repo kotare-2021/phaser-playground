@@ -6,19 +6,39 @@ const Classroom = ({  setScene, setDream }) => {
   const handleClick = (string) => {
     setScene('dream')
     setDream(string)
-  } 
+  }
+  
+  const charOneStyle = {
+    left: '3.3rem',
+    top: '9rem'
+}
+  const charTwoStyle = {
+    left: '15rem',
+    top: '9rem'
+  }
+  const charThreeStyle = {
+    left: '3.3rem',
+    top: '19rem'
+  }
+  const charFourStyle = {
+    left: '15rem',
+    top: '19rem'
+  }
   return (
     <>
     <div className="container">
       <Header setScene={setScene}/>
     </div>
     <div className="container">
+      <span className='heading-small'>It's the first day of Dev Academy and the new students are already starting to fall aleep. Click on the student who's dream you want to see...</span>
+    </div>
+    <div className="container">
       <div className="classroom">
+        <div className="click-box" style={charOneStyle} onClick={() => handleClick('tom')}></div>
+        <div className="click-box" style={charTwoStyle} onClick={() => handleClick('test')}></div>
+        <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}></div>
+        <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}></div>
         <img src="/images/classroom_01.png" alt="a classrom" />
-      <button onClick={() => handleClick('tom')}>Tom</button>
-      <button onClick={() => handleClick('test')}>Test</button>
-      <button onClick={() => handleClick('megan')}>Megan</button>
-      <button onClick={() => handleClick('ymmij')}>Ymmij</button>
       </div>
     </div>
     </>

@@ -39,7 +39,7 @@ code {
 .scene {
   height: 600px;
   width: 800px;
-  border: 5px solid #000;
+  /* border: 5px solid #000; */
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -61,7 +61,7 @@ code {
 	-moz-border-radius: 100px;
 	
 	position: relative;
-	margin: 120px auto 20px;
+	margin: 100px auto 20px;
 }
 
 .cloud:after, .cloud:before {
@@ -88,13 +88,22 @@ code {
 	-moz-border-radius: 200px;
 }
 
+.heading-logo {
+	height: 80%;
+	width: auto;
+}
+
 .heading-main {
   font-size: 7rem;
-  margin: 2rem;
+  margin: 1rem;
 }
 
 .heading-sub {
   font-size: 4rem;
+}
+
+.heading-small {
+  font-size: 2rem;
 }
 
 .cloud-img-small {
@@ -104,6 +113,18 @@ code {
 
 .clickable {
   cursor: pointer;
+}
+
+.click-box {
+	cursor: pointer;
+	height: 3rem;
+	width: 3rem;
+	/* border: 3px solid black; */
+	position: absolute;
+}
+
+.classroom {
+	position: relative;
 }
 /* .header {
   display: flex;

@@ -15,22 +15,9 @@ const App = (props) => {
       {scene === 'classroom' &&
         <Classroom setScene={setScene} setDream={setDream}/>
       }
-      {
-        scene === 'dream' &&
+      {scene === 'dream' &&
         <Dream dream={dream} setScene={setScene}/>
       }
-      {/* <Menu setGame={setGame} />
-      {game === 'Tom' &&
-        <Tom />
-      }
-      {game === 'Test' &&
-        <Test />
-      }{game === 'Megan' &&
-      <Megan />
-    }
-    {game === 'Ymmij' &&
-    <Ymmij />
-    } */}
     </>
   )
 }
