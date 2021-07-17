@@ -4,10 +4,14 @@ import Header from './Header'
 const Dream = ({ dream, setScene }) => {
   return (
     <>
+    <div className="container">
       <Header setScene={setScene}/>
+    </div>
+    <div className="container">
       <div className="scene">
-        <iframe src={`./${dream}.html`} title={dream}></iframe>
+        <iframe src={`./${dream}.html`} title={dream} className='game-frame'></iframe>
       </div>
+    </div>
     </>
   )
 }

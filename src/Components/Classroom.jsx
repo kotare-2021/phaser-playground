@@ -9,13 +9,17 @@ const Classroom = ({  setScene, setDream }) => {
   } 
   return (
     <>
+    <div className="container">
       <Header setScene={setScene}/>
+    </div>
+    <div className="container">
       <div className="scene">
       <button onClick={() => handleClick('tom')}>Tom</button>
       <button onClick={() => handleClick('test')}>Test</button>
       <button onClick={() => handleClick('megan')}>Megan</button>
       <button onClick={() => handleClick('ymmij')}>Ymmij</button>
       </div>
+    </div>
     </>
   )
 }
