@@ -64,9 +64,9 @@
       var crossBarTwo = platforms.create(805, 350, 'ground').setScale(0.5).refreshBody()
       var goalTwo = goalTwo.create(770, 450, 'goalTwo').setScale(0.095).refreshBody()
       var floor2 = platforms.create(400, 620, 'ground').setScale(2).refreshBody()
-      keys = this.input.keyboard.addKeys('W,A,S,D')
+      keys = this.input.keyboard.addKeys('W,A,S,D,F,G,N,M')
       
-      floor.setVisible(false)
+      // floor.setVisible(false)
       crossBarTwo.setVisible(false)
       crossBarOne.setVisible(false)
       player = this.physics.add.sprite(600, 450, 'dude');
@@ -74,6 +74,8 @@
 
       player2.setCollideWorldBounds(true)
       player2.setBounce(0.2);
+      // player.setCircle();
+      // player2.setCircle(100);
       player.setBounce(0.2);
       player.setCollideWorldBounds(true);
 
@@ -142,7 +144,7 @@
       this.physics.add.collider(ball, goalTwo, goalScoreTwo, null, this)
       this.physics.add.collider(floor, player2)
       this.physics.add.collider(ball, player2, kick, null, this)
-      ball.create(400, 50, 'ball').setScale(0.05).setVelocityY(500).setBounce(0.5).setCollideWorldBounds(true)
+      ball.create(400, 50, 'ball').setScale(0.05).setVelocityY(500).setBounce(0.5).setCollideWorldBounds(true).setCircle()
     
       cursors = this.input.keyboard.createCursorKeys();
 
@@ -217,10 +219,16 @@ else
     player.anims.play('turn');
 }
 
-if (cursors.up.isDown && player.body.touching.down)
+if (cursors.up.isDown)
 {
     player.setVelocityY(-330);
-}
+} else if(keys.N.isDown) {
+  player.setVelocityX(-500)
+} else if(keys.M.isDown) {
+  player.setVelocityX(500)
+}  else if(cursors.down.isDown) {
+  player.setVelocityY(300)
+} 
   
    
 
@@ -242,10 +250,16 @@ else if (keys.A.isDown)
   player2.anims.play('turn2')
 }
 
-if (keys.W.isDown && player2.body.touching.down)
+if (keys.W.isDown)
 {
     player2.setVelocityY(-330);
-}
+} else if(keys.F.isDown) {
+  player2.setVelocityX(-500)
+} else if(keys.G.isDown) {
+  player2.setVelocityX(500)
+}  else if(keys.S.isDown) {
+  player2.setVelocityY(300)
+} 
 }
   
   </script>
