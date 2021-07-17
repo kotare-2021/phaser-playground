@@ -4,6 +4,9 @@ const Header = ({ setScene }) => {
   return (
     <>
     <div className="container">
+      {/* <div className="cloud">
+        <img src="/images/logo.png" alt="EDA" onClick={() => setScene('classroom')} className='heading-logo clickable'/>
+      </div> */}
       <h1 onClick={() => setScene('classroom')} className='heading-main clickable'>EDA</h1>
     </div>
     </>
