@@ -7,10 +7,11 @@
 
     <script>
 
-    let CollisionLayer, BackgroundLayer, SheepLayer, StarLayer, sheeps, car, stars, scoreText, carPosX, carPosY, carVelX, carVelY
+    let CollisionLayer, BackgroundLayer, SheepLayer, StarLayer, BuildingLayer, sheeps, buildings, buildings2, car, duck, stars, scoreText, carPosX, carPosY, carVelX, carVelY, particles, breadParticles, waterTimer, cityTimer, villageTimer, sandTimer, officeTimer, cityActive, villageActive, waterActive, officeActive, sandActive, copierA
     let hit = false
     let score = 0
     let carVelocity = 300
+    
     
 // start screen
 
@@ -23,10 +24,12 @@ let Start = new Phaser.Class({
 
     preload: function () {
         this.load.audio('shutup', 'assets/sounds/shutup.mp3')
+        this.load.audio('engine', 'assets/sounds/engine.wav')
     },
 
     create: function () {
-        let text = this.add.text(300, 200, 'SPACE TO START', { fontSize: '32px', fill: '#ffffff' });
+        this.add.text(90, 150, 'SHUT UP AND DRIVE', { fontSize: '62px', fill: '#ffffff' });
+        this.add.text(250, 350, 'SPACE TO START', { fontSize: '32px', fill: '#ffffff' });
         var camera = this.cameras.main;
         camera.setBackgroundColor('#000000')
 
@@ -34,25 +37,27 @@ let Start = new Phaser.Class({
             this.cameras.main.fadeOut(100, 255, 255, 255)
         })
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            console.log('start firing')
             this.sound.play('shutup')
-            this.scene.start('sceneB')
+            this.sound.play('engine')
+            this.scene.start('city')
+            cityActive = true
         })
     },
 
     update: function () {
-
     }
     
 })
 
 // city/star screen
 
-    let SceneB = new Phaser.Class({
+    let City = new Phaser.Class({
         Extends: Phaser.Scene,
 
         initialize: 
 
-    function sceneB () { Phaser.Scene.call(this, { key: 'sceneB', active: true })},
+    function cityScene () { Phaser.Scene.call(this, { key: 'city', active: true })},
 
     preload: function () {
         this.load.tilemapTiledJSON('drive', 'assets/maps/drive.json');
@@ -66,9 +71,10 @@ let Start = new Phaser.Class({
     },
 
     create: function () {
-        this.time.addEvent({
+        cityTimer = this.time.addEvent({
             delay: 28500,
             loop: false,
+            paused: true,
             callback: () => {
                 this.cameras.main.fadeOut(100, 255, 255, 255)
             }
@@ -76,12 +82,14 @@ let Start = new Phaser.Class({
 
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
             this.sound.play('engine')
-            carVelocity = 600
+            carVelocity = 550
             carPosX = car.body.position.x,
             carPosY = car.body.position.y,
             carVelX = car.body.velocity.x,
             carVelY = car.body.velocity.y
             this.scene.start('sceneA')
+            villageActive = true
+            console.log('city firing')
         })
 
         this.physics.world.setBounds(0, 0, 3200, 1920);
@@ -111,7 +119,7 @@ let Start = new Phaser.Class({
         
         map.setCollisionBetween(0, 923, true, 'Footpath')
         this.physics.add.collider(car, CollisionLayer)
-        let starOverlap = this.physics.add.overlap(car, stars, hitStar, null, this)
+        this.physics.add.overlap(car, stars, hitStar, null, this)
 
         this.cameras.main.setBounds(0, 0, 3200, 1920);
         this.cameras.main.startFollow(car);
@@ -120,18 +128,20 @@ let Start = new Phaser.Class({
 
         cursors = this.input.keyboard.createCursorKeys();
 
-        scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#ffffff' });
+        scoreText = this.add.text(16, 16, `Score: ${score}`, { fontSize: '32px', fill: '#ffffff' });
         scoreText.setScrollFactor(0)
 
         function hitStar (car, star) {
             this.sound.play('ding')
             star.destroy()
             score += 10;
-            scoreText.setText('Score: ' + score);
+            scoreText.setText(`Score: ${score}`);
         }
     },
 
     update: function () {
+        if (cityActive) {
+            cityTimer.paused = false
         if (cursors.left.isDown && cursors.up.isDown) {
             car.setVelocityX((carVelocity * -1))
             car.setVelocityY((carVelocity * -1))
@@ -160,17 +170,19 @@ let Start = new Phaser.Class({
         } else if (cursors.down.isDown) {
             car.setVelocityY(carVelocity)
             car.angle = 270
-        } else {
+        } 
+        else {
             car.setVelocityX(0)
             car.setVelocityY(0)
-        }     
+        }    
+    } 
     }
 })
 
 
 // village / sheep screen
 
-    let SceneA = new Phaser.Class({
+    let Village = new Phaser.Class({
         Extends: Phaser.Scene,
 
         initialize: 
@@ -179,28 +191,125 @@ let Start = new Phaser.Class({
 
     preload: function () {
         this.load.tilemapTiledJSON('drive', 'assets/maps/drive.json');
-        // this.load.image("roadEW", "assets/maps/roadEW.png")
-        // this.load.image("roadNE", "assets/maps/roadNE.png")
-        // this.load.image('car', 'assets/maps/Daco_4361360.png')
+        this.load.image('tractor', 'assets/images/tank.png')
         this.load.image('Serene_Village_48x48', 'assets/maps/Serene_Village_48x48.png')
+        this.load.image('redHouse', 'assets/images/redHouse.png')
+        this.load.image('blueHouse', 'assets/images/blueHouse.png')
+        this.load.image('greenHouse', 'assets/images/greenHouse.png')
+        this.load.image('smallRedHouse', 'assets/images/smallRedHouse.png')
+        this.load.image('smallBlueHouse', 'assets/images/smallBlueHouse.png')
+        this.load.image('smallGreenHouse', 'assets/images/smallGreenHouse.png')
+        this.load.image('trees1', 'assets/images/trees1.png')
+        this.load.image('trees2', 'assets/images/trees2.png')
+        this.load.image('trees3', 'assets/images/trees3.png')
+
+        this.load.image('smoke', 'assets/images/fire_02.png')
         this.load.spritesheet('sheep', 'assets/images/sheep_walk.png', { frameWidth: 128, frameHeight: 128 } )
+        // this.load.spritesheet('smoke', 'assets/maps/particlefx_04.png', { frameWidth: 128, frameHeight: 128 })
         this.load.audio('sheepSound', 'assets/sounds/sheep.wav')
         this.load.audio('crash', 'assets/sounds/151624__qubodup__clank-car-crash-collision.wav')
     },
 
     create: function () {
+
+        villageTimer = this.time.addEvent({
+            delay: 29000,
+            paused: true,
+            loop: false,
+            callback: () => {
+                this.cameras.main.fadeOut(100, 255, 255, 255)
+            }
+        })
+
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.sound.play('engine')
+            carVelocity = 250
+            carPosX = car.body.position.x,
+            carPosY = car.body.position.y,
+            carVelX = car.body.velocity.x,
+            carVelY = car.body.velocity.y
+            this.scene.start('office')
+            officeActive = true
+            console.log('village firing')
+        })
+
         this.physics.world.setBounds(0, 0, 3200, 1920);
 
         const map = this.make.tilemap({key: 'drive'});   
-        const tileset = map.addTilesetImage('roadEW', 'roadEW')
-        const tileset2 = map.addTilesetImage('roadNE', 'roadNE')
         const villageTiles = map.addTilesetImage('Serene_Village_48x48', 'Serene_Village_48x48')
-        const allTiles = [tileset, tileset2]
         
         map.createLayer('Village Background', villageTiles)
         BackgroundLayer = map.createLayer('Village Road', villageTiles)
         CollisionLayer = map.createLayer('Village Footpath', villageTiles)
         SheepLayer = map.getObjectLayer('Sheep')['objects']
+
+        buildings = this.add.group()
+        buildings2 = this.add.group()
+
+        //smallred
+        buildings.add(this.add.image(1473, 676, 'smallRedHouse').setScale(1))
+        buildings2.add(this.add.image(2008, 1031, 'smallRedHouse').setScale(1))
+        buildings.add(this.add.image(2512, 1440, 'smallRedHouse').setScale(1))
+
+        //smallblue
+        buildings2.add(this.add.image(596, 180, 'smallBlueHouse').setScale(1))
+        buildings.add(this.add.image(860, 1111, 'smallBlueHouse').setScale(1))
+        buildings2.add(this.add.image(1299, 651, 'smallBlueHouse').setScale(1))
+        buildings.add(this.add.image(2040, 400, 'smallBlueHouse').setScale(1))
+        buildings2.add(this.add.image(2423, 548, 'smallBlueHouse').setScale(1))
+        
+        //smallgreen
+        buildings.add(this.add.image(788, 485, 'smallGreenHouse').setScale(1))
+        buildings2.add(this.add.image(1660, 651, 'smallGreenHouse').setScale(1))
+        buildings.add(this.add.image(2040, 727, 'smallGreenHouse').setScale(1))
+        buildings2.add(this.add.image(2800, 213, 'smallGreenHouse').setScale(1))
+
+        //blue
+        buildings.add(this.add.image(1251, 216, 'blueHouse').setScale(1))
+        buildings2.add(this.add.image(1600, 1030, 'blueHouse').setScale(1))
+        buildings.add(this.add.image(2916, 1623, 'blueHouse').setScale(1))
+
+        //red
+        buildings2.add(this.add.image(865, 216, 'redHouse').setScale(1))
+        buildings.add(this.add.image(1100, 1109, 'redHouse').setScale(1))
+        buildings2.add(this.add.image(2688, 1048, 'redHouse').setScale(1))
+
+        //green
+        buildings.add(this.add.image(1637, 215, 'greenHouse').setScale(1))
+        buildings2.add(this.add.image(548, 1111, 'greenHouse').setScale(1))
+        buildings.add(this.add.image(1956, 1429, 'greenHouse').setScale(1))
+
+        //trees1
+        buildings2.add(this.add.image(260, 220, 'trees1').setScale(1))
+        buildings.add(this.add.image(580, 925, 'trees1').setScale(1))
+        buildings2.add(this.add.image(200, 1540, 'trees1').setScale(1))
+        buildings.add(this.add.image(1025, 1540, 'trees1').setScale(1))
+        buildings2.add(this.add.image(1920, 1692, 'trees1').setScale(1))
+
+        //trees2
+        buildings.add(this.add.image(580, 1540, 'trees2').setScale(1))
+        buildings2.add(this.add.image(1091, 925, 'trees2').setScale(1))
+        buildings.add(this.add.image(2370, 180, 'trees2').setScale(1))
+        buildings2.add(this.add.image(1924, 220, 'trees2').setScale(1))
+
+        //trees3
+        buildings.add(this.add.image(2433, 1236, 'trees3').setScale(1))
+        buildings2.add(this.add.image(20, 930, 'trees3').setScale(1)).setOrigin(0,0)
+        buildings.add(this.add.image(1411, 1540, 'trees3').setScale(1)).setOrigin(0,0)
+        
+        this.tweens.add({
+            targets: buildings.children.entries,
+            props: {
+                y: {value: '+=20', duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
+            }
+        })
+        
+        this.tweens.add({
+            targets: buildings2.children.entries,
+            props: {
+                y: {value: '+=10', duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
+            }
+        })
 
         sheeps = this.physics.add.group()
         
@@ -241,16 +350,16 @@ let Start = new Phaser.Class({
             obj.setBounce(1)
         })
 
-        car = this.physics.add.image(carPosX, carPosY, 'car').setScale(0.04)
+        car = this.physics.add.image(carPosX, carPosY, 'tractor').setScale(0.5)
         car.setVelocityX(carVelX)
         car.setVelocityY(carVelY)
-        car.setSize(1200, 1200, true)
+        car.setSize(150, 150, true)
         car.angle = 180
         
         map.setCollisionBetween(0, 923, true, 'Footpath')
         this.physics.add.collider(car, CollisionLayer)
-        let sheepCollider = this.physics.add.collider(sheeps, CollisionLayer)
-        let sheepOverlap = this.physics.add.overlap(car, sheeps, hitSheep, null, this)
+        this.physics.add.collider(sheeps, CollisionLayer)
+        this.physics.add.overlap(car, sheeps, hitSheep, null, this)
 
         this.cameras.main.setBounds(0, 0, 3200, 1920);
         this.cameras.main.startFollow(car);
@@ -264,19 +373,480 @@ let Start = new Phaser.Class({
 
         function hitSheep (car, sheep) {
             if (sheep.name === 'alive') {
-                this.sound.play('sheepSound', { volume: 0.8 })
-                this.sound.play('crash', { volume: 0.6 })
+                this.sound.play('sheepSound', { volume: 0.6 })
+                this.sound.play('crash', { volume: 0.5 })
                 sheep.setVelocity(Phaser.Math.Between(-600, 600), Phaser.Math.Between(-600, 600))
-                sheep.setAngularVelocity(30)
+                sheep.setAngularVelocity(50)
                 sheep.name = 'dead'
                 score += 10;
-                scoreText.setText('Score: ' + score);
-                sheep.setBounce(0.1)
+                scoreText.setText(`Score: ${score}`);
+                sheep.setBounce(0.3)
             }
+        }
+
+        particles = this.add.particles('smoke')
+
+        particles.createEmitter({
+            // frame: 0,
+            // angle: { start: -40, end: 40, steps: 32 },
+            lifespan: 1000,
+            speed: -200,
+            quantity: 32,
+            scale: { start: 0.1, end: 0},
+            alpha: { start: 0.5, end: 0 },
+            // origin: {x: 0, y: '+=100'},
+            on: true
+        })
+    },
+
+    update: function () {
+        if (villageActive) {
+            villageTimer.paused = false
+            if (cursors.left.isDown && cursors.up.isDown) {
+            car.setVelocityX((carVelocity * -1))
+            car.setVelocityY((carVelocity * -1))
+            car.angle = 45
+            particles.emitParticleAt((car.body.position.x + 70), (car.body.position.y + 70))
+        } else if (cursors.right.isDown && cursors.up.isDown) {
+            car.setVelocityX(carVelocity)
+            car.setVelocityY((carVelocity * -1))
+            particles.emitParticleAt((car.body.position.x + 0), (car.body.position.y + 70))
+            car.angle = 135
+        } else if (cursors.right.isDown && cursors.down.isDown) {
+            car.setVelocityX(carVelocity)
+            car.setVelocityY(carVelocity)
+            car.angle = 225
+            particles.emitParticleAt(car.body.position.x, (car.body.position.y + 0))
+        } else if (cursors.left.isDown && cursors.down.isDown) {
+            car.setVelocityX((carVelocity * -1))
+            car.setVelocityY(carVelocity)
+            car.angle = 315
+            particles.emitParticleAt((car.body.position.x + 70), (car.body.position.y + 0))
+        } else if (cursors.left.isDown) {
+            car.setVelocityX((carVelocity * -1))
+            car.angle = 0
+            particles.emitParticleAt((car.body.position.x + 70), (car.body.position.y + 35))
+        } else if (cursors.right.isDown) {
+            car.setVelocityX(carVelocity)
+            car.angle = 180
+            particles.emitParticleAt(car.body.position.x, (car.body.position.y + 35))
+        } else if (cursors.up.isDown) {
+            car.setVelocityY((carVelocity * -1))
+            car.angle = 90
+            particles.emitParticleAt((car.body.position.x + 35), (car.body.position.y + 70))
+        } else if (cursors.down.isDown) {
+            car.setVelocityY(carVelocity)
+            car.angle = 270
+            particles.emitParticleAt((car.body.position.x + 35), car.body.position.y)
+        } else {
+            car.setVelocityX(0)
+            car.setVelocityY(0)
+        }  
+        sheeps.children.entries.forEach(sheep => {
+            if (sheep.body.velocity.x > 0) {
+                sheep.anims.play('right', true)
+            } else if (sheep.body.velocity.x < 0) {
+                sheep.anims.play('left', true)
+            } else if (sheep.body.velocity.y > 0) {
+                sheep.anims.play('down', true)
+            } else if (sheep.body.velocity.y < 0) {
+                sheep.anims.play('up', true)
+            }
+        })
+    }
+    }
+})
+
+// office level
+
+let Office = new Phaser.Class({
+        Extends: Phaser.Scene,
+
+        initialize: 
+
+    function officeScene () { Phaser.Scene.call(this, { key: 'office', active: true })},
+
+    preload: function () {
+        this.load.tilemapTiledJSON('drive', 'assets/maps/drive.json');
+        this.load.image('Modern_Office_64x64', 'assets/maps/Modern_Office_64x64.png')
+        this.load.image('copier', 'assets/images/copier.png')
+        this.load.image('paper', 'assets/images/paper.png')
+        this.load.audio('ding', 'assets/sounds/ding.wav')
+        this.load.audio('engine', 'assets/sounds/engine.wav')
+    },
+
+    create: function () {
+        officeTimer = this.time.addEvent({
+            delay: 28500,
+            loop: false,
+            paused: true,
+            callback: () => {
+                this.cameras.main.fadeOut(100, 255, 255, 255)
+            }
+        })
+
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.sound.play('engine')
+            carVelocity = 550
+            carPosX = copierA.body.position.x,
+            carPosY = copierA.body.position.y,
+            carVelX = copierA.body.velocity.x,
+            carVelY = copierA.body.velocity.y,
+            waterActive = true,
+            this.scene.start('water')
+            console.log('office firing')
+        })
+
+        this.physics.world.setBounds(0, 0, 3200, 1920);
+
+        const map = this.make.tilemap({key: 'drive'});   
+        const officeTiles = map.addTilesetImage('Modern_Office_64x64', 'Modern_Office_64x64')
+        
+        map.createLayer('Office Background', officeTiles)
+        map.createLayer('Office Objects', officeTiles)
+        RoadLayer = map.createLayer('Office Road', officeTiles)
+        CollisionLayer = map.createLayer('Office Path', officeTiles)
+        map.createLayer('Office Desk Objects', officeTiles)
+        StarLayer = map.getObjectLayer('Sheep')['objects']
+
+        stars = this.physics.add.group()
+          
+        StarLayer.forEach(object => {
+            let obj = stars.create(object.x, object.y, 'paper')
+            obj.setOrigin(-1, 2)
+            obj.setSize(150, 150, true)
+            obj.setScale(0.3)
+        })
+
+        // car = this.physics.add.image(200, 200, 'copier').setScale(0.2)
+        copierA = this.physics.add.image(carPosX, carPosY, 'copier').setScale(0.2)
+        copierA.setVelocityX(carVelX)
+        copierA.setVelocityY(carVelY)
+        copierA.setSize(200, 200, true)
+        copierA.angle = 270
+        
+        map.setCollisionBetween(0, 2923, true, 'Office Path')
+        this.physics.add.collider(copierA, CollisionLayer)
+        this.physics.add.overlap(copierA, stars, hitStar, null, this)
+
+        this.cameras.main.setBounds(0, 0, 3200, 1920);
+        this.cameras.main.startFollow(copierA);
+        
+        copierA.setCollideWorldBounds(true);
+
+        cursors = this.input.keyboard.createCursorKeys();
+
+        scoreText = this.add.text(16, 16, `Score: ${score}`, { fontSize: '32px', fill: '#ffffff' });
+        scoreText.setScrollFactor(0)
+
+        function hitStar (copierA, star) {
+            this.sound.play('ding')
+            star.destroy()
+            score += 10;
+            scoreText.setText(`Score: ${score}`);
+        }
+    },
+
+    update: function () { 
+        if (officeActive) {
+            officeTimer.paused = false
+        if (cursors.left.isDown && cursors.up.isDown) {
+            copierA.setVelocityX((carVelocity * -1))
+            copierA.setVelocityY((carVelocity * -1))
+            copierA.angle = 135
+        } else if (cursors.right.isDown && cursors.up.isDown) {
+            copierA.setVelocityX(carVelocity)
+            copierA.setVelocityY((carVelocity * -1))
+            copierA.angle = 225
+        } else if (cursors.right.isDown && cursors.down.isDown) {
+            copierA.setVelocityX(carVelocity)
+            copierA.setVelocityY(carVelocity)
+            copierA.angle = 315
+        } else if (cursors.left.isDown && cursors.down.isDown) {
+            copierA.setVelocityX((carVelocity * -1))
+            copierA.setVelocityY(carVelocity)
+            copierA.angle = 45
+        } else if (cursors.left.isDown) {
+            copierA.setVelocityX((carVelocity * -1))
+            copierA.angle = 90
+        } else if (cursors.right.isDown) {
+            copierA.setVelocityX(carVelocity)
+            copierA.angle = 270
+        } else if (cursors.up.isDown) {
+            copierA.setVelocityY((carVelocity * -1))
+            copierA.angle = 180
+        } else if (cursors.down.isDown) {
+            copierA.setVelocityY(carVelocity)
+            copierA.angle = 0
+        } else {
+            copierA.setVelocityX(0)
+            copierA.setVelocityY(0)
+        }     
+    }
+    }
+})
+// water level
+
+let Water = new Phaser.Class({
+        Extends: Phaser.Scene,
+
+        initialize: 
+
+    function waterScene () { Phaser.Scene.call(this, { key: 'water', active: true })},
+
+    preload: function () {
+        this.load.tilemapTiledJSON('drive', 'assets/maps/drive.json');
+        this.load.audio('ding', 'assets/sounds/ding.wav')
+        this.load.audio('engine', 'assets/sounds/engine.wav')
+        // this.load.image('Serene_Village_48x48', 'assets/maps/Serene_Village_48x48.png')
+        // this.load.image('car', 'assets/maps/Daco_4361360.png')
+        this.load.image('bread', 'assets/images/bread.png')
+        this.load.spritesheet('duckSprite',
+        // let duckSprite = this.load.spritesheet('duckSprite',
+            'assets/maps/ducks.png',
+            { frameWidth: 48, frameHeight: 48 })
+    },
+
+    create: function () {
+        waterTimer = this.time.addEvent({
+            delay: 28500,
+            loop: false,
+            paused: true,
+            callback: () => {
+                this.cameras.main.fadeOut(100, 255, 255, 255)
+            }
+        })
+
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            this.sound.play('engine')
+            carVelocity = 250
+            carPosX = duck.body.position.x,
+            carPosY = duck.body.position.y,
+            carVelX = duck.body.velocity.x,
+            carVelY = duck.body.velocity.y
+            this.scene.start('sand')
+            sandActive = true
+            console.log('water firing')
+        })
+
+        this.physics.world.setBounds(0, 0, 3200, 1920);
+
+        const map = this.make.tilemap({key: 'drive'});   
+        const villageTiles = map.addTilesetImage('Serene_Village_48x48', 'Serene_Village_48x48')
+        
+        map.createLayer('Water Background', villageTiles)
+        RoadLayer = map.createLayer('Water Road', villageTiles)
+        CollisionLayer = map.createLayer('Water Footpath', villageTiles)
+        StarLayer = map.getObjectLayer('Sheep')['objects']
+
+        stars = this.physics.add.group()
+          
+        StarLayer.forEach(object => {
+            let obj = stars.create(object.x, object.y, 'bread')
+            // obj.setOrigin(-1, 2)
+            obj.setSize(150, 150, true)
+            obj.setScale(0.5)
+        })
+
+        duck = this.physics.add.sprite(carPosX, carPosY, 'duckSprite').setScale(2)
+        // car = this.physics.add.image(300, 100, 'car').setScale(0.04)
+        duck.setSize(30, 30, true)
+        // car.angle = 180
+
+        this.anims.create({
+            key: 'duckDown',
+            frames: this.anims.generateFrameNumbers('duckSprite', { start: 3, end: 5 }),
+            frameRate: 10,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'duckLeft',
+            frames: this.anims.generateFrameNumbers('duckSprite', { start: 15, end: 17 }),
+            frameRate: 10,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'duckRight',
+            frames: this.anims.generateFrameNumbers('duckSprite', { start: 27, end: 29 }),
+            frameRate: 10,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'duckUp',
+            frames: this.anims.generateFrameNumbers('duckSprite', { start: 39, end: 41 }),
+            frameRate: 10,
+            repeat: -1
+        })
+
+        this.anims.create({
+            key: 'duckStop',
+            frames: [{ key: 'duckSprite', frame: 4 }],
+            frameRate: 20
+        })
+        
+        map.setCollisionBetween(0, 923, true, 'Footpath')
+        this.physics.add.collider(duck, CollisionLayer)
+        this.physics.add.overlap(duck, stars, hitStar, null, this)
+
+        this.cameras.main.setBounds(0, 0, 3200, 1920);
+        this.cameras.main.startFollow(duck);
+        
+        duck.setCollideWorldBounds(true);
+
+        cursors = this.input.keyboard.createCursorKeys();
+
+        scoreText = this.add.text(16, 16, `Score: ${score}`, { fontSize: '32px', fill: '#ffffff' });
+        scoreText.setScrollFactor(0)
+
+        breadParticles = this.add.particles('bread')
+
+        breadParticles.createEmitter({
+            lifespan: 10000,
+            speed: -200,
+            quantity: 32,
+            scale: { start: 1, end: 2},
+            alpha: { start: 1, end: 0 },
+            on: false,
+            angle: { start: 0, end: 360, steps: 32 },
+        })
+
+        function hitStar (duck, star) {
+            this.sound.play('ding')
+            star.destroy()
+            score += 10;
+            scoreText.setText(`Score: ${score}`);
+            breadParticles.emitParticleAt((duck.body.position.x + 70), (duck.body.position.y + 70))
+        }
+    },
+
+    update: function () { 
+        if (waterActive) {
+            waterTimer.paused = false
+        if (cursors.left.isDown && cursors.up.isDown) {
+            duck.setVelocityX((carVelocity * -1))
+            duck.setVelocityY((carVelocity * -1))
+        } else if (cursors.right.isDown && cursors.up.isDown) {
+            duck.setVelocityX(carVelocity)
+            duck.setVelocityY((carVelocity * -1))
+        } else if (cursors.right.isDown && cursors.down.isDown) {
+            duck.setVelocityX(carVelocity)
+            duck.setVelocityY(carVelocity)
+        } else if (cursors.left.isDown && cursors.down.isDown) {
+            duck.setVelocityX((carVelocity * -1))
+            duck.setVelocityY(carVelocity)
+        } else if (cursors.left.isDown) {
+            duck.setVelocityX((carVelocity * -1))
+            duck.anims.play('duckLeft', true)
+        } else if (cursors.right.isDown) {
+            duck.setVelocityX(carVelocity)
+            duck.anims.play('duckRight', true)
+        } else if (cursors.up.isDown) {
+            duck.setVelocityY((carVelocity * -1))
+            duck.anims.play('duckUp', true)
+        } else if (cursors.down.isDown) {
+            duck.setVelocityY(carVelocity)
+            duck.anims.play('duckDown', true)
+        } else {
+            duck.setVelocityX(0)
+            duck.setVelocityY(0)
+            duck.anims.play('duckStop', true)
+        }     
+    }
+    }
+})
+
+// sand level
+
+let Sand = new Phaser.Class({
+        Extends: Phaser.Scene,
+
+        initialize: 
+
+    function sandScene () { Phaser.Scene.call(this, { key: 'sand', active: true })},
+
+    preload: function () {
+        this.load.tilemapTiledJSON('drive', 'assets/maps/drive.json');
+        // this.load.image("roadEW", "assets/maps/roadEW.png")
+        // this.load.image("roadNE", "assets/maps/roadNE.png")
+        // this.load.image('tiles', 'assets/maps/tiles.png')
+        // this.load.image('car', 'assets/maps/Daco_4361360.png')
+        // this.load.image('star', 'assets/star.png')
+        this.load.audio('ding', 'assets/sounds/ding.wav')
+        this.load.audio('engine', 'assets/sounds/engine.wav')
+        // this.load.image('Serene_Village_48x48', 'assets/maps/Serene_Village_48x48.png')
+    },
+
+    create: function () {
+        this.time.addEvent({
+            delay: 28500,
+            loop: false,
+            paused: true,
+            callback: () => {
+                this.cameras.main.fadeOut(100, 255, 255, 255)
+            }
+        })
+
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+            console.log('sand firing')
+            // this.sound.play('engine')
+            // carVelocity = 550
+            // carPosX = car.body.position.x,
+            // carPosY = car.body.position.y,
+            // carVelX = car.body.velocity.x,
+            // carVelY = car.body.velocity.y
+            // this.scene.start('sceneA')
+        })
+
+        this.physics.world.setBounds(0, 0, 3200, 1920);
+
+        const map = this.make.tilemap({key: 'drive'});   
+        const villageTiles = map.addTilesetImage('Serene_Village_48x48', 'Serene_Village_48x48')
+        
+        map.createLayer('Water Background', villageTiles)
+        RoadLayer = map.createLayer('Water Road', villageTiles)
+        CollisionLayer = map.createLayer('Water Footpath', villageTiles)
+        StarLayer = map.getObjectLayer('Sheep')['objects']
+
+        stars = this.physics.add.group()
+          
+        StarLayer.forEach(object => {
+            let obj = stars.create(object.x, object.y, 'star')
+            obj.setOrigin(-1, 2)
+            obj.setSize(50, 50, true)
+        })
+
+        car = this.physics.add.image(300, 100, 'car').setScale(0.04)
+        car.setSize(1200, 1200, true)
+        car.angle = 180
+        
+        map.setCollisionBetween(0, 923, true, 'Footpath')
+        this.physics.add.collider(car, CollisionLayer)
+        this.physics.add.overlap(car, stars, hitStar, null, this)
+
+        this.cameras.main.setBounds(0, 0, 3200, 1920);
+        this.cameras.main.startFollow(car);
+        
+        car.setCollideWorldBounds(true);
+
+        cursors = this.input.keyboard.createCursorKeys();
+
+        scoreText = this.add.text(16, 16, `Score: ${score}`, { fontSize: '32px', fill: '#ffffff' });
+        scoreText.setScrollFactor(0)
+
+        function hitStar (car, star) {
+            this.sound.play('ding')
+            star.destroy()
+            score += 10;
+            scoreText.setText(`Score: ${score}`);
         }
     },
 
     update: function () {
+        if (sandActive) {
+            sandTimer.paused = false
         if (cursors.left.isDown && cursors.up.isDown) {
             car.setVelocityX((carVelocity * -1))
             car.setVelocityY((carVelocity * -1))
@@ -308,22 +878,9 @@ let Start = new Phaser.Class({
         } else {
             car.setVelocityX(0)
             car.setVelocityY(0)
-        }  
-        sheeps.children.entries.forEach(sheep => {
-            if (sheep.body.velocity.x > 0) {
-                sheep.anims.play('right', true)
-            } else if (sheep.body.velocity.x < 0) {
-                sheep.anims.play('left', true)
-            } else if (sheep.body.velocity.y > 0) {
-                sheep.anims.play('down', true)
-            } else if (sheep.body.velocity.y < 0) {
-                sheep.anims.play('up', true)
-            }
-        })
+        }     }
     }
 })
-
-
 
 
 var config = {
@@ -340,8 +897,8 @@ var config = {
                 debug: false
             }
         },
-        // scene: [SceneB]
-        scene: [SceneA, SceneB, Start]
+        // scene: [Office]
+        scene: [Water, Office, Village, City, Start]
     };
 
     var game = new Phaser.Game(config);
