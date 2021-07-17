@@ -13,7 +13,8 @@ const Classroom = ({  setScene, setDream }) => {
       <Header setScene={setScene}/>
     </div>
     <div className="container">
-      <div className="scene">
+      <div className="classroom">
+        <img src="/images/classroom_01.png" alt="a classrom" />
       <button onClick={() => handleClick('tom')}>Tom</button>
       <button onClick={() => handleClick('test')}>Test</button>
       <button onClick={() => handleClick('megan')}>Megan</button>
