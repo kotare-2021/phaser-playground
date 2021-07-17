@@ -1,20 +1,25 @@
 import React, { useState } from 'react'
 
-import Menu from './Menu'
-import Tom from './Tom'
-import Test from './Test'
-import Megan from './Megan'
-import Ymmij from './Ymmij'
-import Header from './Header'
+import Landing from './Landing'
+import Classroom from './Classroom'
+import Dream from './Dream'
 
 const App = (props) => {
-  const [game, setGame] = useState('Menu')
+  const [scene, setScene] = useState('landing')
+  const [dream, setDream] = useState('')
   return (
-    <div className='page'>
-      <Header setGame={setGame}/>
-      {game === "Menu" &&
-      <Menu setGame={setGame} />
+    <>
+      {scene === 'landing' &&
+        <Landing setScene={setScene} />
       }
+      {scene === 'classroom' &&
+        <Classroom setScene={setScene} setDream={setDream}/>
+      }
+      {
+        scene === 'dream' &&
+        <Dream dream={dream} setScene={setScene}/>
+      }
+      {/* <Menu setGame={setGame} />
       {game === 'Tom' &&
         <Tom />
       }
@@ -25,8 +30,8 @@ const App = (props) => {
     }
     {game === 'Ymmij' &&
     <Ymmij />
-    }
-    </div>
+    } */}
+    </>
   )
 }
 
