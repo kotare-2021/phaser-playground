@@ -248,7 +248,15 @@ let Start = new Phaser.Class({
     },
 
     create: function () {
-
+        let scoringActive
+        this.time.addEvent({
+            delay: 500,
+            // paused: true,
+            loop: false,
+            callback: () => {
+                scoringActive = true
+            }
+        })
         villageTimer = this.time.addEvent({
             delay: 28500,
             paused: true,
@@ -471,6 +479,9 @@ let Start = new Phaser.Class({
             sheep.name = 'dead'
             score += 10;
             sheep.setBounce(0.3)
+            if (scoringActive) {
+                scoreText.setText(score);
+            }
         }
     }
     },
@@ -557,7 +568,14 @@ let Cubicle = new Phaser.Class({
     },
 
     create: function () {
-
+        let scoringActive
+        this.time.addEvent({
+            delay: 500,
+            loop: false,
+            callback: () => {
+                scoringActive = true
+            }
+        })
         officeTimer = this.time.addEvent({
             delay: 28500,
             loop: false,
@@ -638,7 +656,6 @@ let Cubicle = new Phaser.Class({
         car.setCollideWorldBounds(true);
 
         cursors = this.input.keyboard.createCursorKeys();
-
         this.add.image(0, 10, 'scoreBackground').setScale(0.55, 0.65).setOrigin(0).setScrollFactor(0)
         this.add.image(40, 35, 'scoreCoin').setScale(0.6).setScrollFactor(0)
         let add = this.add
@@ -655,7 +672,9 @@ let Cubicle = new Phaser.Class({
             this.sound.play('printer')
             star.destroy()
             score += 10;
-            scoreText.setText(score);
+            if (scoringActive) {
+                scoreText.setText(score);
+            }
         }
     },
 
@@ -724,6 +743,14 @@ let Water = new Phaser.Class({
     
 
     create: function () {
+        let scoringActive
+        this.time.addEvent({
+            delay: 500,
+            loop: false,
+            callback: () => {
+                scoringActive = true
+            }
+        })
         waterTimer = this.time.addEvent({
             delay: 28500,
             loop: false,
@@ -763,6 +790,8 @@ let Water = new Phaser.Class({
         })
 
         duck = this.physics.add.sprite(carPosX, carPosY, 'duckSprite').setScale(2)
+        duck.setVelocityX(carVelX)
+        duck.setVelocityY(carVelY)
         duck.setSize(30, 30, true)
 
         this.anims.create({
@@ -838,8 +867,10 @@ let Water = new Phaser.Class({
             this.sound.play('quack')
             star.destroy()
             score += 10;
-            scoreText.setText(score);
             breadParticles.emitParticleAt((duck.body.position.x + 70), (duck.body.position.y + 70))
+            if (scoringActive) {
+                scoreText.setText(score);
+            }
         }
     },
 
