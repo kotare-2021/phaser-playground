@@ -47,6 +47,12 @@ const Classroom = ({  setScene, setDream }) => {
     </div>
     <div className='speechBubbleMed'>
     </div>
+    <div className='speechBubbleMed2'>
+    </div>
+    <div className='speechBubbleMed3'>
+    </div>
+    <div className='speechBubbleMed4'>
+    </div>
     <div className='speechBubbleSmall'>
     </div>
     <div className='speechBubbleSmall2'>
