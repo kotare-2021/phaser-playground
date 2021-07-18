@@ -39,8 +39,24 @@ const Classroom = ({  setScene, setDream }) => {
         <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}></div>
         <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}></div>
         <img src="/images/classroom_01.png" alt="a classrom" />
+       
       </div>
+    
+      <div className='speechBubbleCount'>
+    <div className='speechBubbleBig'>
     </div>
+    <div className='speechBubbleMed'>
+    </div>
+    <div className='speechBubbleSmall'>
+    </div>
+    <div className='speechBubbleSmall2'>
+    </div>
+    <div className='speechBubbleSmall3'>
+    </div>
+    </div>
+   
+    </div>
+   
     </>
   )
 }

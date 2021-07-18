@@ -248,3 +248,82 @@ code {
       0 0 140px #5213fe;
   }
 } */ 
+
+.speechBubbleCount {
+  width: 100px;
+  height: 110px;
+  background-color: white;
+  background-color: transparent;
+  position: absolute;
+  left: 4.5rem;
+  top: 17.5rem;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+}
+
+.speechBubbleBig {
+  background-color: white;
+  height: 90px;
+  width: 90px;
+  border-radius: 30px;
+  position: absolute;
+  z-index: 3;
+  /* border: 1px solid black; */
+  /* align-self: flex-start; */
+  
+}
+.speechBubbleMed {
+  background-color: white;
+  height: 30px;
+  width: 30px;
+  top: 65px;
+  left: 55px;
+  /* margin-top: 5px;
+  margin-left: 70px; */
+  border-radius: 15px;
+  /* border: 1px solid black; */
+  z-index: 2;
+  position: absolute;
+  
+}
+.speechBubbleSmall {
+  background-color: white;
+  border-radius: 10px;
+  height: 12px;
+  width: 12px;
+  position: absolute;
+  top: 93px;
+  left: 75px;
+  /* border: 1px solid black; */
+  
+  /* margin-left: 100px; */
+  /* align-self: flex-end; */
+}
+.speechBubbleSmall2 {
+  background-color: white;
+  border-radius: 10px;
+  height: 12px;
+  width: 12px;
+  position: absolute;
+  top: 92px;
+  left: 52px;
+  /* border: 1px solid black; */
+  
+  /* margin-left: 100px; */
+  /* align-self: flex-end; */
+}
+.speechBubbleSmall3 {
+  background-color: white;
+  border-radius: 10px;
+  height: 17px;
+  width: 17px;
+  position: absolute;
+  top: 80px;
+  left: 35px;
+  /* border: 1px solid black; */
+  
+  /* margin-left: 100px; */
+  /* align-self: flex-end; */
+}
+
