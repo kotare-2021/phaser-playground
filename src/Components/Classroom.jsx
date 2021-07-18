@@ -12,6 +12,8 @@ const Classroom = ({  setScene, setDream }) => {
   const [fadeIn, setFadeIn] = useState({
     visibility: 'hidden'
   })
+  const [speechDirectionOne, setSpeechDirectionOne] = useState('left')
+  const [speechDirectionTwo, setSpeechDirectionTwo] = useState('left')
 
   const conversation = [
     'Have you heard of Batmna?',
@@ -33,7 +35,7 @@ const Classroom = ({  setScene, setDream }) => {
     '2 Repo\'s is the way to go'
   ]
   
-  //variables for div positioning
+  //variables for clickbox positioning
   const charOneStyle = {
     left: '3.3rem',
     top: '9rem'
@@ -50,15 +52,17 @@ const Classroom = ({  setScene, setDream }) => {
     left: '15rem',
     top: '19rem'
   }
+
+  //speech positioning variables
   const speechOneStyle = {
-    left: '6.8rem',
-    top: '5rem',
+    left: '6.4rem',
+    top: '7rem',
     visibility: speechOneVisible,
     position: 'absolute'
   }
   const speechTwoStyle = {
-    left: '6.8rem',
-    top: '15rem',
+    left: '6.4rem',
+    top: '17rem',
     visibility: speechTwoVisible,
     position: 'absolute'
   }
@@ -138,10 +142,10 @@ const Classroom = ({  setScene, setDream }) => {
       <div className="container">
         <div className="classroom" style={fadeOut}>
           <div style={speechOneStyle}>
-            <div className="bubble mini left">{speechOne}</div>
+            <div className={`bubble mini ${speechDirectionOne}`}>{speechOne}</div>
           </div>
           <div style={speechTwoStyle}>
-            <div className="bubble mini right">{speechTwo}</div>
+            <div className={`bubble mini ${speechDirectionTwo}`}>{speechTwo}</div> 
           </div>
           <div className="click-box" style={charOneStyle} onClick={() => handleClick('tom')}></div>
           <div className="click-box" style={charTwoStyle} onClick={() => handleClick('test')}></div>
@@ -149,7 +153,6 @@ const Classroom = ({  setScene, setDream }) => {
           <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}></div>
           <img src="/images/classroom_01.png" alt="a classrom" />
         </div>
-
       </div>
     </div>
   )
