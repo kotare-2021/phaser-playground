@@ -159,10 +159,10 @@ code {
   font-family: "Yellowtail", sans-serif;
   color: #e9caf5;
   /* animation: flicker 1.5s infinite alternate;  */
-  margin-left: -100px;
+/*   margin-left: -100px;
   margin-top: 110px;
   margin-bottom: 20px;
-}
+} */
 
 @keyframes flicker {
   0%, 18%, 22%, 25%, 53%, 57%, 100% {
