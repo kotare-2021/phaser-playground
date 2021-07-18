@@ -1,7 +1,18 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from './Header'
 
 const Dream = ({ dream, setScene }) => {
+  const [dreamStyle, setDreamStyle] = useState({
+    visibility: 'hidden'
+  })
+
+  useEffect(() => {
+    setDreamStyle({
+      visibility: 'visible',
+      opacity: 1,
+      transition: 'opacity 2s linear'
+    })
+  }, [])
   return (
     <>
     <div className="container">

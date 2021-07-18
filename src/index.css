@@ -32,8 +32,8 @@ code {
 }
 
 .game-frame {
-  height: 600px;
-  width: 800px;
+  height: 576px;
+  width: 1600px;
 }
 
 .scene {
@@ -126,6 +126,17 @@ code {
 .classroom {
 	position: relative;
 }
+
+.speech {
+    font-family: arial, sans-serif;
+    font-size: 1rem;
+    color: #000;
+    position: absolute;
+    background: #fff;
+    padding: 0.8rem;
+    border: 2px solid #000;
+    max-width: 7rem;
+}
 /* .header {
   display: flex;
   flex-direction: row;
@@ -158,11 +169,11 @@ code {
   font-weight: lighter;
   font-family: "Yellowtail", sans-serif;
   color: #e9caf5;
-  animation: flicker 1.5s infinite alternate; 
-  margin-left: -100px;
+  /* animation: flicker 1.5s infinite alternate;  */
+/*   margin-left: -100px;
   margin-top: 110px;
   margin-bottom: 20px;
-}
+} */
 
 @keyframes flicker {
   0%, 18%, 22%, 25%, 53%, 57%, 100% {
@@ -217,7 +228,7 @@ code {
   inset 0 0 1.3rem #000;
 }
 
-.page {
+/*.page {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -248,8 +259,11 @@ code {
       0 0 140px #5213fe;
   }
 } */ 
-
 .speechBubbleCount {
+  display: none;
+}
+
+.speechBubbleCount1 {
   width: 100px;
   height: 110px;
   background-color: white;
@@ -257,6 +271,42 @@ code {
   position: absolute;
   left: 4.5rem;
   top: 17.5rem;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+}
+.speechBubbleCount2{
+  width: 100px;
+  height: 110px;
+  background-color: white;
+  background-color: transparent;
+  position: absolute;
+  left: 25rem;
+  top: 17.5rem;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+}
+.speechBubbleCount3{
+  width: 100px;
+  height: 110px;
+  background-color: white;
+  background-color: transparent;
+  position: absolute;
+  left: 4.5rem;
+  top: 27.5rem;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center; */
+}
+.speechBubbleCount4{
+  width: 100px;
+  height: 110px;
+  background-color: white;
+  background-color: transparent;
+  position: absolute;
+  left: 25rem;
+  top: 27.5rem;
   /* display: flex;
   flex-direction: column;
   align-items: center; */
@@ -269,27 +319,42 @@ code {
   border-radius: 40px;
   position: absolute;
   z-index: 3;
+  animation-name: fade;
+  animation-duration: 2s;
+  
   
   /* border: 1px solid black; */
   /* align-self: flex-start; */
   
 }
-.speechBubbleMed {
+.VisbleMed1 .speechBubbleMedLeft {
   background-color: white;
   height: 25px;
   width: 25px;
   top: 65px;
   left: 55px;
-  /* margin-top: 5px;
-  margin-left: 70px; */
   border-radius: 15px;
-  /* border: 1px solid black; */
+  animation-name: fade;
+  animation-duration: 2s;
   z-index: 2;
   position: absolute;
-  
-  
+
 }
-.speechBubbleSmall {
+.VisbleMed3 .speechBubbleMedLeft {
+  background-color: white;
+  height: 25px;
+  width: 25px;
+  top: 65px;
+  left: 55px;
+  border-radius: 15px;
+  animation-name: fade;
+  animation-duration: 4s;
+  z-index: 2;
+  position: absolute;
+
+}
+
+.Visible1 .speechBubbleSmallLeft {
   background-color: white;
   border-radius: 10px;
   height: 12px;
@@ -297,9 +362,84 @@ code {
   position: absolute;
   top: 93px;
   left: 75px;
+  animation-name: fade; 
+  animation-duration: 2s;
   
-  border: 1px solid black;
+  
 }  
+.Visible3 .speechBubbleSmallLeft {
+  background-color: white;
+  border-radius: 10px;
+  height: 12px;
+  width: 12px;
+  position: absolute;
+  top: 93px;
+  left: 75px;
+  animation-name: fade; 
+  animation-duration: 2s;
+  
+  
+}  
+.VisbleMed2 .speechBubbleMedRight {
+  background-color: white;
+  height: 25px;
+  width: 25px;
+  top: 65px;
+  left: 5px;
+  border-radius: 15px;
+  animation-name: fade;
+  animation-duration: 2s;
+  z-index: 2;
+  position: absolute;
+  
+
+}
+.VisbleMed4 .speechBubbleMedRight {
+  background-color: white;
+  height: 25px;
+  width: 25px;
+  top: 65px;
+  left: 5px;
+  border-radius: 15px;
+  animation-name: fade;
+  animation-duration: 2s;
+  z-index: 2;
+  position: absolute;
+  
+
+}
+
+.Visible2 .speechBubbleSmallRight {
+  background-color: white;
+  border-radius: 10px;
+  height: 12px;
+  width: 12px;
+  position: absolute;
+  top: 93px;
+  left: -5px;
+  animation-name: fade; 
+  animation-duration: 2s;
+} 
+
+.Visible4 .speechBubbleSmallRight {
+  background-color: white;
+  border-radius: 10px;
+  height: 12px;
+  width: 12px;
+  position: absolute;
+  top: 93px;
+  left: -5px;
+  animation-name: fade; 
+  animation-duration: 2s;
+} 
+
+@keyframes fade {
+  0% {background-color: transparent;}
+
+  100% {
+    background-color: white;
+  }
+}
 
 
 /* .speechBubbleSmall2 {
