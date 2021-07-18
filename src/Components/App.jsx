@@ -1,27 +1,27 @@
 import React, { useState } from 'react'
 
-import Menu from './Menu'
-import Tom from './Tom'
-import Test from './Test'
-import Casey from './Casey'
+
+import Landing from './Landing'
+import Classroom from './Classroom'
+import Dream from './Dream'
 
 const App = (props) => {
-  const [game, setGame] = useState('')
+  const [scene, setScene] = useState('landing')
+  const [dream, setDream] = useState('')
   return (
     <>
-      <h1>Phaser Playground</h1>
-
-      <Casey />
-      {/* <Menu setGame={setGame} />
-      {game === 'Tom' &&
-        <Tom />
+      {scene === 'landing' &&
+        <Landing setScene={setScene} />
       }
-      {game === 'Test' &&
-        <Test />
+      {scene === 'classroom' &&
+        <Classroom setScene={setScene} setDream={setDream}/>
+      }
+      {scene === 'dream' &&
+        <Dream dream={dream} setScene={setScene}/>
       }
       {game === 'Casey' &&
       <Casey />
-      } */}
+      }
     </>
   )
 }
