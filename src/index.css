@@ -126,6 +126,17 @@ code {
 .classroom {
 	position: relative;
 }
+
+.speech {
+    font-family: arial, sans-serif;
+    font-size: 1rem;
+    color: #000;
+    position: absolute;
+    background: #fff;
+    padding: 0.8rem;
+    border: 2px solid #000;
+    max-width: 7rem;
+}
 /* .header {
   display: flex;
   flex-direction: row;
