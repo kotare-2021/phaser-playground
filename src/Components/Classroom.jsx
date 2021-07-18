@@ -8,6 +8,10 @@ const Classroom = ({  setScene, setDream }) => {
   const [speechOneVisible, setSpeechOneVisible] = useState('hidden')
   const [speechTwoVisible, setSpeechTwoVisible] = useState('hidden')
   const [startDream, setStartDream] = useState(false)
+  const [classStyle, setClassStyle] = useState(null)
+  const [fadeIn, setFadeIn] = useState({
+    visibility: 'hidden'
+  })
 
   const conversation = [
     'Have you heard of Batmna?',
@@ -59,8 +63,15 @@ const Classroom = ({  setScene, setDream }) => {
   //On click select dream and render dream component
   const handleClick = (string) => {
     setStartDream(true)
-    setScene('dream')
-    setDream(string)
+    setClassStyle({
+      visibility: 'hidden',
+      opacity: 0,
+      transition: 'visibility 0s 2s, opacity 2s linear'
+    })
+    setTimeout(() => {
+      setScene('dream')
+      setDream(string)
+    }, 2000)
   }
 
   const getRandomInt = (min, max) => {
@@ -71,8 +82,15 @@ const Classroom = ({  setScene, setDream }) => {
 
   //On render set speech boxes to random conversation
   useEffect(() => {
-    setSpeechOne(conversation[getRandomInt(0, conversation.length)])
-    setSpeechTwo(conversation[getRandomInt(0, conversation.length)])
+    setFadeIn({
+      visibility: 'visible',
+      opacity: 1,
+      transition: 'opacity 2s linear'
+    })
+    setTimeout(() => {
+      setSpeechOne(conversation[getRandomInt(0, conversation.length)])
+      setSpeechTwo(conversation[getRandomInt(0, conversation.length)])
+    }, 2000)
   }, [] )
 
   //Logic for repeating random speech boxes
@@ -92,35 +110,40 @@ const Classroom = ({  setScene, setDream }) => {
   }, [speechOne])
 
   useEffect(() => {
-    setTimeout(() => {
-      setSpeechTwoVisible('visible')
+    if (!startDream) {// normal condition
       setTimeout(() => {
-        setSpeechTwoVisible('hidden')
-        setSpeechTwo(conversation[getRandomInt(0, conversation.length)])
-      }, 3000)
-    }, getRandomInt(3000, 12000))
+        setSpeechTwoVisible('visible')
+        setTimeout(() => {
+          setSpeechTwoVisible('hidden')
+          setSpeechTwo(conversation[getRandomInt(0, conversation.length)])
+        }, 3000)
+      }, getRandomInt(3000, 12000))
+    } else {// condition when student clicked
+      setSpeechOneVisible('hidden')
+      setSpeechTwoVisible('hidden')
+    }
   }, [speechTwo])
 
   return (
-    <>
-    <div className="container">
-      <Header setScene={setScene}/>
-    </div>
-    <div className="container">
-      <span className='heading-small'>It's an afternoon lecture at Dev Academy and one of the students are starting to fall aleep. Click on the student who's dream you want to see...</span>
-    </div>
-    <div className="container">
-      <div className="classroom">
-        <div className="speech" style={speechOneStyle}>{speechOne}</div>
-        <div className="speech" style={speechTwoStyle}>{speechTwo}</div>
-        <div className="click-box" style={charOneStyle} onClick={() => handleClick('tom')}></div>
-        <div className="click-box" style={charTwoStyle} onClick={() => handleClick('test')}></div>
-        <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}></div>
-        <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}></div>
-        <img src="/images/classroom_01.png" alt="a classrom" />
+    <div style={fadeIn}>
+      <div className="container">
+        <Header setScene={setScene}/>
+      </div>
+      <div className="container">
+        <span className='heading-small'>It's an afternoon lecture at Dev Academy and one of the students is starting to fall aleep. Click on the student who's dream you want to see...</span>
+      </div>
+      <div className="container">
+        <div className="classroom" style={classStyle}>
+          <div className="speech" style={speechOneStyle}>{speechOne}</div>
+          <div className="speech" style={speechTwoStyle}>{speechTwo}</div>
+          <div className="click-box" style={charOneStyle} onClick={() => handleClick('tom')}></div>
+          <div className="click-box" style={charTwoStyle} onClick={() => handleClick('test')}></div>
+          <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}></div>
+          <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}></div>
+          <img src="/images/classroom_01.png" alt="a classrom" />
+        </div>
       </div>
     </div>
-    </>
   )
 }
 
