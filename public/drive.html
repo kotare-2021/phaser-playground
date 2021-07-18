@@ -30,14 +30,13 @@ let Start = new Phaser.Class({
     create: function () {
         this.add.text(90, 150, 'SHUT UP AND DRIVE', { fontSize: '62px', fill: '#ffffff' });
         this.add.text(250, 350, 'SPACE TO START', { fontSize: '32px', fill: '#ffffff' });
-        var camera = this.cameras.main;
+        let camera = this.cameras.main;
         camera.setBackgroundColor('#000000')
 
         this.input.keyboard.once('keydown-SPACE', () => {
             this.cameras.main.fadeOut(100, 255, 255, 255)
         })
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            console.log('start firing')
             this.sound.play('shutup')
             this.sound.play('engine')
             this.scene.start('city')
@@ -89,7 +88,6 @@ let Start = new Phaser.Class({
             carVelY = car.body.velocity.y
             this.scene.start('sceneA')
             villageActive = true
-            console.log('city firing')
         })
 
         this.physics.world.setBounds(0, 0, 3200, 1920);
@@ -228,9 +226,8 @@ let Start = new Phaser.Class({
             carPosY = car.body.position.y,
             carVelX = car.body.velocity.x,
             carVelY = car.body.velocity.y
-            this.scene.start('office')
             officeActive = true
-            console.log('village firing')
+            this.scene.start('cubicle')
         })
 
         this.physics.world.setBounds(0, 0, 3200, 1920);
@@ -395,7 +392,7 @@ let Start = new Phaser.Class({
             scale: { start: 0.1, end: 0},
             alpha: { start: 0.5, end: 0 },
             // origin: {x: 0, y: '+=100'},
-            on: true
+            on: false
         })
     },
 
@@ -457,25 +454,28 @@ let Start = new Phaser.Class({
     }
 })
 
-// office level
+// Cubicle level
 
-let Office = new Phaser.Class({
-        Extends: Phaser.Scene,
+let Cubicle = new Phaser.Class({
+    Extends: Phaser.Scene,
 
-        initialize: 
+    initialize:
 
-    function officeScene () { Phaser.Scene.call(this, { key: 'office', active: true })},
+    function cubicleScene () { Phaser.Scene.call(this, { key: 'cubicle', active: true })},
 
     preload: function () {
-        this.load.tilemapTiledJSON('drive', 'assets/maps/drive.json');
+        this.load.tilemapTiledJSON('drive', 'assets/maps/drive.json')
+        // this.load.image("roadEW", "assets/maps/roadEW.png")
+        // this.load.image("roadNE", "assets/maps/roadNE.png")
+
         this.load.image('Modern_Office_64x64', 'assets/maps/Modern_Office_64x64.png')
-        this.load.image('copier', 'assets/images/copier.png')
         this.load.image('paper', 'assets/images/paper.png')
-        this.load.audio('ding', 'assets/sounds/ding.wav')
-        this.load.audio('engine', 'assets/sounds/engine.wav')
+        this.load.image('copier', 'assets/images/copier.png')   
+        this.load.audio('printer', 'assets/sounds/printer.wav') 
     },
 
     create: function () {
+
         officeTimer = this.time.addEvent({
             delay: 28500,
             loop: false,
@@ -488,25 +488,33 @@ let Office = new Phaser.Class({
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
             this.sound.play('engine')
             carVelocity = 550
-            carPosX = copierA.body.position.x,
-            carPosY = copierA.body.position.y,
-            carVelX = copierA.body.velocity.x,
-            carVelY = copierA.body.velocity.y,
+            carPosX = car.body.position.x,
+            carPosY = car.body.position.y,
+            carVelX = car.body.velocity.x,
+            carVelY = car.body.velocity.y,
             waterActive = true,
             this.scene.start('water')
-            console.log('office firing')
         })
 
-        this.physics.world.setBounds(0, 0, 3200, 1920);
+        this.physics.world.setBounds(0, 0, 3200, 1920)
 
-        const map = this.make.tilemap({key: 'drive'});   
+        const map = this.make.tilemap({key: 'drive'})
+
         const officeTiles = map.addTilesetImage('Modern_Office_64x64', 'Modern_Office_64x64')
-        
+
+        const tileset = map.addTilesetImage('roadEW', 'roadEW')
+        const tileset2 = map.addTilesetImage('roadNE', 'roadNE')
+        const allTiles = [tileset, tileset2]
+
         map.createLayer('Office Background', officeTiles)
         map.createLayer('Office Objects', officeTiles)
-        RoadLayer = map.createLayer('Office Road', officeTiles)
-        CollisionLayer = map.createLayer('Office Path', officeTiles)
+        map.createLayer('Office Road', officeTiles)
+        
+        map.createLayer('OfficePath', officeTiles)
         map.createLayer('Office Desk Objects', officeTiles)
+        CollisionLayer = map.createLayer('Footpath', allTiles)
+        CollisionLayer.setAlpha(0)
+
         StarLayer = map.getObjectLayer('Sheep')['objects']
 
         stars = this.physics.add.group()
@@ -518,21 +526,20 @@ let Office = new Phaser.Class({
             obj.setScale(0.3)
         })
 
-        // car = this.physics.add.image(200, 200, 'copier').setScale(0.2)
-        copierA = this.physics.add.image(carPosX, carPosY, 'copier').setScale(0.2)
-        copierA.setVelocityX(carVelX)
-        copierA.setVelocityY(carVelY)
-        copierA.setSize(200, 200, true)
-        copierA.angle = 270
-        
-        map.setCollisionBetween(0, 2923, true, 'Office Path')
-        this.physics.add.collider(copierA, CollisionLayer)
-        this.physics.add.overlap(copierA, stars, hitStar, null, this)
+        car = this.physics.add.image(carPosX, carPosY, 'copier').setScale(0.2)
+        car.setVelocityX(carVelX)
+        car.setVelocityY(carVelY)
+        car.setSize(250, 250, true)
+        car.angle = 270
+
+        map.setCollisionBetween(0, 923, true, 'Footpath')
+        this.physics.add.collider(car, CollisionLayer)
+        this.physics.add.overlap(car, stars, hitStar, null, this)
 
         this.cameras.main.setBounds(0, 0, 3200, 1920);
-        this.cameras.main.startFollow(copierA);
+        this.cameras.main.startFollow(car);
         
-        copierA.setCollideWorldBounds(true);
+        car.setCollideWorldBounds(true);
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -540,51 +547,54 @@ let Office = new Phaser.Class({
         scoreText.setScrollFactor(0)
 
         function hitStar (copierA, star) {
-            this.sound.play('ding')
+            this.sound.play('printer')
             star.destroy()
             score += 10;
             scoreText.setText(`Score: ${score}`);
         }
+
     },
 
-    update: function () { 
+    update: function () {
         if (officeActive) {
             officeTimer.paused = false
         if (cursors.left.isDown && cursors.up.isDown) {
-            copierA.setVelocityX((carVelocity * -1))
-            copierA.setVelocityY((carVelocity * -1))
-            copierA.angle = 135
+            car.setVelocityX((carVelocity * -1))
+            car.setVelocityY((carVelocity * -1))
+            car.angle = 135
         } else if (cursors.right.isDown && cursors.up.isDown) {
-            copierA.setVelocityX(carVelocity)
-            copierA.setVelocityY((carVelocity * -1))
-            copierA.angle = 225
+            car.setVelocityX(carVelocity)
+            car.setVelocityY((carVelocity * -1))
+            car.angle = 225
         } else if (cursors.right.isDown && cursors.down.isDown) {
-            copierA.setVelocityX(carVelocity)
-            copierA.setVelocityY(carVelocity)
-            copierA.angle = 315
+            car.setVelocityX(carVelocity)
+            car.setVelocityY(carVelocity)
+            car.angle = 315
         } else if (cursors.left.isDown && cursors.down.isDown) {
-            copierA.setVelocityX((carVelocity * -1))
-            copierA.setVelocityY(carVelocity)
-            copierA.angle = 45
+            car.setVelocityX((carVelocity * -1))
+            car.setVelocityY(carVelocity)
+            car.angle = 45
         } else if (cursors.left.isDown) {
-            copierA.setVelocityX((carVelocity * -1))
-            copierA.angle = 90
+            car.setVelocityX((carVelocity * -1))
+            car.angle = 90
         } else if (cursors.right.isDown) {
-            copierA.setVelocityX(carVelocity)
-            copierA.angle = 270
+            car.setVelocityX(carVelocity)
+            car.angle = 270
         } else if (cursors.up.isDown) {
-            copierA.setVelocityY((carVelocity * -1))
-            copierA.angle = 180
+            car.setVelocityY((carVelocity * -1))
+            car.angle = 180
         } else if (cursors.down.isDown) {
-            copierA.setVelocityY(carVelocity)
-            copierA.angle = 0
-        } else {
-            copierA.setVelocityX(0)
-            copierA.setVelocityY(0)
+            car.setVelocityY(carVelocity)
+            car.angle = 0
+        } 
+        else {
+            car.setVelocityX(0)
+            car.setVelocityY(0)
+        }    
         }     
     }
-    }
 })
+
 // water level
 
 let Water = new Phaser.Class({
@@ -596,7 +606,7 @@ let Water = new Phaser.Class({
 
     preload: function () {
         this.load.tilemapTiledJSON('drive', 'assets/maps/drive.json');
-        this.load.audio('ding', 'assets/sounds/ding.wav')
+        this.load.audio('quack', 'assets/sounds/duckwin.wav')
         this.load.audio('engine', 'assets/sounds/engine.wav')
         // this.load.image('Serene_Village_48x48', 'assets/maps/Serene_Village_48x48.png')
         // this.load.image('car', 'assets/maps/Daco_4361360.png')
@@ -624,9 +634,8 @@ let Water = new Phaser.Class({
             carPosY = duck.body.position.y,
             carVelX = duck.body.velocity.x,
             carVelY = duck.body.velocity.y
-            this.scene.start('sand')
+            this.scene.start('end')
             sandActive = true
-            console.log('water firing')
         })
 
         this.physics.world.setBounds(0, 0, 3200, 1920);
@@ -708,13 +717,13 @@ let Water = new Phaser.Class({
             speed: -200,
             quantity: 32,
             scale: { start: 1, end: 2},
-            alpha: { start: 1, end: 0 },
+            alpha: { start: 0.5, end: 0 },
             on: false,
             angle: { start: 0, end: 360, steps: 32 },
         })
 
         function hitStar (duck, star) {
-            this.sound.play('ding')
+            this.sound.play('quack')
             star.destroy()
             score += 10;
             scoreText.setText(`Score: ${score}`);
@@ -772,15 +781,16 @@ let Sand = new Phaser.Class({
         // this.load.image("roadEW", "assets/maps/roadEW.png")
         // this.load.image("roadNE", "assets/maps/roadNE.png")
         // this.load.image('tiles', 'assets/maps/tiles.png')
-        // this.load.image('car', 'assets/maps/Daco_4361360.png')
-        // this.load.image('star', 'assets/star.png')
         this.load.audio('ding', 'assets/sounds/ding.wav')
         this.load.audio('engine', 'assets/sounds/engine.wav')
+        
         // this.load.image('Serene_Village_48x48', 'assets/maps/Serene_Village_48x48.png')
+        // this.load.image('car', 'assets/maps/Daco_4361360.png')
+        // this.load.image('star', 'assets/star.png')
     },
 
     create: function () {
-        this.time.addEvent({
+        sandTimer = this.time.addEvent({
             delay: 28500,
             loop: false,
             paused: true,
@@ -791,7 +801,7 @@ let Sand = new Phaser.Class({
 
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
             console.log('sand firing')
-            // this.sound.play('engine')
+            this.sound.play('engine')
             // carVelocity = 550
             // carPosX = car.body.position.x,
             // carPosY = car.body.position.y,
@@ -806,8 +816,8 @@ let Sand = new Phaser.Class({
         const villageTiles = map.addTilesetImage('Serene_Village_48x48', 'Serene_Village_48x48')
         
         map.createLayer('Water Background', villageTiles)
-        RoadLayer = map.createLayer('Water Road', villageTiles)
-        CollisionLayer = map.createLayer('Water Footpath', villageTiles)
+        RoadLayer = map.createLayer('Sand Road', villageTiles)
+        CollisionLayer = map.createLayer('Sand Footpath', villageTiles)
         StarLayer = map.getObjectLayer('Sheep')['objects']
 
         stars = this.physics.add.group()
@@ -878,7 +888,32 @@ let Sand = new Phaser.Class({
         } else {
             car.setVelocityX(0)
             car.setVelocityY(0)
-        }     }
+        }     
+    }
+    }
+})
+
+// end screen
+
+let End = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function end () { Phaser.Scene.call(this, { key: 'end', active: false }) },
+
+    preload: function () {
+
+    },
+
+    create: function () {
+        this.add.text(150, 150, 'YOU FINISHED!', { fontSize: '62px', fill: '#ffffff' });
+        this.add.text(300, 350, `Score: ${score}`, { fontSize: '32px', fill: '#ffffff' });
+        let camera = this.cameras.main;
+        camera.setBackgroundColor('#000000')
+    },
+
+    update: function () {
     }
 })
 
@@ -893,12 +928,11 @@ var config = {
         physics: {
             default: 'arcade',
             arcade: {
-                // gravity: { y: 300 },
                 debug: false
             }
         },
-        // scene: [Office]
-        scene: [Water, Office, Village, City, Start]
+        // scene: [Cubicle]
+        scene: [End, Water, Cubicle, Village, City, Start]
     };
 
     var game = new Phaser.Game(config);
