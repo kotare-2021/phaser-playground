@@ -3,18 +3,28 @@ import React, { useState, useEffect } from 'react'
 import Header from './Header'
 
 const Classroom = ({  setScene, setDream }) => {
+  // set speech bubble content
   const [speechOne, setSpeechOne] = useState('')
   const [speechTwo, setSpeechTwo] = useState('')
+
+  // set speech bubble visibility
   const [speechOneVisible, setSpeechOneVisible] = useState('hidden')
   const [speechTwoVisible, setSpeechTwoVisible] = useState('hidden')
+
+  // change dream scene
   const [startDream, setStartDream] = useState(false)
+
+  // used for css effects
   const [fadeOut, setFadeOut] = useState(null)
   const [fadeIn, setFadeIn] = useState({
     visibility: 'hidden'
   })
+
+  // set speech bubble stem direction
   const [speechDirectionOne, setSpeechDirectionOne] = useState(true)
   const [speechDirectionTwo, setSpeechDirectionTwo] = useState(true)
 
+  // speech bubble content
   const conversation = [
     'Have you heard of Batmna?',
     'Has anyone seen Poncho?',
@@ -87,10 +97,6 @@ const Classroom = ({  setScene, setDream }) => {
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
   }
 
-  const boolToDirection = (bool) => {
-    return (bool ? 'left' : 'right')
-  }
-
   //On render set speech boxes to random conversation
   useEffect(() => {
     setFadeIn({// fade in not currently working
@@ -148,10 +154,10 @@ const Classroom = ({  setScene, setDream }) => {
       <div className="container">
         <div className="classroom" style={fadeOut}>
           <div style={speechOneStyle}>
-            <div className={`bubble mini ${() => boolToDirection(speechDirectionOne)}`}>{speechOne}</div>
+            <div className={`bubble mini ${speechDirectionOne ? 'left' : 'right'}`}>{speechOne}</div>
           </div>
           <div style={speechTwoStyle}>
-            <div className={`bubble mini ${() => boolToDirection(speechDirectionTwo)}`}>{speechTwo}</div> 
+            <div className={`bubble mini ${speechDirectionTwo ? 'left' : 'right'}`}>{speechTwo}</div> 
           </div>
           <div className="click-box" style={charOneStyle} onClick={() => handleClick('tom')}></div>
           <div className="click-box" style={charTwoStyle} onClick={() => handleClick('test')}></div>
