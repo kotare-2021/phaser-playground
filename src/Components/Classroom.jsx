@@ -8,7 +8,7 @@ const Classroom = ({  setScene, setDream }) => {
   const [speechOneVisible, setSpeechOneVisible] = useState('hidden')
   const [speechTwoVisible, setSpeechTwoVisible] = useState('hidden')
   const [startDream, setStartDream] = useState(false)
-  const [classStyle, setClassStyle] = useState(null)
+  const [fadeOut, setFadeOut] = useState(null)
   const [fadeIn, setFadeIn] = useState({
     visibility: 'hidden'
   })
@@ -63,7 +63,7 @@ const Classroom = ({  setScene, setDream }) => {
   //On click select dream and render dream component
   const handleClick = (string) => {
     setStartDream(true)
-    setClassStyle({
+    setFadeOut({
       visibility: 'hidden',
       opacity: 0,
       transition: 'visibility 0s 2s, opacity 2s linear'
@@ -82,7 +82,7 @@ const Classroom = ({  setScene, setDream }) => {
 
   //On render set speech boxes to random conversation
   useEffect(() => {
-    setFadeIn({
+    setFadeIn({// fade in not currently working
       visibility: 'visible',
       opacity: 1,
       transition: 'opacity 2s linear'
@@ -133,7 +133,7 @@ const Classroom = ({  setScene, setDream }) => {
         <span className='heading-small'>It's an afternoon lecture at Dev Academy and one of the students is starting to fall aleep. Click on the student who's dream you want to see...</span>
       </div>
       <div className="container">
-        <div className="classroom" style={classStyle}>
+        <div className="classroom" style={fadeOut}>
           <div className="speech" style={speechOneStyle}>{speechOne}</div>
           <div className="speech" style={speechTwoStyle}>{speechTwo}</div>
           <div className="click-box" style={charOneStyle} onClick={() => handleClick('tom')}></div>

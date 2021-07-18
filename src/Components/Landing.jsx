@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
 const Landing = ({ setScene }) => {
-  const [fade, setFade] = useState(null)
+  const [fadeOut, setFadeOut] = useState(null)
 
   const handleClick = () => {
-    setFade({
+    setFadeOut({
       visibility: 'hidden',
       opacity: 0,
       transition: 'visibility 0s 2s, opacity 2s linear'
@@ -12,7 +12,7 @@ const Landing = ({ setScene }) => {
     setTimeout(() => setScene('classroom'), 2000)
   }
   return (
-    <div style={fade}>
+    <div style={fadeOut}>
       <div className='container'>
         <h1 className='heading-main'>EDA</h1>
       </div>
