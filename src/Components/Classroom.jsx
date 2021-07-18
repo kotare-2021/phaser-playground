@@ -29,7 +29,8 @@ const Classroom = ({  setScene, setDream }) => {
     'Pretty sure CSS doesn\'t work',
     'Why doesn\'t Cleo love me?',
     'I wonder how big the baby is this week',
-    'Wait what?!'
+    'Wait what?!',
+    '2 Repo\'s is the way to go'
   ]
   
   //variables for div positioning
@@ -52,12 +53,14 @@ const Classroom = ({  setScene, setDream }) => {
   const speechOneStyle = {
     left: '6.8rem',
     top: '5rem',
-    visibility: speechOneVisible
+    visibility: speechOneVisible,
+    position: 'absolute'
   }
   const speechTwoStyle = {
     left: '6.8rem',
     top: '15rem',
-    visibility: speechTwoVisible
+    visibility: speechTwoVisible,
+    position: 'absolute'
   }
 
   //On click select dream and render dream component
@@ -134,8 +137,12 @@ const Classroom = ({  setScene, setDream }) => {
       </div>
       <div className="container">
         <div className="classroom" style={fadeOut}>
-          <div className="speech" style={speechOneStyle}>{speechOne}</div>
-          <div className="speech" style={speechTwoStyle}>{speechTwo}</div>
+          <div style={speechOneStyle}>
+            <div className="bubble mini left">{speechOne}</div>
+          </div>
+          <div style={speechTwoStyle}>
+            <div className="bubble mini right">{speechTwo}</div>
+          </div>
           <div className="click-box" style={charOneStyle} onClick={() => handleClick('tom')}></div>
           <div className="click-box" style={charTwoStyle} onClick={() => handleClick('test')}></div>
           <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}></div>
