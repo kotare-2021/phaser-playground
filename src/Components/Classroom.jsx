@@ -142,6 +142,7 @@ const Classroom = ({  setScene, setDream }) => {
           <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}></div>
           <img src="/images/classroom_01.png" alt="a classrom" />
         </div>
+
       </div>
     </div>
   )
