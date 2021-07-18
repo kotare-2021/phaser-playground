@@ -158,7 +158,7 @@ code {
   font-weight: lighter;
   font-family: "Yellowtail", sans-serif;
   color: #e9caf5;
-  animation: flicker 1.5s infinite alternate; 
+  /* animation: flicker 1.5s infinite alternate;  */
   margin-left: -100px;
   margin-top: 110px;
   margin-bottom: 20px;
