@@ -136,8 +136,8 @@ const Classroom = ({  setScene, setDream }) => {
         <div className="classroom" style={fadeOut}>
           <div className="speech" style={speechOneStyle}>{speechOne}</div>
           <div className="speech" style={speechTwoStyle}>{speechTwo}</div>
-          <div className="click-box" style={charOneStyle} onClick={() => handleClick('tom')}></div>
-          <div className="click-box" style={charTwoStyle} onClick={() => handleClick('test')}></div>
+          <div className="click-box" style={charOneStyle} onClick={() => handleClick('fred')}></div>
+          <div className="click-box" style={charTwoStyle} onClick={() => handleClick('drive')}></div>
           <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}></div>
           <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}></div>
           <img src="/images/classroom_01.png" alt="a classrom" />

@@ -19,9 +19,6 @@ const App = (props) => {
       {scene === 'dream' &&
         <Dream dream={dream} setScene={setScene}/>
       }
-      {game === 'Casey' &&
-      <Casey />
-      }
     </>
   )
 }
