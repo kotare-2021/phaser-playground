@@ -12,8 +12,8 @@ const Classroom = ({  setScene, setDream }) => {
   const [fadeIn, setFadeIn] = useState({
     visibility: 'hidden'
   })
-  const [speechDirectionOne, setSpeechDirectionOne] = useState('left')
-  const [speechDirectionTwo, setSpeechDirectionTwo] = useState('left')
+  const [speechDirectionOne, setSpeechDirectionOne] = useState(true)
+  const [speechDirectionTwo, setSpeechDirectionTwo] = useState(true)
 
   const conversation = [
     'Have you heard of Batmna?',
@@ -87,6 +87,10 @@ const Classroom = ({  setScene, setDream }) => {
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
   }
 
+  const boolToDirection = (bool) => {
+    return (bool ? 'left' : 'right')
+  }
+
   //On render set speech boxes to random conversation
   useEffect(() => {
     setFadeIn({// fade in not currently working
@@ -108,6 +112,7 @@ const Classroom = ({  setScene, setDream }) => {
          setTimeout(() => {
            setSpeechOneVisible('hidden')
            setSpeechOne(conversation[getRandomInt(0, conversation.length)])
+           setSpeechDirectionOne(!speechDirectionOne)
          }, 3000)
        }, getRandomInt(3000, 12000)) 
     } else {// condition when student clicked
@@ -123,6 +128,7 @@ const Classroom = ({  setScene, setDream }) => {
         setTimeout(() => {
           setSpeechTwoVisible('hidden')
           setSpeechTwo(conversation[getRandomInt(0, conversation.length)])
+          setSpeechDirectionTwo(!speechDirectionTwo)
         }, 3000)
       }, getRandomInt(3000, 12000))
     } else {// condition when student clicked
@@ -142,10 +148,10 @@ const Classroom = ({  setScene, setDream }) => {
       <div className="container">
         <div className="classroom" style={fadeOut}>
           <div style={speechOneStyle}>
-            <div className={`bubble mini ${speechDirectionOne}`}>{speechOne}</div>
+            <div className={`bubble mini ${() => boolToDirection(speechDirectionOne)}`}>{speechOne}</div>
           </div>
           <div style={speechTwoStyle}>
-            <div className={`bubble mini ${speechDirectionTwo}`}>{speechTwo}</div> 
+            <div className={`bubble mini ${() => boolToDirection(speechDirectionTwo)}`}>{speechTwo}</div> 
           </div>
           <div className="click-box" style={charOneStyle} onClick={() => handleClick('tom')}></div>
           <div className="click-box" style={charTwoStyle} onClick={() => handleClick('test')}></div>
