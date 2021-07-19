@@ -3,16 +3,25 @@ import React, { useState, useEffect } from 'react'
 import Header from './Header'
 
 const Classroom = ({  setScene, setDream }) => {
+  // set speech bubble content
   const [speechOne, setSpeechOne] = useState('')
   const [speechTwo, setSpeechTwo] = useState('')
+
+  // set speech bubble visibility
   const [speechOneVisible, setSpeechOneVisible] = useState('hidden')
   const [speechTwoVisible, setSpeechTwoVisible] = useState('hidden')
-  const [startDream, setStartDream] = useState(false)
-  const [fadeOut, setFadeOut] = useState(null)
-  const [fadeIn, setFadeIn] = useState({
-    visibility: 'hidden'
-  })
 
+  // change dream scene
+  const [startDream, setStartDream] = useState(false)
+
+  // fade out scene 
+  const [fadeOut, setFadeOut] = useState(null)
+
+  // set speech bubble stem direction
+  const [speechDirectionOne, setSpeechDirectionOne] = useState(true)
+  const [speechDirectionTwo, setSpeechDirectionTwo] = useState(true)
+
+  // speech bubble content
   const conversation = [
     'Have you heard of Batmna?',
     'Has anyone seen Poncho?',
@@ -29,10 +38,11 @@ const Classroom = ({  setScene, setDream }) => {
     'Pretty sure CSS doesn\'t work',
     'Why doesn\'t Cleo love me?',
     'I wonder how big the baby is this week',
-    'Wait what?!'
+    'Wait what?!',
+    '2 Repo\'s is the way to go'
   ]
   
-  //variables for div positioning
+  //variables for clickbox positioning
   const charOneStyle = {
     left: '3.3rem',
     top: '9rem'
@@ -49,15 +59,31 @@ const Classroom = ({  setScene, setDream }) => {
     left: '15rem',
     top: '19rem'
   }
+
+  //speech positioning variables
   const speechOneStyle = {
-    left: '6.8rem',
-    top: '5rem',
-    visibility: speechOneVisible
+    left: '6.4rem',
+    top: '7rem',
+    visibility: speechOneVisible,
+    position: 'absolute'
   }
   const speechTwoStyle = {
-    left: '6.8rem',
-    top: '15rem',
-    visibility: speechTwoVisible
+    left: '6.4rem',
+    top: '17rem',
+    visibility: speechTwoVisible,
+    position: 'absolute'
+  }
+
+  const [fade, changeFade] = useState('')
+  const [fadeVisNum, changefadeVisNum] = useState('')
+  function fadeInThought(num) {
+   changeFade(num)
+   changefadeVisNum(num)
+
+  }
+  function fadeOutThought() {
+    changeFade('')
+    changefadeVisNum('')
   }
 
   //On click select dream and render dream component
@@ -82,11 +108,6 @@ const Classroom = ({  setScene, setDream }) => {
 
   //On render set speech boxes to random conversation
   useEffect(() => {
-    setFadeIn({// fade in not currently working
-      visibility: 'visible',
-      opacity: 1,
-      transition: 'opacity 2s linear'
-    })
     setTimeout(() => {
       setSpeechOne(conversation[getRandomInt(0, conversation.length)])
       setSpeechTwo(conversation[getRandomInt(0, conversation.length)])
@@ -101,6 +122,7 @@ const Classroom = ({  setScene, setDream }) => {
          setTimeout(() => {
            setSpeechOneVisible('hidden')
            setSpeechOne(conversation[getRandomInt(0, conversation.length)])
+           setSpeechDirectionOne(!speechDirectionOne)
          }, 3000)
        }, getRandomInt(3000, 12000)) 
     } else {// condition when student clicked
@@ -116,6 +138,7 @@ const Classroom = ({  setScene, setDream }) => {
         setTimeout(() => {
           setSpeechTwoVisible('hidden')
           setSpeechTwo(conversation[getRandomInt(0, conversation.length)])
+          setSpeechDirectionTwo(!speechDirectionTwo)
         }, 3000)
       }, getRandomInt(3000, 12000))
     } else {// condition when student clicked
@@ -125,7 +148,7 @@ const Classroom = ({  setScene, setDream }) => {
   }, [speechTwo])
 
   return (
-    <div style={fadeIn}>
+    <div>
       <div className="container">
         <Header setScene={setScene}/>
       </div>
@@ -134,17 +157,40 @@ const Classroom = ({  setScene, setDream }) => {
       </div>
       <div className="container">
         <div className="classroom" style={fadeOut}>
-          <div className="speech" style={speechOneStyle}>{speechOne}</div>
-          <div className="speech" style={speechTwoStyle}>{speechTwo}</div>
-          <div className="click-box" style={charOneStyle} onClick={() => handleClick('fred')}></div>
-          <div className="click-box" style={charTwoStyle} onClick={() => handleClick('drive')}></div>
-          <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}></div>
-          <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}></div>
+        <div style={speechOneStyle}>
+            <div className={`bubble mini ${speechDirectionOne ? 'left' : 'right'}`}>{speechOne}</div>
+          </div>
+          <div style={speechTwoStyle}>
+            <div className={`bubble mini ${speechDirectionTwo ? 'left' : 'right'}`}>{speechTwo}</div> 
+          </div>
+          <div className="click-box" style={charOneStyle} onClick={() => handleClick('fred')}onMouseEnter={() => fadeInThought(1)} onMouseLeave={() => fadeOutThought()}></div>
+          <div className="click-box" style={charTwoStyle} onClick={() => handleClick('drive')}onMouseEnter={() => fadeInThought(2)} onMouseLeave={() => fadeOutThought()}></div>
+          <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}onMouseEnter={() => fadeInThought(3)} onMouseLeave={() => fadeOutThought()}></div>
+          <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}onMouseEnter={() => fadeInThought(4)} onMouseLeave={() => fadeOutThought()}></div>
+  
           <img src="/images/classroom_01.png" alt="a classrom" />
-        </div>
 
+          <div className={ fade ? `speechBubbleCount${fade} Visible${fadeVisNum} VisbleMed${fadeVisNum}`: 'speechBubbleCount'}>
+      <div className='speechBubbleBig'>
       </div>
+       
+      <div  className={ fade === 1 || 3 ? 'speechBubbleMedLeft Visible': 'speechBubbleCount' }>
+      </div>
+      <div className={ fade === 1 || 3 ? 'speechBubbleSmallLeft Visible': 'speechBubbleCount' }>
+      </div>
+      <div className={ fade === 2 || 4 ? 'speechBubbleMedRight Visible': 'speechBubbleCount' }>
+      </div>
+      <div className={ fade === 2 || 4 ? 'speechBubbleSmallRight Visible': 'speechBubbleCount' }>
+      </div> 
     </div>
+        </div>
+      </div>
+    
+   
+   
+  </div>
+    
+   
   )
 }
 

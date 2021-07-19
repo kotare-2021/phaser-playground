@@ -1,0 +1,139 @@
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  font-family: 'Chela One', cursive;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(to bottom, #9be2fe 0%,#67d1fb 100%);
+  background-attachment: fixed;
+  font-size: 10px;
+/*   font-family: -apple-system, BlinkMacSystemFont,'Segoe UI', 'Roboto', 'Yellowtail', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(13, 13, 36);
+  color: white */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.container {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.game-frame {
+  height: 650px;
+  width: 800px;
+}
+
+.scene {
+  height: 600px;
+  width: 800px;
+  /* border: 5px solid #000; */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
+.cloud {
+	width: 350px; height: 120px;
+	
+	background: #f2f9fe;
+	background: linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
+	background: -webkit-linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
+	background: -moz-linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
+	background: -ms-linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
+	background: -o-linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
+	
+	border-radius: 100px;
+	-webkit-border-radius: 100px;
+	-moz-border-radius: 100px;
+	
+	position: relative;
+	margin: 100px auto 20px;
+}
+
+.cloud:after, .cloud:before {
+	content: '';
+	position: absolute;
+	background: #f2f9fe;
+	z-index: -1
+}
+
+.cloud:after {
+	width: 100px; height: 100px;
+	top: -50px; left: 50px;
+	
+	border-radius: 100px;
+	-webkit-border-radius: 100px;
+	-moz-border-radius: 100px;
+}
+
+.cloud:before {
+	width: 180px; height: 180px;
+	top: -90px; right: 50px;
+	border-radius: 200px;
+	-webkit-border-radius: 200px;
+	-moz-border-radius: 200px;
+}
+
+.heading-logo {
+	height: 80%;
+	width: auto;
+}
+
+.heading-main {
+  font-size: 7rem;
+  margin: 1rem;
+}
+
+.heading-sub {
+  font-size: 4rem;
+}
+
+.heading-small {
+  font-size: 2rem;
+}
+
+.cloud-img-small {
+  height: auto;
+  width: 20%;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.click-box {
+	cursor: pointer;
+	height: 3rem;
+	width: 3rem;
+	/* border: 3px solid black; */
+	position: absolute;
+}
+
+.classroom {
+	position: relative;
+}
+
+.speech {
+    font-family: arial, sans-serif;
+    font-size: 1rem;
+    color: #000;
+    position: absolute;
+    background: #fff;
+    padding: 0.8rem;
+    border: 2px solid #000;
+    max-width: 7rem;
+}
