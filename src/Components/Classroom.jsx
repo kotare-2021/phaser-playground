@@ -92,6 +92,10 @@ const Classroom = ({  setScene, setDream }) => {
       changeImgThought('sheep_walk.png')
       changeFade(num)
       changefadeVisNum(num)
+    } else if (num === 4) {
+      changeImgThought('Hamster_Dance.ico')
+      changeFade(num)
+      changefadeVisNum(num)
     }
  
   }
