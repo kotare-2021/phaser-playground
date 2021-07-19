@@ -151,8 +151,8 @@ const Classroom = ({  setScene, setDream }) => {
           <div style={speechTwoStyle}>
             <div className={`bubble mini ${speechDirectionTwo ? 'left' : 'right'}`}>{speechTwo}</div> 
           </div>
-          <div className="click-box" style={charOneStyle} onClick={() => handleClick('tom')}></div>
-          <div className="click-box" style={charTwoStyle} onClick={() => handleClick('test')}></div>
+          <div className="click-box" style={charOneStyle} onClick={() => handleClick('fred')}></div>
+          <div className="click-box" style={charTwoStyle} onClick={() => handleClick('drive')}></div>
           <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}></div>
           <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}></div>
           <img src="/images/classroom_01.png" alt="a classrom" />
