@@ -1,0 +1,27 @@
+.cloud {
+  position: fixed;
+  width: 300px;
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.cloud1 {
+  top: 10rem;
+  animation: 30s linear clouds -21s infinite;
+}
+
+.cloud2 {
+  top: 25rem;
+  animation: 30s linear clouds -1s infinite;
+}
+
+.cloud3 {
+  top: 40rem;
+  opacity: 0.4;
+  animation: 30s linear clouds -11s infinite;
+}
+
+@keyframes clouds {
+  0% {left: 100vw}
+  100% {left: -35vw}
+}
