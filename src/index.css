@@ -269,7 +269,7 @@ code {
   background-color: white;
   background-color: transparent;
   position: absolute;
-  left: 4.5rem;
+  left: calc(50% - 450px);
   top: 17.5rem;
   /* display: flex;
   flex-direction: column;
@@ -281,8 +281,8 @@ code {
   background-color: white;
   background-color: transparent;
   position: absolute;
-  left: 25rem;
-  top: 17.5rem;
+  left: calc(50% - 100px);
+  top: 17.5rem
   /* display: flex;
   flex-direction: column;
   align-items: center; */
@@ -293,7 +293,7 @@ code {
   background-color: white;
   background-color: transparent;
   position: absolute;
-  left: 4.5rem;
+  left: calc(50% - 450px);
   top: 27.5rem;
   /* display: flex;
   flex-direction: column;
@@ -305,7 +305,7 @@ code {
   background-color: white;
   background-color: transparent;
   position: absolute;
-  left: 25rem;
+  left: calc(50% - 100px);
   top: 27.5rem;
   /* display: flex;
   flex-direction: column;

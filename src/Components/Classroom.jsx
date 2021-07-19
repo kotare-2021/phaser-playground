@@ -157,7 +157,7 @@ const Classroom = ({  setScene, setDream }) => {
 
       </div>
     
-    <div className={ fade ? `speechBubbleCount${fade} Visible${fadeVisNum} VisbleMed${fadeVisNum}`: 'speechBubbleCount'}>
+    {/* <div className={ fade ? `speechBubbleCount${fade} Visible${fadeVisNum} VisbleMed${fadeVisNum}`: 'speechBubbleCount'}>
       <div className='speechBubbleBig'>
       </div>
        
@@ -169,7 +169,7 @@ const Classroom = ({  setScene, setDream }) => {
       </div>
       <div className={ fade === 2 || 4 ? 'speechBubbleSmallRight Visible': 'speechBubbleCount' }>
       </div> 
-    </div>
+    </div> */}
    
   </div>
     
