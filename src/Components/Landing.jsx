@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import Header from './Header'
+import Clouds from './Clouds'
 
 const Landing = ({ setScene }) => {
   const [fadeOut, setFadeOut] = useState(null)
@@ -15,13 +16,13 @@ const Landing = ({ setScene }) => {
   }
   return (
     <div style={fadeOut}>
-      <Header setScene={setScene}/>
-      <div className="container">
-        <h4 onClick={handleClick} className='heading-sub clickable'>Everyone Dreams...<br />Always</h4>
+      <div>
+        <Header setScene={setScene}/>
+        <div className="container">
+          <h4 onClick={handleClick} className='heading-sub clickable'>Everyone Dreams...<br />Always</h4>
+        </div>
       </div>
-      <img src="/images/cloud.png" alt="cloud" className='cloud cloud1'/>
-      <img src="/images/cloud.png" alt="cloud" className='cloud cloud2'/>
-      <img src="/images/cloud.png" alt="cloud" className='cloud cloud3'/>
+      <Clouds />
     </div>
   )
 }
