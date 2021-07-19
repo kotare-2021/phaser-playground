@@ -74,6 +74,18 @@ const Classroom = ({  setScene, setDream }) => {
     position: 'absolute'
   }
 
+  const [fade, changeFade] = useState('')
+  const [fadeVisNum, changefadeVisNum] = useState('')
+  function fadeInThought(num) {
+   changeFade(num)
+   changefadeVisNum(num)
+
+  }
+  function fadeOutThought() {
+    changeFade('')
+    changefadeVisNum('')
+  }
+
   //On click select dream and render dream component
   const handleClick = (string) => {
     setStartDream(true)
@@ -145,20 +157,38 @@ const Classroom = ({  setScene, setDream }) => {
       </div>
       <div className="container">
         <div className="classroom" style={fadeOut}>
-          <div style={speechOneStyle}>
+        <div style={speechOneStyle}>
             <div className={`bubble mini ${speechDirectionOne ? 'left' : 'right'}`}>{speechOne}</div>
           </div>
           <div style={speechTwoStyle}>
             <div className={`bubble mini ${speechDirectionTwo ? 'left' : 'right'}`}>{speechTwo}</div> 
           </div>
-          <div className="click-box" style={charOneStyle} onClick={() => handleClick('fred')}></div>
-          <div className="click-box" style={charTwoStyle} onClick={() => handleClick('drive')}></div>
-          <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}></div>
-          <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}></div>
+          <div className="click-box" style={charOneStyle} onClick={() => handleClick('fred')}onMouseEnter={() => fadeInThought(1)} onMouseLeave={() => fadeOutThought()}></div>
+          <div className="click-box" style={charTwoStyle} onClick={() => handleClick('drive')}onMouseEnter={() => fadeInThought(2)} onMouseLeave={() => fadeOutThought()}></div>
+          <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}onMouseEnter={() => fadeInThought(3)} onMouseLeave={() => fadeOutThought()}></div>
+          <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}onMouseEnter={() => fadeInThought(4)} onMouseLeave={() => fadeOutThought()}></div>
+  
           <img src="/images/classroom_01.png" alt="a classrom" />
         </div>
       </div>
+    
+    <div className={ fade ? `speechBubbleCount${fade} Visible${fadeVisNum} VisbleMed${fadeVisNum}`: 'speechBubbleCount'}>
+      <div className='speechBubbleBig'>
+      </div>
+       
+      <div  className={ fade === 1 || 3 ? 'speechBubbleMedLeft Visible': 'speechBubbleCount' }>
+      </div>
+      <div className={ fade === 1 || 3 ? 'speechBubbleSmallLeft Visible': 'speechBubbleCount' }>
+      </div>
+      <div className={ fade === 2 || 4 ? 'speechBubbleMedRight Visible': 'speechBubbleCount' }>
+      </div>
+      <div className={ fade === 2 || 4 ? 'speechBubbleSmallRight Visible': 'speechBubbleCount' }>
+      </div> 
     </div>
+   
+  </div>
+    
+   
   )
 }
 
