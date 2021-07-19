@@ -1,42 +1,12 @@
 
-
-// const talkyTalkyPeople = new Audio('/audio/classguystalking.mp3')
-// const woosh = new Audio('/audio/woosh.wav')
-
-  // //play background music on load.
-  //   useEffect(() => {
-  //   talkyTalkyPeople.play()
-  // }, [])
-
-    // //ymmij audio stuff:
-    //   let TalkingFadeIn = setInterval(() => {
-    //   talkyTalkyPeople.volume += 0.2
-    //   console.log(talkyTalkyPeople.volume)
-    //   if (talkyTalkyPeople.volume > 0.25 ) {
-    //     clearInterval(TalkingFadeIn)
-    //   }
-    // },1000);
-
-    // let fadeVoices = setInterval(() => {
-    //   talkyTalkyPeople.volume -= 0.2
-    //   console.log(talkyTalkyPeople.volume)
-    //   if (talkyTalkyPeople.volume < 0.4) {
-    //     woosh.play()
-    //   }
-    //   if (talkyTalkyPeople.volume < 0.1 ) {
-    //     // talkyTalkyPeople.volume = 0
-    //     clearInterval(fadeVoices)
-    //   }
-    // },500);
-    // //end
-    //
-
-
     import React, { useState } from 'react'
 
     import Header from './Header'
     import Clouds from './Clouds'
     import Speech from './Speech'
+
+    const talkyTalkyPeople = new Audio('/audio/classguystalking.mp3')
+    const woosh = new Audio('/audio/woosh.wav')
     
     const Classroom = ({  setScene, setDream }) => {
       // change dream scene
@@ -66,6 +36,12 @@
       const [fade, changeFade] = useState('')
       const [imgThought, changeImgThought] = useState('')
       const [fadeVisNum, changefadeVisNum] = useState('')
+
+      //play background music on load.
+      useEffect(() => {
+      talkyTalkyPeople.play()
+    }, [])
+  
     
       function imgDayDream(num) {
         if(num === 1) {
@@ -97,6 +73,30 @@
     
       //On click select dream and render dream component
       const handleClick = (string) => {
+
+    //ymmij audio stuff:
+    let TalkingFadeIn = setInterval(() => {
+      talkyTalkyPeople.volume += 0.2
+      console.log(talkyTalkyPeople.volume)
+      if (talkyTalkyPeople.volume > 0.25 ) {
+        clearInterval(TalkingFadeIn)
+      }
+    },1000);
+
+    let fadeVoices = setInterval(() => {
+      talkyTalkyPeople.volume -= 0.2
+      console.log(talkyTalkyPeople.volume)
+      if (talkyTalkyPeople.volume < 0.4) {
+        woosh.play()
+      }
+      if (talkyTalkyPeople.volume < 0.1 ) {
+        // talkyTalkyPeople.volume = 0
+        clearInterval(fadeVoices)
+      }
+    },500);
+    //end
+    
+
         setStartDream(true)
         setFadeOut({
           visibility: 'hidden',
