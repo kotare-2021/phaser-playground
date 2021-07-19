@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
+
 import Header from './Header'
+import Clouds from './Clouds'
 
 const Dream = ({ dream, setScene }) => {
   const [dreamStyle, setDreamStyle] = useState({
@@ -22,6 +24,7 @@ const Dream = ({ dream, setScene }) => {
       <div className="scene">
         <iframe src={`./${dream}.html`} title={dream} className='game-frame' frameBorder='0'></iframe>
       </div>
+      <Clouds />
     </div>
     </>
   )
