@@ -7,7 +7,7 @@
 
     <script>
 
-    let CollisionLayer, BackgroundLayer, SheepLayer, StarLayer, BuildingLayer, sheeps, buildings, buildings2, car, duck, stars, scoreText, carPosX, carPosY, carVelX, carVelY, particles, breadParticles, waterCoolers
+    let sheeps, car, duck, scoreText, carPosX, carPosY, carVelX, carVelY, particles
     let hit = false
     let score = 0
     let carVelocity = 300
@@ -44,11 +44,13 @@ let Start = new Phaser.Class({
         this.add.image(220, 277, 'button').setScale(0.7).setOrigin(0)
         startItems.add(this.add.image(100, 450, 'pig'))
         startItems.add(this.add.image(700, 450, 'chick'))
-        this.tweens.add({
-            targets: startItems.children.entries,
-            props: {
-                y: {value: '-=10', duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
-            }
+        startItems.children.entries.forEach(object => {
+            this.tweens.add({
+                targets: object,
+                props: {
+                    y: {value: `+=${Phaser.Math.Between(-20, 20)}`, duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
+                }
+            })
         })
 
         let camera = this.cameras.main;
@@ -120,11 +122,11 @@ let Start = new Phaser.Class({
         const allTiles = [tileset, tileset2]
         
         RoofLayer = map.createLayer('Buildings', cityTiles)
-        BackgroundLayer = map.createLayer('Road', allTiles)
-        CollisionLayer = map.createLayer('Footpath', allTiles)
-        StarLayer = map.getObjectLayer('Sheep')['objects']
+        map.createLayer('Road', allTiles)
+        let CollisionLayer = map.createLayer('Footpath', allTiles)
+        let StarLayer = map.getObjectLayer('Sheep')['objects']
 
-        stars = this.physics.add.group()
+        let stars = this.physics.add.group()
           
         StarLayer.forEach(object => {
             let obj = stars.create(object.x, object.y, 'star')
@@ -268,9 +270,9 @@ let Start = new Phaser.Class({
         const villageTiles = map.addTilesetImage('Serene_Village_48x48', 'Serene_Village_48x48')
         
         map.createLayer('Village Background', villageTiles)
-        BackgroundLayer = map.createLayer('Village Road', villageTiles)
-        CollisionLayer = map.createLayer('Village Footpath', villageTiles)
-        SheepLayer = map.getObjectLayer('Sheep')['objects']
+        map.createLayer('Village Road', villageTiles)
+        let CollisionLayer = map.createLayer('Village Footpath', villageTiles)
+        let SheepLayer = map.getObjectLayer('Sheep')['objects']
 
         let bloodParticles = this.add.particles('blood')
 
@@ -279,55 +281,64 @@ let Start = new Phaser.Class({
         car.setVelocityY(carVelY)
         car.setSize(15, 15, true)
 
-        buildings = this.add.group()
-        buildings2 = this.add.group()
+        let buildings = this.add.group()
+        // let buildings2 = this.add.group()
         buildings.add(this.add.image(1473, 620, 'smallRedHouse').setScale(1))
-        buildings2.add(this.add.image(2008, 1031, 'smallRedHouse').setScale(1))
-        buildings2.add(this.add.image(2512, 1440, 'smallRedHouse').setScale(1))
-        buildings2.add(this.add.image(596, 180, 'smallBlueHouse').setScale(1))
+        buildings.add(this.add.image(2008, 1031, 'smallRedHouse').setScale(1))
+        buildings.add(this.add.image(2512, 1440, 'smallRedHouse').setScale(1))
+        buildings.add(this.add.image(596, 180, 'smallBlueHouse').setScale(1))
         buildings.add(this.add.image(860, 1111, 'smallBlueHouse').setScale(1))
-        buildings2.add(this.add.image(1299, 651, 'smallBlueHouse').setScale(1))
+        buildings.add(this.add.image(1299, 651, 'smallBlueHouse').setScale(1))
         buildings.add(this.add.image(2040, 400, 'smallBlueHouse').setScale(1))
-        buildings2.add(this.add.image(2423, 548, 'smallBlueHouse').setScale(1))
+        buildings.add(this.add.image(2423, 548, 'smallBlueHouse').setScale(1))
         buildings.add(this.add.image(788, 485, 'smallGreenHouse').setScale(1))
-        buildings2.add(this.add.image(1660, 651, 'smallGreenHouse').setScale(1))
+        buildings.add(this.add.image(1660, 651, 'smallGreenHouse').setScale(1))
         buildings.add(this.add.image(2040, 727, 'smallGreenHouse').setScale(1))
-        buildings2.add(this.add.image(2800, 213, 'smallGreenHouse').setScale(1))
+        buildings.add(this.add.image(2800, 213, 'smallGreenHouse').setScale(1))
         buildings.add(this.add.image(1251, 216, 'blueHouse').setScale(1))
-        buildings2.add(this.add.image(1600, 1030, 'blueHouse').setScale(1))
+        buildings.add(this.add.image(1600, 1030, 'blueHouse').setScale(1))
         buildings.add(this.add.image(2916, 1623, 'blueHouse').setScale(1))
-        buildings2.add(this.add.image(865, 216, 'redHouse').setScale(1))
+        buildings.add(this.add.image(865, 216, 'redHouse').setScale(1))
         buildings.add(this.add.image(1100, 1109, 'redHouse').setScale(1))
-        buildings2.add(this.add.image(2688, 1048, 'redHouse').setScale(1))
-        buildings2.add(this.add.image(1637, 215, 'greenHouse').setScale(1))
-        buildings2.add(this.add.image(548, 1111, 'greenHouse').setScale(1))
+        buildings.add(this.add.image(2688, 1048, 'redHouse').setScale(1))
+        buildings.add(this.add.image(1637, 215, 'greenHouse').setScale(1))
+        buildings.add(this.add.image(548, 1111, 'greenHouse').setScale(1))
         buildings.add(this.add.image(1956, 1429, 'greenHouse').setScale(1))
         buildings.add(this.add.image(260, 220, 'trees1').setScale(1))
         buildings.add(this.add.image(580, 925, 'trees1').setScale(1))
-        buildings2.add(this.add.image(200, 1500, 'trees1').setScale(1))
-        buildings2.add(this.add.image(1025, 1500, 'trees1').setScale(1))
-        buildings2.add(this.add.image(1900, 1692, 'trees1').setScale(1))
+        buildings.add(this.add.image(200, 1500, 'trees1').setScale(1))
+        buildings.add(this.add.image(1025, 1500, 'trees1').setScale(1))
+        buildings.add(this.add.image(1900, 1692, 'trees1').setScale(1))
         buildings.add(this.add.image(580, 1500, 'trees2').setScale(1))
-        buildings2.add(this.add.image(1091, 925, 'trees2').setScale(1))
+        buildings.add(this.add.image(1091, 925, 'trees2').setScale(1))
         buildings.add(this.add.image(2370, 160, 'trees2').setScale(1))
-        buildings2.add(this.add.image(1924, 220, 'trees2').setScale(1))
+        buildings.add(this.add.image(1924, 220, 'trees2').setScale(1))
         buildings.add(this.add.image(2433, 1236, 'trees3').setScale(1))
-        buildings2.add(this.add.image(20, 930, 'trees3').setScale(1)).setOrigin(0,0)
+        buildings.add(this.add.image(20, 930, 'trees3').setScale(1)).setOrigin(0,0)
         buildings.add(this.add.image(1411, 1500, 'trees3').setScale(1)).setOrigin(0,0)
-        
-        this.tweens.add({
-            targets: buildings.children.entries,
-            props: {
-                y: {value: '+=20', duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
-            }
+
+        buildings.children.entries.forEach(object => {
+            this.tweens.add({
+                targets: object,
+                props: {
+                    y: {value: `+=${Phaser.Math.Between(-20, 20)}`, duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
+                }
+            })
         })
         
-        this.tweens.add({
-            targets: buildings2.children.entries,
-            props: {
-                y: {value: '-=10', duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
-            }
-        })
+        // this.tweens.add({
+        //     targets: buildings.children.entries,
+        //     props: {
+        //         y: {value: '+=20', duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
+        //     }
+        // })
+        
+        // this.tweens.add({
+        //     targets: buildings2.children.entries,
+        //     props: {
+        //         y: {value: '-=10', duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
+        //     }
+        // })
 
         sheeps = this.physics.add.group()
         
@@ -405,8 +416,6 @@ let Start = new Phaser.Class({
         this.physics.add.collider(car, CollisionLayer)
         this.physics.add.collider(sheeps, CollisionLayer)
         this.physics.add.overlap(car, sheeps, hitSheep, null, this)
-        this.physics.add.collider(sheeps, buildings)
-        this.physics.add.collider(sheeps, buildings2)
 
         this.cameras.main.setBounds(0, 0, 3200, 1920);
         this.cameras.main.startFollow(car);
@@ -589,14 +598,14 @@ let Cubicle = new Phaser.Class({
 
         map.createLayer('OfficePath', officeTiles)
         map.createLayer('Office Desk Objects', officeTiles)
-        CollisionLayer = map.createLayer('Footpath', allTiles)
+        let CollisionLayer = map.createLayer('Footpath', allTiles)
         CollisionLayer.setAlpha(0)
 
-        StarLayer = map.getObjectLayer('Sheep')['objects']
-        waterCoolers = map.getObjectLayer('Office Water Coolers')['objects']
+        let StarLayer = map.getObjectLayer('Sheep')['objects']
+        let waterCoolers = map.getObjectLayer('Office Water Coolers')['objects']
 
         let coolers = this.add.group()
-        stars = this.physics.add.group()
+        let stars = this.physics.add.group()
           
         StarLayer.forEach(object => {
             let obj = stars.create(object.x, object.y, 'paper')
@@ -642,11 +651,13 @@ let Cubicle = new Phaser.Class({
             }
         }
 
-        let bounce = this.tweens.add({
-            targets: coolers.children.entries,
-            props: {
-                y: {value: '+=15', duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
-            }
+        coolers.children.entries.forEach(object => {
+            this.tweens.add({
+                targets: object,
+                props: {
+                    y: {value: `+=${Phaser.Math.Between(-20, 20)}`, duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
+                }
+            })
         })
     },
 
@@ -707,6 +718,22 @@ let Water = new Phaser.Class({
         this.load.spritesheet('duckSprite',
             'assets/maps/ducks.png',
             { frameWidth: 48, frameHeight: 48 })
+        this.load.image('beachball', 'assets/images/BeachBall.png')
+        this.load.image('bush', 'assets/images/Bush.png')
+        this.load.image('cat', 'assets/images/Cat_Down.png')
+        this.load.image('chick', 'assets/images/Chick_Down.png')
+        this.load.image('danger', 'assets/images/Danger_Water.png')
+        this.load.image('fox', 'assets/images/Fox_Down.png')
+        this.load.image('beetroot', 'assets/images/GardenBed_Beetroot_02.png')
+        this.load.image('carrots', 'assets/images/GardenBed_Carrots_02.png')
+        this.load.image('cucumbers', 'assets/images/GardenBed_Cucumbers_02.png')
+        this.load.image('tomatoes', 'assets/images/GardenBed_Tomatoes_02.png')
+        this.load.image('pig', 'assets/images/Pig_Down.png')
+        this.load.image('rabbit', 'assets/images/Rabbit_Down.png')
+        this.load.image('barrel', 'assets/images/RadioactiveBarrel.png')
+        this.load.image('shovel', 'assets/images/Showel.png')
+        this.load.image('waterTree', 'assets/images/Tree.png')
+        this.load.image('wateringCan', 'assets/images/WateringCan.png')
     },
 
     create: function () {
@@ -744,10 +771,10 @@ let Water = new Phaser.Class({
         
         map.createLayer('Water Background', villageTiles)
         RoadLayer = map.createLayer('Water Road', villageTiles)
-        CollisionLayer = map.createLayer('Water Footpath', villageTiles)
-        StarLayer = map.getObjectLayer('Sheep')['objects']
+        let CollisionLayer = map.createLayer('Water Footpath', villageTiles)
+        let StarLayer = map.getObjectLayer('Sheep')['objects']
 
-        stars = this.physics.add.group()
+        let stars = this.physics.add.group()
           
         StarLayer.forEach(object => {
             let obj = stars.create(object.x, object.y, 'bread')
@@ -793,9 +820,61 @@ let Water = new Phaser.Class({
             frames: [{ key: 'duckSprite', frame: 4 }],
             frameRate: 20
         })
+
+        let balls = map.getObjectLayer('Beach Ball')['objects']
+        let bushes = map.getObjectLayer('Bush')['objects']
+        let cats = map.getObjectLayer('Cat')['objects']
+        let chicks = map.getObjectLayer('Chicken')['objects']
+        let dangers = map.getObjectLayer('Sign')['objects']
+        let foxes = map.getObjectLayer('Fox')['objects']
+        let beetroots = map.getObjectLayer('Radishes')['objects']
+        let carrots = map.getObjectLayer('Carrots')['objects']
+        let cucumbers = map.getObjectLayer('Cucumber')['objects']
+        let tomatoes = map.getObjectLayer('Tomatoes')['objects']
+        let pigs = map.getObjectLayer('Pig')['objects']
+        let rabbits = map.getObjectLayer('Rabbit')['objects']
+        let barrels = map.getObjectLayer('Waste')['objects']
+        let shovels = map.getObjectLayer('Shovel')['objects']
+        let trees = map.getObjectLayer('Tree')['objects']
+        let cans = map.getObjectLayer('WateringCan')['objects']
+
+        let stuff = this.add.group()
+        let beachballs = this.physics.add.group()
+        
+        balls.forEach(object => { beachballs.create(object.x, object.y, 'beachball') })
+        bushes.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'bush')) })
+        cats.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'cat')) })
+        chicks.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'chick').setScale(0.5)) })
+        dangers.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'danger')) })
+        foxes.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'fox')) })
+        beetroots.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'beetroot')) })
+        carrots.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'carrots')) })
+        cucumbers.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'cucumbers')) })
+        tomatoes.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'tomatoes')) })
+        pigs.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'pig').setScale(0.5)) })
+        rabbits.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'rabbit')) })
+        barrels.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'barrel')) })
+        shovels.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'shovel')) })
+        trees.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'waterTree')) })
+        cans.forEach(object => { stuff.add(this.add.image(object.x, object.y, 'wateringCan')) })
+        
+        stuff.setOrigin(0, 1)
+        beachballs.setOrigin(0, 1)
+
+        stuff.children.entries.forEach(object => {
+            this.tweens.add({
+                targets: object,
+                props: {
+                    y: {value: `+=${Phaser.Math.Between(-20, 20)}`, duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
+                }
+            })
+        })
+        
+        this.physics.add.overlap(duck, beachballs, hitBall, null, this)
         
         map.setCollisionBetween(0, 923, true, 'Footpath')
         this.physics.add.collider(duck, CollisionLayer)
+        this.physics.add.collider(beachballs, CollisionLayer)
         this.physics.add.overlap(duck, stars, hitStar, null, this)
 
         this.cameras.main.setBounds(0, 0, 3200, 1920);
@@ -817,7 +896,7 @@ let Water = new Phaser.Class({
         }
     });
 
-        breadParticles = this.add.particles('bread')
+        let breadParticles = this.add.particles('bread')
 
         breadParticles.createEmitter({
             lifespan: 10000,
@@ -837,6 +916,31 @@ let Water = new Phaser.Class({
             if (scoringActive) {
                 scoreText.setText(score);
             }
+        }
+
+        function hitBall (duck, ball) {
+            if (ball.body.velocity.x === 0 && duck.body.velocity.x > 0) {
+                ball.body.velocity.x = 10
+            } else if (ball.body.velocity.x === 0 && duck.body.velocity.x < 0) {
+                ball.body.velocity.x = -10
+            }
+            if (ball.body.velocity.y === 0 && duck.body.velocity.y > 0) {
+                ball.body.velocity.y = 10
+            } else if (ball.body.velocity.y === 0 && duck.body.velocity.y < 0) {
+                ball.body.velocity.y = -10
+            }
+            if (ball.body.velocity.x > 0 && ball.body.velocity.x < 300) {
+                ball.body.velocity.x += 50
+            } else if (ball.body.velocity.x < 0 && ball.body.velocity.x > -300) {
+                ball.body.velocity.x -= 50
+            } 
+            if (ball.body.velocity.y > 0 && ball.body.velocity.y < 300) {
+                ball.body.velocity.y += 50
+            } else if (ball.body.velocity.y < 0 && ball.body.velocity.y > -300) {
+                ball.body.velocity.y -= 50
+            }
+                ball.setBounce(0.8)
+                ball.setCollideWorldBounds(true)
         }
     },
 
@@ -921,10 +1025,10 @@ let Sand = new Phaser.Class({
         
         map.createLayer('Water Background', villageTiles)
         RoadLayer = map.createLayer('Sand Road', villageTiles)
-        CollisionLayer = map.createLayer('Sand Footpath', villageTiles)
-        StarLayer = map.getObjectLayer('Sheep')['objects']
+        let CollisionLayer = map.createLayer('Sand Footpath', villageTiles)
+        let StarLayer = map.getObjectLayer('Sheep')['objects']
 
-        stars = this.physics.add.group()
+        let stars = this.physics.add.group()
           
         StarLayer.forEach(object => {
             let obj = stars.create(object.x, object.y, 'star')
@@ -1071,7 +1175,7 @@ let End = new Phaser.Class({
         this.tweens.add({
             targets: finishItems.children.entries,
             props: {
-                y: {value: '-=10', duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
+                y: {value: `+=${Phaser.Math.Between(-20, 20)}`, duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
             }
         })
         let camera = this.cameras.main;
@@ -1095,7 +1199,7 @@ var config = {
                 debug: false
             }
         },
-        // scene: [Cubicle]
+        // scene: [Water]
         scene: [White, End, Water, Cubicle, Village, City, Start]
     };
 
