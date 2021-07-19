@@ -76,6 +76,18 @@ const Classroom = ({  setScene, setDream }) => {
     position: 'absolute'
   }
 
+  const [fade, changeFade] = useState('')
+  const [fadeVisNum, changefadeVisNum] = useState('')
+  function fadeInThought(num) {
+   changeFade(num)
+   changefadeVisNum(num)
+
+  }
+  function fadeOutThought() {
+    changeFade('')
+    changefadeVisNum('')
+  }
+
   //On click select dream and render dream component
   const handleClick = (string) => {
     setStartDream(true)
@@ -95,11 +107,7 @@ const Classroom = ({  setScene, setDream }) => {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
   }
-
-  const randomCloud = () => {
-    return <img src='/images/cloud.png'></img>
-  }
-
+  
   //On render set speech boxes to random conversation
   useEffect(() => {
       setSpeechOne(conversation[getRandomInt(0, conversation.length)])
@@ -161,17 +169,29 @@ const Classroom = ({  setScene, setDream }) => {
           <div style={speechTwoStyle}>
             <div className={`bubble mini ${speechDirectionTwo ? 'left' : 'right'}`}>{speechTwo}</div> 
           </div>
-          <div className="click-box" style={charOneStyle} onClick={() => handleClick('fred')}></div>
-          <div className="click-box" style={charTwoStyle} onClick={() => handleClick('drive')}></div>
-          <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}></div>
-          <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}></div>
+          <div className="click-box" style={charOneStyle} onClick={() => handleClick('fred')}onMouseEnter={() => fadeInThought(1)} onMouseLeave={() => fadeOutThought()}></div>
+          <div className="click-box" style={charTwoStyle} onClick={() => handleClick('drive')}onMouseEnter={() => fadeInThought(2)} onMouseLeave={() => fadeOutThought()}></div>
+          <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}onMouseEnter={() => fadeInThought(3)} onMouseLeave={() => fadeOutThought()}></div>
+          <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}onMouseEnter={() => fadeInThought(4)} onMouseLeave={() => fadeOutThought()}></div>
+  
           <img src="/images/classroom_01.png" alt="a classrom" />
+          <img src="/images/cloud.png" alt="cloud" className='cloud cloud1'/>
+          <img src="/images/cloud.png" alt="cloud" className='cloud cloud2'/>
+          <img src="/images/cloud.png" alt="cloud" className='cloud cloud3'/>
+
+          <div className={ fade ? `speechBubbleCount${fade} Visible${fadeVisNum} VisbleMed${fadeVisNum}`: 'speechBubbleCount'}>
+      <div className='speechBubbleBig'>
+      </div>
+      <div  className={ fade === 1 || 3 ? 'speechBubbleMedLeft Visible': 'speechBubbleCount' }>
+      </div>
+      <div className={ fade === 1 || 3 ? 'speechBubbleSmallLeft Visible': 'speechBubbleCount' }>
+      </div>
+    </div>
         </div>
       </div>
-      <img src="/images/cloud.png" alt="cloud" className='cloud cloud1'/>
-      <img src="/images/cloud.png" alt="cloud" className='cloud cloud2'/>
-      <img src="/images/cloud.png" alt="cloud" className='cloud cloud3'/>
-    </div>
+  </div>
+    
+   
   )
 }
 
