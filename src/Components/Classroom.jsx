@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react'
 
 import Header from './Header'
 
+const talkyTalkyPeople = new Audio('/audio/classguystalking.mp3')
+const woosh = new Audio('/audio/woosh.wav')
+
 const Classroom = ({  setScene, setDream }) => {
   const [speechOne, setSpeechOne] = useState('')
   const [speechTwo, setSpeechTwo] = useState('')
@@ -9,13 +12,20 @@ const Classroom = ({  setScene, setDream }) => {
   const [speechTwoVisible, setSpeechTwoVisible] = useState('hidden')
   const [startDream, setStartDream] = useState(false)
   const [fadeOut, setFadeOut] = useState(null)
+
   const [fadeIn, setFadeIn] = useState({
     visibility: 'hidden'
   })
 
+  useEffect(() => {
+    talkyTalkyPeople.play()
+  }, [])
+
+
   const conversation = [
     'Have you heard of Batmna?',
     'Has anyone seen Poncho?',
+    'Whats an elevator?',
     'Man that teacher sure loves drones',
     'That Lucas guy asks a lot of questions',
     'Handlebars is amazing!',
@@ -60,8 +70,33 @@ const Classroom = ({  setScene, setDream }) => {
     visibility: speechTwoVisible
   }
 
+ 
   //On click select dream and render dream component
   const handleClick = (string) => {
+
+
+    let TalkingFadeIn = setInterval(() => {
+      talkyTalkyPeople.volume += 0.2
+      console.log(talkyTalkyPeople.volume)
+      if (talkyTalkyPeople.volume > 0.25 ) {
+        clearInterval(TalkingFadeIn)
+      }
+    },1000);
+
+    let fadeVoices = setInterval(() => {
+      talkyTalkyPeople.volume -= 0.2
+      console.log(talkyTalkyPeople.volume)
+      if (talkyTalkyPeople.volume < 0.4) {
+        woosh.play()
+      }
+      if (talkyTalkyPeople.volume < 0.1 ) {
+        // talkyTalkyPeople.volume = 0
+        clearInterval(fadeVoices)
+      }
+    },500);
+
+
+  
     setStartDream(true)
     setFadeOut({
       visibility: 'hidden',
@@ -79,6 +114,8 @@ const Classroom = ({  setScene, setDream }) => {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
   }
+
+  
 
   //On render set speech boxes to random conversation
   useEffect(() => {
@@ -124,8 +161,12 @@ const Classroom = ({  setScene, setDream }) => {
     }
   }, [speechTwo])
 
+  // const soundCheck = () => {
+  //   talkyTalkyPeople.play()
+  // }
+
   return (
-    <div style={fadeIn}>
+    <div style={fadeIn} >
       <div className="container">
         <Header setScene={setScene}/>
       </div>

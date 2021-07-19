@@ -1,9 +1,25 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
+const harpyMusic = new Audio('/audio/harpMusicy.mp3')
 
 const Landing = ({ setScene }) => {
   const [fadeOut, setFadeOut] = useState(null)
 
+  useEffect(() => {
+    harpyMusic.play()
+  }, [])
+
+
   const handleClick = () => {
+
+    let harpMusicFade = setInterval(() => {
+      harpyMusic.volume -= 0.2
+      console.log(harpyMusic.volume)
+      if (harpyMusic.volume < 0.25 ) {
+        clearInterval(harpMusicFade)
+      }
+    },1000);
+
     setFadeOut({
       visibility: 'hidden',
       opacity: 0,
@@ -11,6 +27,9 @@ const Landing = ({ setScene }) => {
     })
     setTimeout(() => setScene('classroom'), 2000)
   }
+
+
+
   return (
     <div style={fadeOut}>
       <div className='container'>
