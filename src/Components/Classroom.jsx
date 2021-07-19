@@ -123,7 +123,7 @@ const Classroom = ({  setScene, setDream }) => {
            setSpeechOneVisible('hidden')
            setSpeechOne(conversation[getRandomInt(0, conversation.length)])
            setSpeechDirectionOne(!speechDirectionOne)
-         }, 3000)
+         }, 4000)
        }, getRandomInt(3000, 9000)) 
     } else {// condition when student clicked
       setSpeechOneVisible('hidden')
@@ -139,7 +139,7 @@ const Classroom = ({  setScene, setDream }) => {
           setSpeechTwoVisible('hidden')
           setSpeechTwo(conversation[getRandomInt(0, conversation.length)])
           setSpeechDirectionTwo(!speechDirectionTwo)
-        }, 3000)
+        }, 4000)
       }, getRandomInt(3000, 9000))
     } else {// condition when student clicked
       setSpeechOneVisible('hidden')
@@ -179,14 +179,14 @@ const Classroom = ({  setScene, setDream }) => {
           <img src="/images/cloud.png" alt="cloud" className='cloud cloud2'/>
           <img src="/images/cloud.png" alt="cloud" className='cloud cloud3'/>
 
-          <div className={ fade ? `speechBubbleCount${fade} Visible${fadeVisNum} VisbleMed${fadeVisNum}`: 'speechBubbleCount'}>
+          {/* <div className={ fade ? `speechBubbleCount${fade} Visible${fadeVisNum} VisbleMed${fadeVisNum}`: 'speechBubbleCount'}>
       <div className='speechBubbleBig'>
       </div>
       <div  className={ fade === 1 || 3 ? 'speechBubbleMedLeft Visible': 'speechBubbleCount' }>
       </div>
       <div className={ fade === 1 || 3 ? 'speechBubbleSmallLeft Visible': 'speechBubbleCount' }>
       </div>
-    </div>
+    </div> */}
         </div>
       </div>
   </div>

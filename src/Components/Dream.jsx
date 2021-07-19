@@ -22,6 +22,9 @@ const Dream = ({ dream, setScene }) => {
       <div className="scene">
         <iframe src={`./${dream}.html`} title={dream} className='game-frame' frameBorder='0'></iframe>
       </div>
+      <img src="/images/cloud.png" alt="cloud" className='cloud cloud1'/>
+      <img src="/images/cloud.png" alt="cloud" className='cloud cloud2'/>
+      <img src="/images/cloud.png" alt="cloud" className='cloud cloud3'/>
     </div>
     </>
   )
