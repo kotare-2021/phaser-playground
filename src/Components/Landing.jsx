@@ -19,11 +19,9 @@ const Landing = ({ setScene }) => {
       <div className="container">
         <h4 onClick={handleClick} className='heading-sub clickable'>Everyone Dreams...<br />Always</h4>
       </div>
-      <img src="/images/cloud.png" alt="a cloud" className='cloud-img-small'/>
-      <img src="/images/cloud.png" alt="a cloud" className='cloud-img-small'/>
-      <img src="/images/cloud.png" alt="a cloud" className='cloud-img-small'/>
-      <img src="/images/cloud.png" alt="a cloud" className='cloud-img-small'/>
-      <img src="/images/cloud.png" alt="a cloud" className='cloud-img-small'/>
+      <img src="/images/cloud.png" alt="cloud" className='cloud cloud1'/>
+      <img src="/images/cloud.png" alt="cloud" className='cloud cloud2'/>
+      <img src="/images/cloud.png" alt="cloud" className='cloud cloud3'/>
     </div>
   )
 }
