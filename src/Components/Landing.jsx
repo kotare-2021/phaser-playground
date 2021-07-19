@@ -5,7 +5,6 @@ import Clouds from './Clouds'
 
 const Landing = ({ setScene }) => {
   const [fadeOut, setFadeOut] = useState(null)
-
   const handleClick = () => {
     setFadeOut({
       visibility: 'hidden',

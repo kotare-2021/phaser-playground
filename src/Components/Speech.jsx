@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react'
 
-const Speech = (props) => {
+const Speech = () => {
   // set speech bubble content
   const [speechOne, setSpeechOne] = useState('')
   const [speechTwo, setSpeechTwo] = useState('')

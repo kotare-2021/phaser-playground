@@ -8,9 +8,6 @@ const Classroom = ({  setScene, setDream }) => {
   // change dream scene
   const [startDream, setStartDream] = useState(false)
 
-  // fade out scene 
-  const [fadeOut, setFadeOut] = useState(null)
-
   //variables for clickbox positioning
   const charOneStyle = {
     left: '3.3rem',
@@ -64,11 +61,6 @@ const Classroom = ({  setScene, setDream }) => {
   //On click select dream and render dream component
   const handleClick = (string) => {
     setStartDream(true)
-    setFadeOut({
-      visibility: 'hidden',
-      opacity: 0,
-      transition: 'visibility 0s 2s, opacity 2s linear'
-    })
     setTimeout(() => {
       setScene('dream')
       setDream(string)
@@ -76,10 +68,8 @@ const Classroom = ({  setScene, setDream }) => {
   }
 
   return (
-    <div style={fadeOut}>
-      <div className="container">
-        <Header setScene={setScene}/>
-      </div>
+    <>
+      <Header setScene={setScene}/>
       <div className="container">
         <div style={{position: 'relative'}}>
           <span className='heading-small'>It's an afternoon lecture at Dev Academy and one of the students is starting to fall asleep.</span>
@@ -104,7 +94,7 @@ const Classroom = ({  setScene, setDream }) => {
 
           <div className={ fade ? `speechBubbleCount${fade} Visible${fadeVisNum} VisbleMed${fadeVisNum}`: 'speechBubbleCount'}>
             <div className='speechBubbleBig'>
-              <img className='dayDreamImg' src={`/assets/${imgThought}`} alt={imgThought}/> 
+              <img className='dayDreamImg' src={`/assets/${imgThought}`} alt={imgThought}/>
             </div>
             <div  className={ fade === 1 || 3 ? 'speechBubbleMedLeft Visible': 'speechBubbleCount' }>
             </div>
@@ -115,9 +105,10 @@ const Classroom = ({  setScene, setDream }) => {
             <div className={ fade === 2 || 4 ? 'speechBubbleSmallLeft Visible': 'speechBubbleCount' }>
             </div>
           </div>
+            <div className={startDream && 'fadeOut'}></div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
