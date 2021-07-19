@@ -3,61 +3,37 @@ import React, { useState } from 'react'
 import Header from './Header'
 import Clouds from './Clouds'
 import Speech from './Speech'
+import Thoughts from './Thoughts'
+
+
+// import {fadeInThought} from './Thoughts'
+// // import {imgDayDream} from './Thoughts'
+// import {fadeOutThought} from './Thoughts'
+
+const characters = [
+  { name: 'fred', style: { left: '3.3rem', top: '9rem' }, img: 'football.png' },
+  { name: 'drive', style: { left: '15rem', top: '9rem' }, img: 'sheep_walk.png',  },
+  { name: 'megan', style: { left: '3.3rem', top: '19rem' }, img: '', },
+  { name: 'ymmij', style: { left: '15rem', top: '19rem' }, img: 'Hamster_Dance.ico' },
+]
 
 const Classroom = ({  setScene, setDream }) => {
   // change dream scene
   const [startDream, setStartDream] = useState(false)
-
   // fade out scene 
   const [fadeOut, setFadeOut] = useState(null)
-
-  //variables for clickbox positioning
-  const charOneStyle = {
-    left: '3.3rem',
-    top: '9rem'
-}
-  const charTwoStyle = {
-    left: '15rem',
-    top: '9rem'
-  }
-  const charThreeStyle = {
-    left: '3.3rem',
-    top: '19rem'
-  }
-  const charFourStyle = {
-    left: '15rem',
-    top: '19rem'
-  }
-
   const [fade, changeFade] = useState('')
   const [imgThought, changeImgThought] = useState('')
-  const [fadeVisNum, changefadeVisNum] = useState('')
-
-  function imgDayDream(num) {
-    if(num === 1) {
-      changeImgThought('football.png')
-    }
-  }
+  
 
   function fadeInThought(num) {
-    if (num === 1) {
-      changeImgThought('football.png')
-      changeFade(num)
-      changefadeVisNum(num)
-    } else if (num === 2) {
-      changeImgThought('sheep_walk.png')
-      changeFade(num)
-      changefadeVisNum(num)
-    } else if (num === 4) {
-      changeImgThought('Hamster_Dance.ico')
-      changeFade(num)
-      changefadeVisNum(num)
-    }
+    changeImgThought(characters[num].img)
+    changeFade(num)
+
   }
 
   function fadeOutThought() {
     changeFade('')
-    changefadeVisNum('')
     changeImgThought('')
   }
 
@@ -73,6 +49,16 @@ const Classroom = ({  setScene, setDream }) => {
       setScene('dream')
       setDream(string)
     }, 2000)
+  } 
+
+  const renderCharacter = (item, i) => {
+    return <div 
+      className="click-box" 
+      style={item.style} 
+      onClick={() => handleClick(item.name)}
+      onMouseEnter={() => fadeInThought(i)} 
+      onMouseLeave={() => fadeOutThought()}
+    />
   }
 
   return (
@@ -90,31 +76,15 @@ const Classroom = ({  setScene, setDream }) => {
       </div>
       <div className="container">
         <div className="classroom">
-
-          <Speech />
           
-          <div className="click-box" style={charOneStyle} onClick={() => handleClick('fred')}onMouseEnter={() => fadeInThought(1)} onMouseLeave={() => fadeOutThought()}> </div>
-          <div className="click-box" style={charTwoStyle} onClick={() => handleClick('drive')}onMouseEnter={() => fadeInThought(2)} onMouseLeave={() => fadeOutThought()}></div>
-          <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}onMouseEnter={() => fadeInThought(3)} onMouseLeave={() => fadeOutThought()}></div>
-          <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}onMouseEnter={() => fadeInThought(4)} onMouseLeave={() => fadeOutThought()}></div>
-
           <img src="/images/classroom_01.png" alt="a classrom"/>
-
           <Clouds />
 
-          <div className={ fade ? `speechBubbleCount${fade} Visible${fadeVisNum} VisbleMed${fadeVisNum}`: 'speechBubbleCount'}>
-            <div className='speechBubbleBig'>
-              <img className='dayDreamImg' src={`/assets/${imgThought}`} alt={imgThought}/> 
-            </div>
-            <div  className={ fade === 1 || 3 ? 'speechBubbleMedLeft Visible': 'speechBubbleCount' }>
-            </div>
-            <div className={ fade === 1 || 3 ? 'speechBubbleMedRight Visible': 'speechBubbleCount' }>
-            </div>
-            <div className={ fade === 2 || 4 ? 'speechBubbleSmallRight Visible': 'speechBubbleCount' }>
-            </div>
-            <div className={ fade === 2 || 4 ? 'speechBubbleSmallLeft Visible': 'speechBubbleCount' }>
-            </div>
-          </div>
+          {characters.map((item,i) => renderCharacter(item, i))}
+          
+          <Speech />
+          <Thoughts fade={fade} imgThought={imgThought} />      
+
         </div>
       </div>
     </div>
