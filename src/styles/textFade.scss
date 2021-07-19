@@ -1,0 +1,31 @@
+.fadingEffect {
+  position:absolute;
+  top:0; bottom:0; right:0;
+  width:0%;
+  background: blue;
+  -moz-animation: showHide 3s ease-in alternate; /* Firefox */
+  -webkit-animation: showHide 3s ease-in alternate; /* Safari and Chrome */
+  -ms-animation: showHide 3s ease-in alternate; /* IE10 */
+  -o-animation: showHide 3s ease-in alternate; /* Opera */
+  animation: showHide 3s ease-in alternate;
+}
+@-webkit-keyframes showHide { /* Chrome, Safari */
+  0% {width:100%}
+  100% {width:0%;}
+}
+@-moz-keyframes showHide { /* FF */
+  0% {width:100%}
+  100% {width:0%;}
+}
+@-ms-keyframes showHide { /* IE10 */
+  0% {width:100%}
+  100% {width:0%;}
+}
+@-o-keyframes showHide { /* Opera */
+  0% {width:100%}
+  100% {width:0%;}
+}
+@keyframes showHide {
+  0% {width:100%}
+  100% {width:0%;}
+}
