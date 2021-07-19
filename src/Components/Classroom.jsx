@@ -142,7 +142,7 @@ const Classroom = ({  setScene, setDream }) => {
            setSpeechOneVisible('hidden')
            setSpeechOne(conversation[getRandomInt(0, conversation.length)])
            setSpeechDirectionOne(!speechDirectionOne)
-         }, 3000)
+         }, 4000)
        }, getRandomInt(3000, 9000)) 
     } else {// condition when student clicked
       setSpeechOneVisible('hidden')
@@ -158,7 +158,7 @@ const Classroom = ({  setScene, setDream }) => {
           setSpeechTwoVisible('hidden')
           setSpeechTwo(conversation[getRandomInt(0, conversation.length)])
           setSpeechDirectionTwo(!speechDirectionTwo)
-        }, 3000)
+        }, 4000)
       }, getRandomInt(3000, 9000))
     } else {// condition when student clicked
       setSpeechOneVisible('hidden')
@@ -188,37 +188,33 @@ const Classroom = ({  setScene, setDream }) => {
           <div style={speechTwoStyle}>
             <div className={`bubble mini ${speechDirectionTwo ? 'left' : 'right'}`}>{speechTwo}</div> 
           </div>
+          
           <div className="click-box" style={charOneStyle} onClick={() => handleClick('fred')}onMouseEnter={() => fadeInThought(1)} onMouseLeave={() => fadeOutThought()}> </div>
           <div className="click-box" style={charTwoStyle} onClick={() => handleClick('drive')}onMouseEnter={() => fadeInThought(2)} onMouseLeave={() => fadeOutThought()}></div>
           <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}onMouseEnter={() => fadeInThought(3)} onMouseLeave={() => fadeOutThought()}></div>
           <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}onMouseEnter={() => fadeInThought(4)} onMouseLeave={() => fadeOutThought()}></div>
-  
-          
 
-          <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}onMouseEnter={() => fadeInThought(4)} onMouseLeave={() => fadeOutThought()}></div>
-          
-          
           <img src="/images/classroom_01.png" alt="a classrom"/> 
           <img src="/images/cloud.png" alt="cloud" className='cloud cloud1'/>
           <img src="/images/cloud.png" alt="cloud" className='cloud cloud2'/>
           <img src="/images/cloud.png" alt="cloud" className='cloud cloud3'/>
-         
+
           <div className={ fade ? `speechBubbleCount${fade} Visible${fadeVisNum} VisbleMed${fadeVisNum}`: 'speechBubbleCount'}>
-      <div className='speechBubbleBig'>
-        <img className='dayDreamImg' src={`/assets/${imgThought}`} /> 
-      </div>
-      <div  className={ fade === 1 || 3 ? 'speechBubbleMedLeft Visible': 'speechBubbleCount' }>
-      </div>
-      <div className={ fade === 1 || 3 ? 'speechBubbleMedRight Visible': 'speechBubbleCount' }>
-      </div>
-      <div className={ fade === 2 || 4 ? 'speechBubbleSmallRight Visible': 'speechBubbleCount' }>
-      </div>
-      <div className={ fade === 2 || 4 ? 'speechBubbleSmallLeft Visible': 'speechBubbleCount' }>
-      </div>
-    </div>
+            <div className='speechBubbleBig'>
+              <img className='dayDreamImg' src={`/assets/${imgThought}`} alt={imgThought}/> 
+            </div>
+            <div  className={ fade === 1 || 3 ? 'speechBubbleMedLeft Visible': 'speechBubbleCount' }>
+            </div>
+            <div className={ fade === 1 || 3 ? 'speechBubbleMedRight Visible': 'speechBubbleCount' }>
+            </div>
+            <div className={ fade === 2 || 4 ? 'speechBubbleSmallRight Visible': 'speechBubbleCount' }>
+            </div>
+            <div className={ fade === 2 || 4 ? 'speechBubbleSmallLeft Visible': 'speechBubbleCount' }>
+            </div>
+          </div>
         </div>
       </div>
-  </div>
+    </div>
     
    
   )
