@@ -14,11 +14,8 @@ const Classroom = ({  setScene, setDream }) => {
   // change dream scene
   const [startDream, setStartDream] = useState(false)
 
-  // used for css effects
+  // fade out scene 
   const [fadeOut, setFadeOut] = useState(null)
-  const [fadeIn, setFadeIn] = useState({
-    visibility: 'hidden'
-  })
 
   // set speech bubble stem direction
   const [speechDirectionOne, setSpeechDirectionOne] = useState(true)
@@ -99,11 +96,6 @@ const Classroom = ({  setScene, setDream }) => {
 
   //On render set speech boxes to random conversation
   useEffect(() => {
-    setFadeIn({// fade in not currently working
-      visibility: 'visible',
-      opacity: 1,
-      transition: 'opacity 2s linear'
-    })
     setTimeout(() => {
       setSpeechOne(conversation[getRandomInt(0, conversation.length)])
       setSpeechTwo(conversation[getRandomInt(0, conversation.length)])
@@ -144,7 +136,7 @@ const Classroom = ({  setScene, setDream }) => {
   }, [speechTwo])
 
   return (
-    <div style={fadeIn}>
+    <div>
       <div className="container">
         <Header setScene={setScene}/>
       </div>
