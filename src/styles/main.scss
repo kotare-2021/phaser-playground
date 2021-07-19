@@ -46,47 +46,47 @@ code {
 	overflow: hidden;
 }
 
-.cloud {
-	width: 350px; height: 120px;
+// .cloud {
+// 	width: 350px; height: 120px;
 	
-	background: #f2f9fe;
-	background: linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
-	background: -webkit-linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
-	background: -moz-linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
-	background: -ms-linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
-	background: -o-linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
+// 	background: #f2f9fe;
+// 	background: linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
+// 	background: -webkit-linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
+// 	background: -moz-linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
+// 	background: -ms-linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
+// 	background: -o-linear-gradient(top, #f2f9fe 5%, #d6f0fd 100%);
 	
-	border-radius: 100px;
-	-webkit-border-radius: 100px;
-	-moz-border-radius: 100px;
+// 	border-radius: 100px;
+// 	-webkit-border-radius: 100px;
+// 	-moz-border-radius: 100px;
 	
-	position: relative;
-	margin: 100px auto 20px;
-}
+// 	position: relative;
+// 	margin: 100px auto 20px;
+// }
 
-.cloud:after, .cloud:before {
-	content: '';
-	position: absolute;
-	background: #f2f9fe;
-	z-index: -1
-}
+// .cloud:after, .cloud:before {
+// 	content: '';
+// 	position: absolute;
+// 	background: #f2f9fe;
+// 	z-index: -1
+// }
 
-.cloud:after {
-	width: 100px; height: 100px;
-	top: -50px; left: 50px;
+// .cloud:after {
+// 	width: 100px; height: 100px;
+// 	top: -50px; left: 50px;
 	
-	border-radius: 100px;
-	-webkit-border-radius: 100px;
-	-moz-border-radius: 100px;
-}
+// 	border-radius: 100px;
+// 	-webkit-border-radius: 100px;
+// 	-moz-border-radius: 100px;
+// }
 
-.cloud:before {
-	width: 180px; height: 180px;
-	top: -90px; right: 50px;
-	border-radius: 200px;
-	-webkit-border-radius: 200px;
-	-moz-border-radius: 200px;
-}
+// .cloud:before {
+// 	width: 180px; height: 180px;
+// 	top: -90px; right: 50px;
+// 	border-radius: 200px;
+// 	-webkit-border-radius: 200px;
+// 	-moz-border-radius: 200px;
+// }
 
 .heading-logo {
 	height: 80%;
@@ -95,7 +95,7 @@ code {
 
 .heading-main {
   font-size: 7rem;
-  margin: 1rem;
+  margin: 1.5rem;
 }
 
 .heading-sub {
@@ -104,6 +104,8 @@ code {
 
 .heading-small {
   font-size: 2rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
 }
 
 .cloud-img-small {
@@ -125,6 +127,8 @@ code {
 
 .classroom {
 	position: relative;
+  margin-top: 3rem;
+  box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
 }
 
 .speech {
