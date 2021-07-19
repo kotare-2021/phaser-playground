@@ -169,10 +169,8 @@ const Classroom = ({  setScene, setDream }) => {
           <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}onMouseEnter={() => fadeInThought(4)} onMouseLeave={() => fadeOutThought()}></div>
   
           <img src="/images/classroom_01.png" alt="a classrom" />
-        </div>
-      </div>
-    
-    <div className={ fade ? `speechBubbleCount${fade} Visible${fadeVisNum} VisbleMed${fadeVisNum}`: 'speechBubbleCount'}>
+
+          <div className={ fade ? `speechBubbleCount${fade} Visible${fadeVisNum} VisbleMed${fadeVisNum}`: 'speechBubbleCount'}>
       <div className='speechBubbleBig'>
       </div>
        
@@ -185,6 +183,10 @@ const Classroom = ({  setScene, setDream }) => {
       <div className={ fade === 2 || 4 ? 'speechBubbleSmallRight Visible': 'speechBubbleCount' }>
       </div> 
     </div>
+        </div>
+      </div>
+    
+   
    
   </div>
     
