@@ -7,103 +7,118 @@
 
   <script>
 
-    let CollisionLayer, BackgroundLayer, SheepLayer, StarLayer, sheeps, car, stars, scoreText, carPosX, dude, carPosY, carVelX, carVelY, starText, startActive, gameActive, endActive, gameOver
+    let CollisionLayer, BackgroundLayer,  sheeps, car, stars, scoreText, carPosX, dude, carPosY, carVelX, carVelY, starText, startActive, gameActive, endActive, gameOver, teacher, player, bombs, plane
     let hit = false
     let score = 0
+    let starScore = 10
+    gameActive = true
+
     
 // start screen
 
-let Start = new Phaser.Class({
-    Extends: Phaser.Scene,
+// let Start = new Phaser.Class({
+//     Extends: Phaser.Scene,
 
-    initialize: 
+//     initialize: 
     
-    function start () { Phaser.Scene.call(this, { key: 'start', active: true })},
+//     function start () { Phaser.Scene.call(this, { key: 'start', active: true })},
 
-    preload: function () {
-        // this.load.audio('shutup', 'assets/sounds/shutup.mp3')
-    },
+//     preload: function () {
+//       this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+//       this.load.image('plane', 'assets/images/plane.png');
+//         // this.load.audio('shutup', 'assets/sounds/shutup.mp3')
+//     },
 
-    create: function () {
-        let text = this.add.text(300, 200, 'SPACE TO START', { fontSize: '32px', fill: '#ffffff' });
-        var camera = this.cameras.main;
-        camera.setBackgroundColor('#b13543')
+//     create: function () {
+//       let startItems = this.add.group()
+//       let add = this.add
+//         WebFont.load({
+//         google: {
+//             families: [ 'Fredoka One' ]
+//         },
+//         active: function () {
+//             add.text(245, 100, 'GAME TITLE', { fontFamily: 'Fredoka One', fontSize: '48px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 6, offsetX: 3, color: 'white', fill: true} })
+//             add.text(295, 500, 'SPACE TO START', { fontFamily: 'Fredoka One', fontSize: '24px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 4, offsetX: 2, color: 'white', fill: true} })
+//         }
+//     });
+//     startItems.add(this.add.image(385, 350, 'plane'))
+      
+//       var camera = this.cameras.main;
+//       camera.setBackgroundColor('#7be2fe')
 
-        this.input.keyboard.once('keydown-SPACE', () => {
-            this.cameras.main.fadeOut(100, 255, 255, 255)
-        })
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            // this.sound.play('shutup')
-            this.scene.start('sceneB')
-            gameActive = true
-        })
-    },
-
-    update: function () {
-
-    }
-}) 
-
-
-// city/star screen
-
-let SceneB = new Phaser.Class({
-  Extends: Phaser.Scene,
-
-  initialize: 
-
-  function sceneB () { Phaser.Scene.call(this, { key: 'sceneB', active: false })},
-
-  preload: function () {
-    this.load.tilemapTiledJSON('NewMap', 'assets/NewMap.json');
-    this.load.image("terrain2", "assets/terrain2.png")
-    // this.load.image("roadNE", "assets/maps/roadNE.png")
-    this.load.image('star', 'assets/star.png')
-    this.load.spritesheet('bomb', 
-      'assets/drone.png',
-      { frameWidth: 26, frameHeight: 20 }
-    );
-    this.load.spritesheet('dude', 
-      'assets/betty.png',
-      { frameWidth: 48, frameHeight: 48 }
-    );
-  },
-
-  create: function () {
-      // this.time.addEvent({
-      //     delay: 28500,
-      //     loop: false,
-      //     callback: () => {
-      //         this.cameras.main.fadeOut(100, 255, 255, 255)
-      //     }
-      // })
-
-      // this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-      //     // this.sound.play('engine')
-      //     playerVelocity = 600
-      //     playerPosX = player.body.position.x,
-      //     playerPosY = player.body.position.y,
-      //     playerVelX = player.body.velocity.x,
-      //     playerVelY = player.body.velocity.y
-      //     this.scene.start('sceneB')
-      // })
+//       this.input.keyboard.once('keydown-SPACE', () => {
+//           this.cameras.main.fadeOut(2000, 255, 255, 255)
+//       })
+//       this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+//           // this.sound.play('shutup')
+//           this.scene.start('sceneB')
+//           gameActive = true
+//         })
+//       },
+      
+//       update: function () {
+        
+//       }
+//     }) 
+    
+    
+    // city/star screen
+    
+    let SceneB = new Phaser.Class({
+      Extends: Phaser.Scene,
+      
+      initialize: 
+      
+      function sceneB () { Phaser.Scene.call(this, { key: 'sceneB', active: true })},
+      
+      preload: function () {
+        this.load.tilemapTiledJSON('Library', 'assets/library1.json');
+        this.load.image("floor", "assets/floors.png")
+        this.load.image("desks3", "assets/desks.png")
+        this.load.image("bookshelves", "assets/class2.png")
+        // this.load.image("roadNE", "assets/maps/roadNE.png")
+        this.load.image('star', 'assets/star.png')
+        this.load.image('plane', 'assets/plane.png')
+        this.load.image('scoreboard', 'assets/chalkboard.png')
+        this.load.spritesheet('bomb', 
+        'assets/drone.png',
+        { frameWidth: 26, frameHeight: 20 }
+        );
+        this.load.spritesheet('teacher', 
+        'assets/teacher.png',
+        { frameWidth: 100, frameHeight: 100 }
+        );
+        this.load.spritesheet('dude', 
+        'assets/betty.png',
+        { frameWidth: 48, frameHeight: 48 }
+        );
+        // var eightDirection = this.plugins.get('rexeightdirectionplugin').add(plane, config);
+      },
+      
+      create: function () {
+        this.cameras.main.fadeIn(3000, 255, 255, 255)
+        
     this.physics.world.setBounds(60, 60, 1540, 1156);
     
-    const map = this.make.tilemap({key: 'NewMap'});  
-    console.log(map) 
-    const tileset = map.addTilesetImage('terrain2', 'terrain2')
+    const map = this.make.tilemap({key: 'Library'});  
+    const tileset1 = map.addTilesetImage('floor', 'floor')
+    const tileset2 = map.addTilesetImage('desks3', 'desks3')
+    const tileset3 = map.addTilesetImage('bookshelves', 'bookshelves')
+    const allTiles = [tileset3, tileset2]
+    // walls = map.createStaticLayer('walls', tileset2,400,400);
     
-    BackgroundLayer = map.createLayer('water', tileset)
-    CollisionLayer = map.createLayer('Tile Layer 1', tileset)
+    BackgroundLayer = map.createLayer('floors', tileset1)
+    CollisionLayer = map.createLayer('walls', allTiles, 0, 0)
     player = this.physics.add.sprite(565, 250, 'dude');
+    map.setCollisionBetween(0, 1126, true, 'walls')
     this.physics.add.collider(player, CollisionLayer);
     
     
     player.setBounce(0);
     player.setCollideWorldBounds(true);
     player.body.setGravityY(0)
-    player.setSize(20, 20, true)
-    player.setScale(1.5)
+    player.setSize(30, 30, true)
+    player.setScale(.8)
 
     this.anims.create({
       key: 'left',
@@ -161,9 +176,14 @@ let SceneB = new Phaser.Class({
 
     bombs.enableBody = true;
 
-    this.physics.add.collider(bombs, CollisionLayer);
+    planes = this.physics.add.group();
+
+    planes.enableBody = true;
+
+    this.physics.add.collider(planes, CollisionLayer);
 
     this.physics.add.collider(player, bombs, hitBomb, null, this);
+    this.physics.add.collider(player, planes, hitPlane, null, this);
 
     function hitBomb (player, bomb) {
       this.physics.pause();
@@ -175,7 +195,13 @@ let SceneB = new Phaser.Class({
       gameOver = true;
 
       if(gameOver = true) {
-        this.cameras.main.fadeOut(100, 255, 255, 255)
+        this.time.addEvent({
+          delay: 3000,
+          loop: false,
+          callback: () => {
+              this.cameras.main.fadeOut(100, 255, 255, 255)
+          }
+        })
       }
       this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
         // this.sound.play('shutup')
@@ -183,6 +209,32 @@ let SceneB = new Phaser.Class({
         endActive = true
       })
     }
+    function hitPlane (player, Plane) {
+      this.physics.pause();
+      
+      player.setTint(0xff0000);
+      
+      player.anims.play('turn');
+
+      gameOver = true;
+
+      if(gameOver = true) {
+        this.time.addEvent({
+          // delay: 3000,
+          loop: false,
+          callback: () => {
+              this.cameras.main.fadeOut(2000, 255, 255, 255)
+          }
+        })
+      }
+      this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+        // this.sound.play('shutup')
+        this.scene.start('end')
+        endActive = true
+      })
+    }
+
+
 
     stars.children.iterateLocal('setSize', 100, 100, true)
 
@@ -192,18 +244,39 @@ let SceneB = new Phaser.Class({
       
     function collectStar (player, star) {
       if (gameActive) {
-        console.log('firing')
         star.disableBody(true, true);
-      
         score += 10;
         scoreText.setText('Score: ' + score);
+        starScore -= 1;
+        starScoreText.setText('Stars: ' + starScore);
       
       if (stars.countActive(true) === 0) {
+        if (100 < score < 300) {
+          starScore = 10;
         stars.children.iterate(function (child) {
           child.enableBody(true, child.x, Phaser.Math.FloatBetween(80, 1200), true, true);
         });
         
-        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+        var x = (player.x < 800) ? Phaser.Math.Between(800, 1520) : Phaser.Math.Between(80, 800);
+        
+        plane = planes.create(x, Phaser.Math.FloatBetween(80, 1200), 'plane');
+
+        plane.setBounce(1);
+        plane.setSize(20, 20, true)
+        plane.setScale(.20)
+        
+        var x = plane.x
+        var y = plane.y
+        plane.setCollideWorldBounds(true);
+
+        plane.setVelocity(Phaser.Math.Between(-200, 200), Phaser.Math.Between(-200, 200) ); 
+      }
+      if (score > 300) {
+        stars.children.iterate(function (child) {
+          child.enableBody(true, child.x, Phaser.Math.FloatBetween(80, 1200), true, true);
+        });
+        
+        var x = (player.x < 800) ? Phaser.Math.Between(800, 1520) : Phaser.Math.Between(80, 800);
         
         var bomb = bombs.create(x, Phaser.Math.FloatBetween(80, 1200), 'bomb');
         
@@ -217,48 +290,48 @@ let SceneB = new Phaser.Class({
         bomb.anims.play('fly')
 
         bomb.setBounce(1);
+        bomb.setScale(1.5);
 
         bomb.setCollideWorldBounds(true);
 
         bomb.setVelocity(Phaser.Math.Between(-200, 200), Phaser.Math.Between(-200, 200) ); 
-      }}
+      }
     }
-
-    scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
+      }
+      
+    }
+    scoreBoard = this.add.image(150, 26, 'scoreboard')
+    scoreText = this.add.text(30, 16, 'Score: 0', { fontSize: '20px', fill: '#fff' });
+    starScoreText = this.add.text(165, 16, 'Stars: 10', { fontSize: '20px', fill: '#fff' })
     scoreText.setScrollFactor(0)
-
-    // function hitStar (dude, star) {
-    //     this.sound.play('ding')
-    //     star.destroy()
-    //     score += 10;
-    //     scoreText.setText('Score: ' + score);
-    // }
+    starScoreText.setScrollFactor(0)
+    scoreBoard.setScrollFactor(0)
   },
 
-  update: function () {
 
+  update: function () {
     if (gameActive) {
       if (cursors.left.isDown)
         {
-          player.setVelocityX(-160);
-          
+          player.setVelocityX(-200);
+
           player.anims.play('left', true);
         }
         else if (cursors.right.isDown)
         {
-          player.setVelocityX(160);
+          player.setVelocityX(200);
           
           player.anims.play('right', true);
         }
         else if (cursors.up.isDown)
         {
-          player.setVelocityY(-160);
+          player.setVelocityY(-200);
           
           player.anims.play('up', true);
         }
         else if (cursors.down.isDown)
         {
-          player.setVelocityY(160);
+          player.setVelocityY(200);
           
           player.anims.play('down', true);
         }
@@ -269,6 +342,18 @@ let SceneB = new Phaser.Class({
           
           player.anims.play('turn');
         } 
+        planes.children.entries.forEach(plane => {
+          if (plane.body.velocity.x > 0) {
+            plane.flipX = false
+          } else if (plane.body.velocity.x < 0 ){
+            plane.flipX = true
+          }
+          if (plane.body.velocity.y > 0 ) {
+            plane.flipY = true
+          } else if (plane.body.velocity.y < 0 ) {
+            plane.flipY = false
+          }
+        })
     }
   }
 })
@@ -281,32 +366,43 @@ let end = new Phaser.Class({
     function end () { Phaser.Scene.call(this, { key: 'end', active: false })},
 
     preload: function () {
-        // this.load.audio('shutup', 'assets/sounds/shutup.mp3')
+      this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
+      this.load.image('plane', 'assets/images/plane.png');
     },
 
     create: function () {
-        let text = this.add.text(300, 100, 'YOU LOSE!', { fontSize: '32px', fill: '#ffffff' });
-        this.add.text(300, 200, `Your final Score was: ${score}`, { fontSize: '24px', fill: '#ffffff' });
-        this.add.text(300, 300, 'press space to restart', { fontSize: '24px', fill: '#ffffff' });
+      // let endItems = this.add.group()
+      let add = this.add
+        WebFont.load({
+        google: {
+            families: [ 'Fredoka One' ]
+        },
+        active: function () {
+            add.text(245, 100, 'GAME OVER', { fontFamily: 'Fredoka One', fontSize: '48px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 6, offsetX: 3, color: 'white', fill: true} })
+            add.text(245, 250, `Your final score was: ${score}`, { fontFamily: 'Fredoka One', fontSize: '32px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 4, offsetX: 2, color: 'white', fill: true} })
+            add.text(295, 500, 'press space to restart', { fontFamily: 'Fredoka One', fontSize: '24px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 4, offsetX: 2, color: 'white', fill: true} })
+        }
+    });
+        
         var camera = this.cameras.main;
-        camera.setBackgroundColor('#000000')
+        camera.setBackgroundColor('#FFF')
 
         if (endActive){ this.input.keyboard.once('keydown-SPACE', () => {
             this.cameras.main.fadeOut(100, 255, 255, 255)
         })
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            // this.sound.play('shutup')
             score = 0
-            this.scene.start('start')
+            this.scene.start('SceneB')
         })}
     },
-
+    
     update: function () {
-
+      
+      
     }
   }) 
 
-var config = {
+  var config = {
         type: Phaser.AUTO,
         width: 800,
         height: 576,
@@ -316,10 +412,10 @@ var config = {
         physics: {
             default: 'arcade',
             arcade: {
-                debug: false
+                debug: true
             }
         },
-        scene: [SceneB, end, Start]
+        scene: [end, SceneB]
     };
 
     var game = new Phaser.Game(config);
