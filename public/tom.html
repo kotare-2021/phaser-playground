@@ -6,178 +6,213 @@
 <body>
 
     <script>
-        var config = {
-                type: Phaser.AUTO,
-                width: 800,
-                height: 600,
-                physics: {
-                    default: 'arcade',
-                    arcade: {
-                        debug: false
-                    }
-                },
-                scene: {
-                    preload: preload,
-                    create: create,
-                    update: update
+     var config = {
+    type: Phaser.AUTO,
+    parent: 'phaser-example',
+    width: 800,
+    height: 600,
+    physics: {
+      default: 'arcade',
+      arcade: {
+        gravity: { y: 0 },
+        debug: true
+      }
+    },
+    scene: {
+        preload: preload,
+        create: create,
+        update: update,
+        extend: {
+                    player: null,
+                    reticle: null,
+                    moveKeys: null,
+                    bullets: null,
+                    lastFired: 0,
+                    time: 0,
                 }
-        }
+    }
+};
 
-        var game = new Phaser.Game(config) // initialise game variable
+var game = new Phaser.Game(config);
 
-        function preload () // preloads game assets
-        {
-            this.load.image('sky', 'assets/sky.png')
-            this.load.image('wall', 'assets/platform.png')
-            
-            this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48})
+function preload ()
+{
+    // Load in images and sprites
+    this.load.spritesheet('player_handgun', 'assets/sprites/player_handgun.png',
+        { frameWidth: 66, frameHeight: 60 }
+    ); // Made by tokkatrain: https://tokkatrain.itch.io/top-down-basic-set
+    this.load.image('target', 'assets/demoscene/ball.png');
+    this.load.image('background', 'assets/skies/underwater1.png');
+}
 
-            this.load.spritesheet('robot', 'assets/future4.png', {frameWidth: 26, frameHeight: 36})
+function create ()
+{
+    // Create world bounds
+    this.physics.world.setBounds(0, 0, 1600, 1200);
 
-            this.load.spritesheet('enemy', 'assets/future4.png', {frameWidth: 26, frameHeight: 36})
-        }
+    // Add background, player, and reticle sprites
+    var background = this.add.image(800, 600, 'background');
+    player = this.physics.add.sprite(800, 600, 'player_handgun');
+    reticle = this.physics.add.sprite(800, 700, 'target');
 
-        function create () 
-        {
-            this.physics.world.setBounds(0, 0, 3200, 3200)
+    // Set image/sprite properties
+    background.setOrigin(0.5, 0.5).setDisplaySize(1600, 1200);
+    player.setOrigin(0.5, 0.5).setDisplaySize(132, 120).setCollideWorldBounds(true).setDrag(500, 500);
+    reticle.setOrigin(0.5, 0.5).setDisplaySize(25, 25).setCollideWorldBounds(true);
 
-            this.add.image(400, 300, 'sky')//add sky background
+    // Set camera zoom
+    this.cameras.main.zoom = 0.5;
 
-            walls = this.physics.add.staticGroup() // create walls
+    // Creates object for input with WASD kets
+    moveKeys = this.input.keyboard.addKeys({
+        'up': Phaser.Input.Keyboard.KeyCodes.W,
+        'down': Phaser.Input.Keyboard.KeyCodes.S,
+        'left': Phaser.Input.Keyboard.KeyCodes.A,
+        'right': Phaser.Input.Keyboard.KeyCodes.D
+    });
 
-            walls.create(400, 568, 'wall').setScale(2).refreshBody()
+    // Enables movement of player with WASD keys
+    this.input.keyboard.on('keydown_W', function (event) {
+        player.setAccelerationY(-800);
+    });
+    this.input.keyboard.on('keydown_S', function (event) {
+        player.setAccelerationY(800);
+    });
+    this.input.keyboard.on('keydown_A', function (event) {
+        player.setAccelerationX(-800);
+    });
+    this.input.keyboard.on('keydown_D', function (event) {
+        player.setAccelerationX(800);
+    });
 
-            player = this.physics.add.sprite(300, 450, 'robot') // create player
+    // Stops player acceleration on uppress of WASD keys
+    this.input.keyboard.on('keyup_W', function (event) {
+        if (moveKeys['down'].isUp)
+            player.setAccelerationY(0);
+    });
+    this.input.keyboard.on('keyup_S', function (event) {
+        if (moveKeys['up'].isUp)
+            player.setAccelerationY(0);
+    });
+    this.input.keyboard.on('keyup_A', function (event) {
+        if (moveKeys['right'].isUp)
+            player.setAccelerationX(0);
+    });
+    this.input.keyboard.on('keyup_D', function (event) {
+        if (moveKeys['left'].isUp)
+            player.setAccelerationX(0);
+    });
 
-            enemy = this.physics.add.sprite(500, 450, 'enemy') //create enemy
+    // Locks pointer on mousedown
+    game.canvas.addEventListener('mousedown', function () {
+        game.input.mouse.requestPointerLock();
+    });
 
-            // creates the animations for the player
+    // Exit pointer lock when Q or escape (by default) is pressed.
+    this.input.keyboard.on('keydown_Q', function (event) {
+        if (game.input.mouse.locked)
+            game.input.mouse.releasePointerLock();
+    }, 0, this);
 
-            this.anims.create({
-                key: 'left',
-                frames: this.anims.generateFrameNumbers('robot', { start: 63, end: 65 }),
-                frameRate: 10,
-                repeat: -1
-            })
+    // Move reticle upon locked pointer move
+    this.input.on('pointermove', function (pointer) {
+      if (this.input.mouse.locked)
+      {
+          // Move reticle with mouse
+          reticle.x += pointer.movementX;
+          reticle.y += pointer.movementY;
 
-            this.anims.create({
-                key: 'right',
-                frames: this.anims.generateFrameNumbers('robot', { start: 75, end: 77 }),
-                frameRate: 10,
-                repeat: -1
-            })
+          // Only works when camera follows player
+          var distX = reticle.x-player.x;
+          var distY = reticle.y-player.y;
 
-            this.anims.create({
-                key: 'up',
-                frames: this.anims.generateFrameNumbers('robot', { start: 87, end: 89 }),
-                frameRate: 10,
-                repeat: -1
-            })
-            
-            this.anims.create({
-                key: 'down',
-                frames: this.anims.generateFrameNumbers('robot', { start: 51, end: 53 }),
-                frameRate: 10,
-                repeat: -1
-            })
+          // Ensures reticle cannot be moved offscreen
+          if (distX > 800)
+              reticle.x = player.x+800;
+          else if (distX < -800)
+              reticle.x = player.x-800;
 
-            this.anims.create({
-                key: 'face',
-                frames: [ {key: 'robot', frame: 52}],
-                frameRate: 20
-            })
+          if (distY > 600)
+              reticle.y = player.y+600;
+          else if (distY < -600)
+              reticle.y = player.y-600;
+      }
+    }, this);
 
-            // create enemy anims
+}
 
-            //anims
+// Ensures sprite speed doesnt exceed maxVelocity while update is called
+function constrainVelocity(sprite, maxVelocity)
+{
+    if (!sprite || !sprite.body)
+      return;
 
-            this.physics.add.collider(player, walls) // creates collision with player and walls
+    var angle, currVelocitySqr, vx, vy;
+    vx = sprite.body.velocity.x;
+    vy = sprite.body.velocity.y;
+    currVelocitySqr = vx * vx + vy * vy;
 
-            this.physics.moveToObject(enemy, player, 200)
+    if (currVelocitySqr > maxVelocity * maxVelocity)
+    {
+        angle = Math.atan2(vy, vx);
+        vx = Math.cos(angle) * maxVelocity;
+        vy = Math.sin(angle) * maxVelocity;
+        sprite.body.velocity.x = vx;
+        sprite.body.velocity.y = vy;
+    }
+}
 
-            // Move to arrive within 2 seconds:
-            // this.physics.moveTo(clown, block, null, 2000);
+// Ensures reticle does not move offscreen and dist(radius) from player
+function constrainReticle(reticle, radius)
+{
+  var distX = reticle.x-player.x; // X distance between player & reticle
+  var distY = reticle.y-player.y; // Y distance between player & reticle
 
-            console.log('velocity', enemy.body.velocity.x)
+  // Ensures reticle cannot be moved offscreen
+  if (distX > 800)
+      reticle.x = player.x+800;
+  else if (distX < -800)
+      reticle.x = player.x-800;
 
-            var collider = this.physics.add.overlap(enemy, player, function (clownOnBlock)
-            {
-                clownOnBlock.body.stop();
+  if (distY > 600)
+      reticle.y = player.y+600;
+  else if (distY < -600)
+      reticle.y = player.y-600;
 
-                this.physics.world.removeCollider(collider)
-            }, null, this)
+  // Ensures reticle cannot be moved further than dist(radius) from player
+  var distBetween = Phaser.Math.Distance.Between(player.x, player.y, reticle.x, reticle.y);
+  if (distBetween > radius)
+  {
+      // Place reticle on perimeter of circle on line intersecting player & reticle
+      var scale = distBetween/radius;
 
-            this.cameras.main.setBounds(0, 0, 3200, 3200) // sets the camera boundary
-            this.cameras.main.startFollow(player) // sets the camera to follow the player
+      reticle.x = player.x + (reticle.x-player.x)/scale;
+      reticle.y = player.y + (reticle.y-player.y)/scale;
+  }
+}
 
-            cursors = this.input.keyboard.createCursorKeys() // initialise keyboard controls
-        }
+function update (time, delta)
+{
+    // Rotates player to face towards reticle
+    player.rotation = Phaser.Math.Angle.Between(player.x, player.y, reticle.x, reticle.y);
 
-        function update ()
-        {
+    // Camera position is average between reticle and player positions
+    avgX = ((player.x+reticle.x)/2)-400;
+    avgY = ((player.y+reticle.y)/2)-300;
+    this.cameras.main.scrollX = avgX;
+    this.cameras.main.scrollY = avgY;
 
-            // keyboard controls
-            if (cursors.up.isDown && cursors.left.isDown)
-            {
-                player.setVelocityX(-160)
-                player.setVelocityY(-160)
-                
-                player.anims.play('left', true)
-            }
-            else if (cursors.up.isDown && cursors.right.isDown)
-            {
-                player.setVelocityX(160)
-                player.setVelocityY(-160)
-                
-                player.anims.play('right', true)
-            }
-            else if (cursors.down.isDown && cursors.left.isDown)
-            {
-                player.setVelocityX(-160)
-                player.setVelocityY(160)
-                
-                player.anims.play('left', true)
-            }
-            else if (cursors.down.isDown && cursors.right.isDown)
-            {
-                player.setVelocityX(160)
-                player.setVelocityY(160)
-                
-                player.anims.play('right', true)
-            }
-            else if (cursors.left.isDown)
-            {
-                player.setVelocityX(-160);
+    // Make reticle move with player
+    reticle.body.velocity.x = player.body.velocity.x;
+    reticle.body.velocity.y = player.body.velocity.y;
 
-                player.anims.play('left', true)
-            }
-            else if (cursors.right.isDown)
-            {
-                player.setVelocityX(160);
+    // Constrain velocity of player
+    constrainVelocity(player, 500);
 
-                player.anims.play('right', true)
-            }
-            else if (cursors.up.isDown)
-            {
-                player.setVelocityY(-160)
+    // Constrain position of reticle
+    constrainReticle(reticle, 550);
+}
 
-                player.anims.play('up', true)
-            }
-            else if (cursors.down.isDown)
-            {
-                player.setVelocityY(160)
-
-                player.anims.play('down', true)
-            }
-            else
-            {
-                player.setVelocityX(0)
-
-                player.setVelocityY(0)
-
-                player.anims.play('face')
-            }
-        }
     </script>
 
 </body>
