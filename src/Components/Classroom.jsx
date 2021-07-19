@@ -25,7 +25,7 @@ const Classroom = ({  setScene, setDream }) => {
   const conversation = [
     'Have you heard of Batmna?',
     'Has anyone seen Poncho?',
-    'Man that teacher sure loves drones',
+    'Man that teacher loves drones',
     'That Lucas guy asks a lot of questions',
     'Handlebars is amazing!',
     '*Fred* Hey Bren...',
@@ -33,13 +33,15 @@ const Classroom = ({  setScene, setDream }) => {
     'I have no idea what\'s going on',
     'It\'s definitely not going to get any harder than this...',
     'The great thing about blockchain is',
-    'I should really start my Trello Board',
-    'I wonder if a boy will be born who can swim faster than a shark',
-    'Pretty sure CSS doesn\'t work',
+    'I should really start my Trello Board...',
+    'Will be born who can swim faster than a shark?',
+    'I hate CSS',
     'Why doesn\'t Cleo love me?',
     'I wonder how big the baby is this week',
     'Wait what?!',
-    '2 Repo\'s is the way to go'
+    '2 Repo\'s is the way to go',
+    'What am I going to say in my lightning talk?!',
+
   ]
   
   //variables for clickbox positioning
@@ -94,12 +96,14 @@ const Classroom = ({  setScene, setDream }) => {
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
   }
 
+  const randomCloud = () => {
+    return <img src='/images/cloud.png'></img>
+  }
+
   //On render set speech boxes to random conversation
   useEffect(() => {
-    setTimeout(() => {
       setSpeechOne(conversation[getRandomInt(0, conversation.length)])
       setSpeechTwo(conversation[getRandomInt(0, conversation.length)])
-    }, 2000)
   }, [] )
 
   //Logic for repeating random speech boxes
@@ -112,7 +116,7 @@ const Classroom = ({  setScene, setDream }) => {
            setSpeechOne(conversation[getRandomInt(0, conversation.length)])
            setSpeechDirectionOne(!speechDirectionOne)
          }, 3000)
-       }, getRandomInt(3000, 12000)) 
+       }, getRandomInt(3000, 9000)) 
     } else {// condition when student clicked
       setSpeechOneVisible('hidden')
       setSpeechTwoVisible('hidden')
@@ -128,7 +132,7 @@ const Classroom = ({  setScene, setDream }) => {
           setSpeechTwo(conversation[getRandomInt(0, conversation.length)])
           setSpeechDirectionTwo(!speechDirectionTwo)
         }, 3000)
-      }, getRandomInt(3000, 12000))
+      }, getRandomInt(3000, 9000))
     } else {// condition when student clicked
       setSpeechOneVisible('hidden')
       setSpeechTwoVisible('hidden')
@@ -136,15 +140,21 @@ const Classroom = ({  setScene, setDream }) => {
   }, [speechTwo])
 
   return (
-    <div>
+    <div style={fadeOut}>
       <div className="container">
         <Header setScene={setScene}/>
       </div>
       <div className="container">
-        <span className='heading-small'>It's an afternoon lecture at Dev Academy and one of the students is starting to fall aleep. Click on the student who's dream you want to see...</span>
+        <div style={{position: 'relative'}}>
+          <span className='heading-small'>It's an afternoon lecture at Dev Academy and one of the students is starting to fall asleep.</span>
+          {/* <div className="fadingEffect"></div> */}
+        </div>
       </div>
       <div className="container">
-        <div className="classroom" style={fadeOut}>
+        <span className='heading-small'> Click on the student who's dream you want to see...</span>
+      </div>
+      <div className="container">
+        <div className="classroom">
           <div style={speechOneStyle}>
             <div className={`bubble mini ${speechDirectionOne ? 'left' : 'right'}`}>{speechOne}</div>
           </div>
@@ -158,6 +168,9 @@ const Classroom = ({  setScene, setDream }) => {
           <img src="/images/classroom_01.png" alt="a classrom" />
         </div>
       </div>
+      <img src="/images/cloud.png" alt="cloud" className='cloud cloud1'/>
+      <img src="/images/cloud.png" alt="cloud" className='cloud cloud2'/>
+      <img src="/images/cloud.png" alt="cloud" className='cloud cloud3'/>
     </div>
   )
 }
