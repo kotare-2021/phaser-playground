@@ -101,7 +101,7 @@ let Start = new Phaser.Class({
         cityTimer = this.time.addEvent({
             delay: 28000,
             loop: false,
-            paused: true,
+            // paused: true,
             callback: () => {
                 this.cameras.main.fadeOut(100, 255, 255, 255)
             }
@@ -175,8 +175,8 @@ let Start = new Phaser.Class({
     },
 
     update: function () {
-        if (cityActive) {
-            cityTimer.paused = false
+        // if (cityActive) {
+        //     cityTimer.paused = false
         if (cursors.left.isDown && cursors.up.isDown) {
             car.setVelocityX((carVelocity * -1))
             car.setVelocityY((carVelocity * -1))
@@ -211,7 +211,7 @@ let Start = new Phaser.Class({
             car.setVelocityY(0)
         }    
     } 
-    }
+    // }
 })
 
 
@@ -245,6 +245,7 @@ let Start = new Phaser.Class({
         this.load.spritesheet('sheep', 'assets/images/sheep_walk.png', { frameWidth: 128, frameHeight: 128 } )
         this.load.audio('sheepSound', 'assets/sounds/sheep.wav')
         this.load.audio('crash', 'assets/sounds/151624__qubodup__clank-car-crash-collision.wav')
+        this.load.image('blood', 'assets/images/blood.png')
     },
 
     create: function () {
@@ -259,7 +260,7 @@ let Start = new Phaser.Class({
         })
         villageTimer = this.time.addEvent({
             delay: 28500,
-            paused: true,
+            // paused: true,
             loop: false,
             callback: () => {
                 this.cameras.main.fadeOut(100, 255, 255, 255)
@@ -286,6 +287,8 @@ let Start = new Phaser.Class({
         BackgroundLayer = map.createLayer('Village Road', villageTiles)
         CollisionLayer = map.createLayer('Village Footpath', villageTiles)
         SheepLayer = map.getObjectLayer('Sheep')['objects']
+
+        let bloodParticles = this.add.particles('blood')
 
         car = this.physics.add.sprite(carPosX, carPosY, 'tractor').setScale(3)
         car.setVelocityX(carVelX)
@@ -428,21 +431,20 @@ let Start = new Phaser.Class({
             let obj = sheeps.create(object.x, object.y, 'sheep')
             obj.setOrigin(0, 1)
             obj.setSize(50, 50, true)
-            obj.setName('alive')
+            // obj.setName('alive')
             obj.setVelocity(Phaser.Math.Between(-20, 20), Phaser.Math.Between(-20, 20))
             obj.setBounce(1)
         })
 
-        
-        
         map.setCollisionBetween(0, 923, true, 'Footpath')
         this.physics.add.collider(car, CollisionLayer)
         this.physics.add.collider(sheeps, CollisionLayer)
         this.physics.add.overlap(car, sheeps, hitSheep, null, this)
+        this.physics.add.collider(sheeps, buildings)
+        this.physics.add.collider(sheeps, buildings2)
 
         this.cameras.main.setBounds(0, 0, 3200, 1920);
         this.cameras.main.startFollow(car);
-        
         
         car.setCollideWorldBounds(true);
 
@@ -469,26 +471,40 @@ let Start = new Phaser.Class({
         alpha: { start: 0.5, end: 0 },
         on: false
     })
+    
+    bloodParticles.createEmitter({
+        lifespan: 30000,
+        speed: 0,
+        quantity: 1,
+        scale: 0.2,
+        on: false
+    })
 
     function hitSheep (car, sheep) {
-        if (sheep.name === 'alive') {
+        // if (sheep.name === 'alive') {
+            sheep.destroy()
+            // sheep.setSize(0.1, 0)
+            // console.log(sheep)
+            bloodParticles.emitParticleAt((car.body.position.x + 70), (car.body.position.y + 70))
+            // this.physics.moveToObject(sheep, car, 60)
+
             this.sound.play('sheepSound', { volume: 0.6 })
             this.sound.play('crash', { volume: 0.5 })
-            sheep.setVelocity(Phaser.Math.Between(-600, 600), Phaser.Math.Between(-600, 600))
-            sheep.setAngularVelocity(50)
-            sheep.name = 'dead'
+            // sheep.setVelocity(Phaser.Math.Between(-600, 600), Phaser.Math.Between(-600, 600))
+            // sheep.setAngularVelocity(50)
+            // sheep.name = 'dead'
             score += 10;
-            sheep.setBounce(0.3)
+            // sheep.setBounce(0.3)
             if (scoringActive) {
                 scoreText.setText(score);
             }
-        }
+        // }
     }
     },
 
     update: function () {
-        if (villageActive) {
-            villageTimer.paused = false
+        // if (villageActive) {
+        //     villageTimer.paused = false
             if (cursors.left.isDown && cursors.up.isDown) {
             car.setVelocityX((carVelocity * -1))
             car.setVelocityY((carVelocity * -1))
@@ -541,7 +557,7 @@ let Start = new Phaser.Class({
             }
         })
     }
-    }
+    // }
 })
 
 // Cubicle level
@@ -559,16 +575,20 @@ let Cubicle = new Phaser.Class({
         // this.load.image("roadNE", "assets/maps/roadNE.png")
         this.load.image('Modern_Office_64x64', 'assets/maps/Modern_Office_64x64.png')
         this.load.image('paper', 'assets/images/paper.png')
-        this.load.image('copier', 'assets/images/copier.png')   
         this.load.image('cooler', 'assets/images/cooler.png')
         this.load.audio('printer', 'assets/sounds/printer.wav') 
         this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
         this.load.image('scoreBackground', 'assets/images/UI_Toolbar_Top_Corner.png')
         this.load.image('scoreCoin', 'assets/images/scoreCoin.png')
+        this.load.image('printerDown', 'assets/images/printerDown.png')
+        this.load.image('printerLeft', 'assets/images/printerLeft.png')
+        this.load.image('printerRight', 'assets/images/printerRight.png')
+        this.load.image('printerUp', 'assets/images/printerUp.png')
     },
 
     create: function () {
         let scoringActive
+        let coolerBounce = 1
         this.time.addEvent({
             delay: 500,
             loop: false,
@@ -579,7 +599,7 @@ let Cubicle = new Phaser.Class({
         officeTimer = this.time.addEvent({
             delay: 28500,
             loop: false,
-            paused: true,
+            // paused: true,
             callback: () => {
                 this.cameras.main.fadeOut(100, 255, 255, 255)
             }
@@ -610,11 +630,15 @@ let Cubicle = new Phaser.Class({
         map.createLayer('Office Objects', officeTiles)
         map.createLayer('Office Road', officeTiles)
 
-        car = this.physics.add.image(carPosX, carPosY, 'copier').setScale(0.2)
+        car = this.physics.add.sprite(carPosX, carPosY, 'printerDown').setScale(0.2)
         car.setVelocityX(carVelX)
         car.setVelocityY(carVelY)
-        car.setSize(300, 300, true)
-        car.angle = 270
+        car.setSize(500, 300, true)
+
+        this.anims.create({ key: 'printerUp', frames: [{ key: 'printerUp' }], repeat: -1})
+        this.anims.create({ key: 'printerDown', frames: [{ key: 'printerDown' }], repeat: -1})
+        this.anims.create({ key: 'printerLeft', frames: [{ key: 'printerLeft' }], repeat: -1})
+        this.anims.create({ key: 'printerRight', frames: [{ key: 'printerRight' }], repeat: -1})
 
         map.createLayer('OfficePath', officeTiles)
         map.createLayer('Office Desk Objects', officeTiles)
@@ -637,14 +661,7 @@ let Cubicle = new Phaser.Class({
         waterCoolers.forEach(object => {
             let obj = coolers.add(this.add.image(object.x, object.y, 'cooler'))
             obj.setOrigin(0.5, 0.1)
-        })
-
-        this.tweens.add({
-            targets: coolers.children.entries,
-            props: {
-                y: {value: '+=5', duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
-            }
-        })
+        })     
 
         map.setCollisionBetween(0, 923, true, 'Footpath')
         this.physics.add.collider(car, CollisionLayer)
@@ -672,49 +689,67 @@ let Cubicle = new Phaser.Class({
             this.sound.play('printer')
             star.destroy()
             score += 10;
+            carVelocity += 20
             if (scoringActive) {
                 scoreText.setText(score);
             }
         }
+
+        let bounce = this.tweens.add({
+            targets: coolers.children.entries,
+            props: {
+                y: {value: '+=15', duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
+            }
+        })
     },
 
     update: function () {
-        if (officeActive) {
-            officeTimer.paused = false
+        // if (officeActive) {
+        //     officeTimer.paused = false
         if (cursors.left.isDown && cursors.up.isDown) {
             car.setVelocityX((carVelocity * -1))
             car.setVelocityY((carVelocity * -1))
-            car.angle = 135
+            // car.angle = 135
         } else if (cursors.right.isDown && cursors.up.isDown) {
             car.setVelocityX(carVelocity)
             car.setVelocityY((carVelocity * -1))
-            car.angle = 225
+            // car.angle = 225
         } else if (cursors.right.isDown && cursors.down.isDown) {
             car.setVelocityX(carVelocity)
             car.setVelocityY(carVelocity)
-            car.angle = 315
+            // car.angle = 315
         } else if (cursors.left.isDown && cursors.down.isDown) {
             car.setVelocityX((carVelocity * -1))
             car.setVelocityY(carVelocity)
-            car.angle = 45
+            // car.angle = 45
         } else if (cursors.left.isDown) {
             car.setVelocityX((carVelocity * -1))
-            car.angle = 90
+            // car.angle = 90
         } else if (cursors.right.isDown) {
             car.setVelocityX(carVelocity)
-            car.angle = 270
+            // car.angle = 270
         } else if (cursors.up.isDown) {
             car.setVelocityY((carVelocity * -1))
-            car.angle = 180
+            // car.angle = 180
         } else if (cursors.down.isDown) {
             car.setVelocityY(carVelocity)
-            car.angle = 0
+            // car.angle = 0
         } 
         else {
             car.setVelocityX(0)
             car.setVelocityY(0)
         }    
-        }     
+        if (car.body.velocity.x > 0) {
+            car.anims.play('printerRight', true)
+        } else if (car.body.velocity.x < 0) {
+            car.anims.play('printerLeft', true)
+        } else if (car.body.velocity.y > 0) {
+            car.anims.play('printerDown', true)
+        } else if (car.body.velocity.y < 0) {
+            car.anims.play('printerUp', true)
+        }
+
+        // }     
     }
 })
 
@@ -754,7 +789,7 @@ let Water = new Phaser.Class({
         waterTimer = this.time.addEvent({
             delay: 28500,
             loop: false,
-            paused: true,
+            // paused: true,
             callback: () => {
                 this.cameras.main.fadeOut(100, 255, 255, 255)
             }
@@ -875,8 +910,8 @@ let Water = new Phaser.Class({
     },
 
     update: function () { 
-        if (waterActive) {
-            waterTimer.paused = false
+        // if (waterActive) {
+        //     waterTimer.paused = false
         if (cursors.left.isDown && cursors.up.isDown) {
             duck.setVelocityX((carVelocity * -1))
             duck.setVelocityY((carVelocity * -1))
@@ -907,7 +942,7 @@ let Water = new Phaser.Class({
             duck.anims.play('duckStop', true)
         }     
     }
-    }
+    // }
 })
 
 // sand level
@@ -1065,9 +1100,34 @@ let End = new Phaser.Class({
         this.load.image('button', 'assets/images/ButtonTemplate.png')
         this.load.image('pig', 'assets/images/Pig_Down@2x.png')
         this.load.image('chick', 'assets/images/Chick_Down@2x.png')
+        this.load.image('coin', 'assets/images/CoinNoShadow.png')
+        this.load.image('ruby', 'assets/images/Ruby.png')
     },
 
     create: function () {
+        let rubyParticles = this.add.particles('ruby')
+        rubyParticles.createEmitter({
+            lifespan: 8000,
+            frequency: 200,
+            speed: 200,
+            gravityY: 100,
+            scale: 0.4,
+            x: 400,
+            y: -70,
+            rotate: { start: 0, end: 360}
+        })
+        let coinParticles = this.add.particles('coin')
+        coinParticles.createEmitter({
+            lifespan: 8000,
+            frequency: 200,
+            speed: 200,
+            gravityY: 100,
+            scale: 0.4,
+            x: 400,
+            y: -70,
+            rotate: { start: 0, end: 360}
+        })
+
         let finishItems = this.add.group()
 
         let add = this.add
