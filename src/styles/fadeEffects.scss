@@ -1,0 +1,11 @@
+@keyframes fadeToWhite {
+  0% {background-color: transparent;}
+  100% {
+    background-color: white;
+  }
+}
+
+@keyframes fadeFromWhite {
+  0% {background-color: white;}
+  100% {background-color: transparent;}
+}
