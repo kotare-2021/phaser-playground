@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react'
 import Header from './Header'
 import Clouds from './Clouds'
 
-const Dream = ({ dream, setScene, fadeOut, setFadeOut }) => {
+const Dream = ({ dream, setScene }) => {
   const [removeFade, setRemoveFade] = useState(false)
+  const [fadeOut, setFadeOut] = useState(null)
 
   useEffect(() => {
     setTimeout(() => {
@@ -12,9 +13,20 @@ const Dream = ({ dream, setScene, fadeOut, setFadeOut }) => {
     }, 2000)
   }, [])
 
+  const handleClick = () => {
+    setFadeOut({
+    visibility: 'hidden',
+    opacity: 0,
+    transition: 'visibility 0s 2s, opacity 2s linear'
+  })
+  setTimeout(() => setScene('classroom'), 2000)
+}
+
   return (
-    <div>
+    <div style={fadeOut}>
+      <div onClick={handleClick}>
       <Header setScene={setScene}/>
+      </div>
       <div className="container">
         <div className="scene">
           <iframe src={`./${dream}.html`} title={dream} className='game-frame' frameBorder='0'></iframe>
