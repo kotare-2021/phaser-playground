@@ -76,7 +76,7 @@ const Speech = () => {
     'It\'s definitely not going to get any harder than this...',
     'The great thing about blockchain is',
     'I should really start my Trello Board...',
-    'Will be born who can swim faster than a shark?',
+    'Will a boy be born who can swim faster than a shark?',
     'I hate CSS',
     'Why doesn\'t Cleo love me?',
     'I wonder how big the baby is this week',

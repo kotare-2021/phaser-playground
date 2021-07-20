@@ -27,7 +27,7 @@ code {
 
 .fadeOut {
   animation-name: fadeToWhite;
-  animation-duration: 2s;
+  animation-duration: 3s;
   height: 100vh;
   width: 100vw;
   position:fixed;
@@ -39,7 +39,7 @@ code {
 
 .fadeIn {
   animation-name: fadeFromWhite;
-  animation-duration: 2s;
+  animation-duration: 3s;
   height: 100vh;
   width: 100vw;
   position: absolute;

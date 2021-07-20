@@ -18,7 +18,7 @@ const App = (props) => {
         <Classroom setScene={setScene} setDream={setDream}/>
       }
       {scene === 'dream' &&
-        <Dream dream={dream} setScene={setScene}                  />
+        <Dream dream={dream} setScene={setScene} />
       }
     </>
   )
