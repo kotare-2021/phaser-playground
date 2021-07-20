@@ -3,7 +3,7 @@
     import Header from './Header'
     import Speech from './Speech'
     import Thoughts from './Thoughts'
-    import Footer from './Footer'
+    import Bren from './Bren'
 
     const characters = [
       { name: 'fred', style: { left: '3.3rem', top: '9rem' }, img: 'fred/football.png' },
@@ -69,7 +69,8 @@
             {characters.map((item,i) => renderCharacter(item, i))}
             
             <Speech />
-            <Thoughts fade={fade} imgThought={imgThought} startDream={startDream}/>      
+            <Thoughts fade={fade} imgThought={imgThought} startDream={startDream}/>
+            <Bren />      
           </div>
         </div>
         

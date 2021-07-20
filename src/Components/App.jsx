@@ -8,7 +8,7 @@ import Clouds from './Clouds'
 
 const App = (props) => {
   //state
-  const [scene, setScene] = useState('')
+  const [scene, setScene] = useState('classroom')
   const [dream, setDream] = useState('')
 
   // audio files
