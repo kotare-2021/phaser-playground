@@ -1,13 +1,10 @@
-    import React, { useState, useEffect } from 'react'
+    import React, { useState } from 'react'
 
     import Header from './Header'
-    import Clouds from './Clouds'
     import Speech from './Speech'
     import Thoughts from './Thoughts'
     import Footer from './Footer'
 
-    // const talkyTalkyPeople = new Audio('/audio/classguystalking.mp3')
-    // const woosh = new Audio('/audio/woosh.wav')
     const characters = [
       { name: 'fred', style: { left: '3.3rem', top: '9rem' }, img: 'fred/football.png' },
       { name: 'drive', style: { left: '15rem', top: '9rem' }, img: 'sheep_walk.png',  },
@@ -15,18 +12,13 @@
       { name: 'ymmij', style: { left: '15rem', top: '19rem' }, img: 'Hamster_Dance.ico' },
     ]
     
-    const Classroom = ({  setScene, setDream }) => {
+    const Classroom = ({  setScene, setDream, handleStop }) => {
       // change dream scene
       const [startDream, setStartDream] = useState(false)
 
       // fade out scene 
       const [fade, changeFade] = useState('')
       const [imgThought, changeImgThought] = useState('')
-
-      // //play background music on load.
-      // useEffect(() => {
-      //   talkyTalkyPeople.play()
-      // }, [])
 
       function fadeInThought(num) {
         changeImgThought(characters[num].img)
@@ -40,38 +32,18 @@
 
       //On click select dream and render dream component
       const handleClick = (string) => {
+
         setStartDream(true)
+
         setTimeout(() => {
           setScene('dream')
           setDream(string)
         }, 2000)
-
-        // //ymmij audio stuff:
-        // let TalkingFadeIn = setInterval(() => {
-        //   talkyTalkyPeople.volume += 0.2
-        //   console.log(talkyTalkyPeople.volume)
-        //   if (talkyTalkyPeople.volume > 0.25 ) {
-        //     clearInterval(TalkingFadeIn)
-        //   }
-        // },1000);
-  
-        // let fadeVoices = setInterval(() => {
-        //   talkyTalkyPeople.volume -= 0.2
-        //   console.log(talkyTalkyPeople.volume)
-        //   if (talkyTalkyPeople.volume < 0.4) {
-        //     woosh.play()
-        //   }
-        //   if (talkyTalkyPeople.volume < 0.1 ) {
-        //     // talkyTalkyPeople.volume = 0
-        //     clearInterval(fadeVoices)
-        //   }
-        // },500);
-        // //end
       }
 
-      
       const renderCharacter = (item, i) => {
-        return <div 
+        return <div
+          key={i} 
           className="click-box" 
           style={item.style} 
           onClick={() => handleClick(item.name)}
@@ -93,7 +65,6 @@
           <div className="classroom">
             
             <img src="/images/classroom_01.png" alt="a classrom"/>
-            <Clouds />
 
             {characters.map((item,i) => renderCharacter(item, i))}
             

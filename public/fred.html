@@ -172,20 +172,20 @@
       var score2 = 0; 
       var scoreText1
       var scoreText2
-      scoreText2 = this.add.text(16, 50, 'score: 0', {fontSize: '32px', fill: '#000'})
-      scoreText1 = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+      scoreText2 = this.add.text(16, 50, 'Green: 0', {fontSize: '32px', fill: '#000'})
+      scoreText1 = this.add.text(16, 16, 'Gold: 0', { fontSize: '32px', fill: '#000' });
       
       function goalScoreOne (player, goalOne)
        {
 
            score1 += 1;
-           scoreText1.setText('Green: ' + score1);
+           scoreText1.setText('Gold: ' + score1);
         }
 
       function goalScoreTwo(player, goalTwo) 
        {
           score2 += 1;
-          scoreText2.setText('Gold: ' + score2)
+          scoreText2.setText('Green: ' + score2)
        }
        
        music = this.sound.add('audio', {loop: true})

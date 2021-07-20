@@ -192,6 +192,17 @@ code {
   margin-top: 40vh;
 }
 
+.landing-start {
+  justify-self: center;
+  align-self: center;
+  height: 50vh;
+  width: 100vw;
+  font-size: 150px;
+  animation-name: fade-landing-in;
+  animation-duration: 2s;
+  margin-top: 40vh;
+}
+
 .landing-instr {
   justify-self: center;
   align-self: center;
