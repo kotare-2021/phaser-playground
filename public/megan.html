@@ -277,13 +277,15 @@
         scoreText.setText('Score: ' + score);
         starScore -= 1;
         starScoreText.setText('Stars: ' + starScore);
-      
-      if (stars.countActive(true) === 0) {
-        starScore = 10;
-        if (score > 90 && score < 280) {
-        stars.children.iterate(function (child) {
+
+        
+        if (stars.countActive(true) === 0) {
+          starScore = 10
+          starScoreText.setText('Stars: ' + starScore);
+          stars.children.iterate(function (child) {
           child.enableBody(true, child.x, Phaser.Math.FloatBetween(80, 1200), true, true);
         });
+        if (score > 90 && score < 280) {
         
         var x = (player.x < 800) ? Phaser.Math.Between(800, 1520) : Phaser.Math.Between(80, 800);
         
@@ -297,9 +299,9 @@
         plane.setVelocity(Phaser.Math.Between(-200, 200), Phaser.Math.Between(-200, 200) ); 
       }
       else if (score > 280 && score < 580) {
-        stars.children.iterate(function (child) {
-          child.enableBody(true, child.x, Phaser.Math.FloatBetween(80, 1200), true, true);
-        });
+        // stars.children.iterate(function (child) {
+        //   child.enableBody(true, child.x, Phaser.Math.FloatBetween(80, 1200), true, true);
+        // });
         
         var x = (player.x < 800) ? Phaser.Math.Between(800, 1520) : Phaser.Math.Between(80, 800);
         
@@ -321,9 +323,9 @@
 
       }
       else if (score > 580 && score < 880) {
-        stars.children.iterate(function (child) {
-          child.enableBody(true, child.x, Phaser.Math.FloatBetween(80, 1200), true, true);
-        });
+        // stars.children.iterate(function (child) {
+        //   child.enableBody(true, child.x, Phaser.Math.FloatBetween(80, 1200), true, true);
+        // });
         
         var x = (player.x < 800) ? Phaser.Math.Between(800, 1520) : Phaser.Math.Between(80, 800);
         
@@ -350,7 +352,7 @@
     }
     scoreBoard = this.add.image(150, 46, 'scoreboard')
     scoreText = this.add.text(30, 36, 'Score: 0', { fontSize: '20px', fill: '#fff' });
-    starScoreText = this.add.text(165, 36, `Stars: ${starScore}`, { fontSize: '20px', fill: '#fff' })
+    starScoreText = this.add.text(165, 36, 'Stars: 10', { fontSize: '20px', fill: '#fff' })
     scoreText.setScrollFactor(0)
     starScoreText.setScrollFactor(0)
     scoreBoard.setScrollFactor(0)
@@ -460,7 +462,7 @@ let end = new Phaser.Class({
         physics: {
             default: 'arcade',
             arcade: {
-                debug: true
+                debug: false
             }
         },
         scene: [end, SceneB]
