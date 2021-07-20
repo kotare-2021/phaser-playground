@@ -5,11 +5,10 @@ const Bren = (props) => {
   const [visible, setVisible] = useState('hidden')
 
   const brenPos = {
-    border: '2px solid black',
     position: 'absolute',
     top: '1rem',
     left: '13.5rem',
-    height: '4rem',
+    height: '5rem',
     width: '3rem'
   }
 
