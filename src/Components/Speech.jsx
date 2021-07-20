@@ -67,6 +67,7 @@ const Speech = () => {
   const conversation = [
     'Have you heard of Batmna?',
     'Has anyone seen Poncho?',
+    'Whats an elevator?',
     'Man that teacher loves drones',
     'That Lucas guy asks a lot of questions',
     'Handlebars is amazing!',
