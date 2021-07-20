@@ -427,22 +427,15 @@ let end = new Phaser.Class({
             families: [ 'Fredoka One' ]
         },
         active: function () {
-            add.text(245, 100, 'GAME OVER', { fontFamily: 'Fredoka One', fontSize: '48px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 6, offsetX: 3, color: 'white', fill: true} })
-            add.text(245, 250, `Your final score was: ${score}`, { fontFamily: 'Fredoka One', fontSize: '32px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 4, offsetX: 2, color: 'white', fill: true} })
-            add.text(295, 500, 'press space to restart', { fontFamily: 'Fredoka One', fontSize: '24px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 4, offsetX: 2, color: 'white', fill: true} })
+          if (score > 0) {
+            add.text(195, 150, 'Time to wake up!', { fontFamily: 'Fredoka One', fontSize: '48px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 6, offsetX: 3, color: 'white', fill: true} })
+            add.text(195, 350, `Your final score was: ${score}`, { fontFamily: 'Fredoka One', fontSize: '32px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 4, offsetX: 2, color: 'white', fill: true} })
+          }
         }
     });
         
         var camera = this.cameras.main;
-        camera.setBackgroundColor('#FFF')
-
-        if (endActive){ this.input.keyboard.once('keydown-SPACE', () => {
-            this.cameras.main.fadeOut(100, 255, 255, 255)
-        })
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            score = 0
-            this.scene.start('SceneB')
-        })}
+        camera.setBackgroundColor('9be2fe')
     },
     
     update: function () {
