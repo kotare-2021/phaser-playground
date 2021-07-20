@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
 import Header from './Header'
-import Clouds from './Clouds'
 import Footer from './Footer'
 
 const Dream = ({ dream, setScene }) => {
@@ -30,10 +29,9 @@ const Dream = ({ dream, setScene }) => {
       </div>
       <div className="container dreamscene">
         <div className="scene">
-          <iframe src={`./${dream}.html`} title={dream} className='game-frame' frameBorder='0'></iframe>
-        <div className={!removeFade && 'fadeIn'}></div>
+          <iframe src={`./${dream}.html`} title={dream} className='game-frame' frameBorder='0' allow='autoplay'></iframe>
+        <div className={!removeFade ? 'fadeIn' : undefined}></div>
         </div>
-        <Clouds />
       </div>
     <div>
       <Footer setScene={setScene}/>
