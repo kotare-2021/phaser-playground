@@ -1,7 +1,6 @@
     import React, { useState } from 'react'
 
     import Header from './Header'
-    import Clouds from './Clouds'
     import Speech from './Speech'
     import Thoughts from './Thoughts'
 
@@ -12,7 +11,8 @@
       { name: 'ymmij', style: { left: '15rem', top: '19rem' }, img: 'Hamster_Dance.ico' },
     ]
     
-    const Classroom = ({  setScene, setDream }) => {
+    const Classroom = ({  setScene, setDream, talkyTalkyPeople }) => {
+      const woosh = new Audio('/audio/woosh.wav')
       // change dream scene
       const [startDream, setStartDream] = useState(false)
 

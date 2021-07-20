@@ -18,7 +18,7 @@ import React from 'react'
     <div className={ oldfade === 1 || 3 ? 'speechBubbleSmallLeft Visible': 'speechBubbleCount' }>
     </div>
   </div>
-  <div className={startDream && 'fadeOut'}></div>
+  <div className={startDream ? 'fadeOut' : undefined}></div>
   </>
   )
 }
