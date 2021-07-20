@@ -17,7 +17,7 @@ const Dream = ({ dream, setScene }) => {
       <div className="container">
         <div className="scene">
           <iframe src={`./${dream}.html`} title={dream} className='game-frame' frameBorder='0' allow='autoplay'></iframe>
-        <div className={!removeFade && 'fadeIn'}></div>
+        <div className={!removeFade ? 'fadeIn' : undefined}></div>
         </div>
       </div>
     </div>

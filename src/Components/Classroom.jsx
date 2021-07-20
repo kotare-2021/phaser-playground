@@ -11,7 +11,7 @@
       { name: 'ymmij', style: { left: '15rem', top: '19rem' }, img: 'Hamster_Dance.ico' },
     ]
     
-    const Classroom = ({  setScene, setDream, fadeTalking }) => {
+    const Classroom = ({  setScene, setDream, handleStop }) => {
       // change dream scene
       const [startDream, setStartDream] = useState(false)
 
@@ -31,6 +31,7 @@
 
       //On click select dream and render dream component
       const handleClick = (string) => {
+
         setStartDream(true)
 
         setTimeout(() => {
