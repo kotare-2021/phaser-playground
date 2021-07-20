@@ -7,7 +7,7 @@
 
     <script>
 
-    let sheeps, car, duck, scoreText, carPosX, carPosY, carVelX, carVelY, particles
+    let sheeps, car, duck, scoreText, carPosX, carPosY, carVelX, carVelY, particles, timer
     let hit = false
     let score = 0
     let carVelocity = 300
@@ -63,7 +63,6 @@ let Start = new Phaser.Class({
             this.sound.play('shutup')
             this.sound.play('engine')
             this.scene.start('city')
-            cityActive = true
         })
     },
 
@@ -94,7 +93,7 @@ let Start = new Phaser.Class({
     
     create: function () {
 
-        cityTimer = this.time.addEvent({
+        timer = this.time.addEvent({
             delay: 28000,
             loop: false,
             callback: () => {
@@ -104,13 +103,9 @@ let Start = new Phaser.Class({
 
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
             this.sound.play('engine')
-            carVelocity = 550
             carPosX = car.body.position.x,
             carPosY = car.body.position.y,
-            carVelX = car.body.velocity.x,
-            carVelY = car.body.velocity.y
             this.scene.start('sceneA')
-            villageActive = true
         })
 
         this.physics.world.setBounds(0, 0, 3200, 1920);
@@ -165,8 +160,15 @@ let Start = new Phaser.Class({
             this.sound.play('ding')
             star.destroy()
             score += 10;
+            carVelocity += 10
             scoreText.setText(score);
         }
+        game.events.on('blur', () => {
+            timer.paused = true
+        })
+        game.events.on('focus', () => {
+            timer.paused = false
+        })
     },
 
     update: function () {
@@ -245,7 +247,7 @@ let Start = new Phaser.Class({
                 scoringActive = true
             }
         })
-        villageTimer = this.time.addEvent({
+        timer = this.time.addEvent({
             delay: 28500,
             loop: false,
             callback: () => {
@@ -258,9 +260,6 @@ let Start = new Phaser.Class({
             carVelocity = 250
             carPosX = car.body.position.x,
             carPosY = car.body.position.y,
-            carVelX = car.body.velocity.x,
-            carVelY = car.body.velocity.y
-            officeActive = true
             this.scene.start('cubicle')
         })
 
@@ -277,12 +276,9 @@ let Start = new Phaser.Class({
         let bloodParticles = this.add.particles('blood')
 
         car = this.physics.add.sprite(carPosX, carPosY, 'tractor').setScale(3)
-        car.setVelocityX(carVelX)
-        car.setVelocityY(carVelY)
         car.setSize(15, 15, true)
 
         let buildings = this.add.group()
-        // let buildings2 = this.add.group()
         buildings.add(this.add.image(1473, 620, 'smallRedHouse').setScale(1))
         buildings.add(this.add.image(2008, 1031, 'smallRedHouse').setScale(1))
         buildings.add(this.add.image(2512, 1440, 'smallRedHouse').setScale(1))
@@ -326,20 +322,6 @@ let Start = new Phaser.Class({
             })
         })
         
-        // this.tweens.add({
-        //     targets: buildings.children.entries,
-        //     props: {
-        //         y: {value: '+=20', duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
-        //     }
-        // })
-        
-        // this.tweens.add({
-        //     targets: buildings2.children.entries,
-        //     props: {
-        //         y: {value: '-=10', duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
-        //     }
-        // })
-
         sheeps = this.physics.add.group()
         
         this.anims.create ({
@@ -455,15 +437,26 @@ let Start = new Phaser.Class({
     })
 
     function hitSheep (car, sheep) {
-            sheep.destroy()
-            bloodParticles.emitParticleAt((car.body.position.x + 70), (car.body.position.y + 70))
+            sheep.disableBody(true, true)
+            bloodParticles.emitParticleAt((car.body.position.x + 50), (car.body.position.y + 50))
             this.sound.play('sheepSound', { volume: 0.6 })
             this.sound.play('crash', { volume: 0.5 })
             score += 10;
             if (scoringActive) {
                 scoreText.setText(score);
             }
+            if (sheeps.countActive(true) === 3) {
+                sheeps.children.iterate(function (child) {
+                    child.enableBody(true, child.x, child.y, true, true);
+                });
+            }
     }
+        game.events.on('blur', () => {
+            timer.paused = true
+        })
+        game.events.on('focus', () => {
+            timer.paused = false
+        })
     },
 
     update: function () {
@@ -553,7 +546,7 @@ let Cubicle = new Phaser.Class({
                 scoringActive = true
             }
         })
-        officeTimer = this.time.addEvent({
+        timer = this.time.addEvent({
             delay: 28500,
             loop: false,
             callback: () => {
@@ -563,12 +556,8 @@ let Cubicle = new Phaser.Class({
 
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
             this.sound.play('engine')
-            carVelocity = 550
             carPosX = car.body.position.x,
             carPosY = car.body.position.y,
-            carVelX = car.body.velocity.x,
-            carVelY = car.body.velocity.y,
-            waterActive = true,
             this.scene.start('water')
         })
 
@@ -587,8 +576,6 @@ let Cubicle = new Phaser.Class({
         map.createLayer('Office Road', officeTiles)
 
         car = this.physics.add.sprite(carPosX, carPosY, 'printerDown').setScale(0.2)
-        car.setVelocityX(carVelX)
-        car.setVelocityY(carVelY)
         car.setSize(500, 300, true)
 
         this.anims.create({ key: 'printerUp', frames: [{ key: 'printerUp' }], repeat: -1})
@@ -659,6 +646,12 @@ let Cubicle = new Phaser.Class({
                 }
             })
         })
+        game.events.on('blur', () => {
+            timer.paused = true
+        })
+        game.events.on('focus', () => {
+            timer.paused = false
+        })
     },
 
     update: function () {
@@ -682,8 +675,7 @@ let Cubicle = new Phaser.Class({
             car.setVelocityY((carVelocity * -1))
         } else if (cursors.down.isDown) {
             car.setVelocityY(carVelocity)
-        } 
-        else {
+        } else {
             car.setVelocityX(0)
             car.setVelocityY(0)
         }    
@@ -745,7 +737,7 @@ let Water = new Phaser.Class({
                 scoringActive = true
             }
         })
-        waterTimer = this.time.addEvent({
+        timer = this.time.addEvent({
             delay: 28500,
             loop: false,
             callback: () => {
@@ -754,14 +746,12 @@ let Water = new Phaser.Class({
         })
 
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            // this.sound.play('engine')
             carVelocity = 250
             carPosX = duck.body.position.x,
             carPosY = duck.body.position.y,
             carVelX = duck.body.velocity.x,
             carVelY = duck.body.velocity.y
             this.scene.start('end')
-            sandActive = true
         })
 
         this.physics.world.setBounds(0, 0, 3200, 1920);
@@ -783,8 +773,6 @@ let Water = new Phaser.Class({
         })
 
         duck = this.physics.add.sprite(carPosX, carPosY, 'duckSprite').setScale(2)
-        duck.setVelocityX(carVelX)
-        duck.setVelocityY(carVelY)
         duck.setSize(30, 30, true)
 
         this.anims.create({
@@ -884,6 +872,18 @@ let Water = new Phaser.Class({
 
         cursors = this.input.keyboard.createCursorKeys();
 
+        let breadParticles = this.add.particles('bread')
+    
+        breadParticles.createEmitter({
+            lifespan: 10000,
+            speed: -200,
+            quantity: 32,
+            scale: { start: 1, end: 2},
+            alpha: { start: 0.5, end: 0 },
+            on: false,
+            angle: { start: 0, end: 360, steps: 32 },
+        })
+
         this.add.image(0, 10, 'scoreBackground').setScale(0.55, 0.65).setOrigin(0).setScrollFactor(0)
         this.add.image(40, 35, 'scoreCoin').setScale(0.6).setScrollFactor(0)
         let add = this.add
@@ -896,25 +896,19 @@ let Water = new Phaser.Class({
         }
     });
 
-        let breadParticles = this.add.particles('bread')
-
-        breadParticles.createEmitter({
-            lifespan: 10000,
-            speed: -200,
-            quantity: 32,
-            scale: { start: 1, end: 2},
-            alpha: { start: 0.5, end: 0 },
-            on: false,
-            angle: { start: 0, end: 360, steps: 32 },
-        })
 
         function hitStar (duck, star) {
             this.sound.play('quack')
-            star.destroy()
+            star.disableBody(true, true)
             score += 10;
             breadParticles.emitParticleAt((duck.body.position.x + 70), (duck.body.position.y + 70))
             if (scoringActive) {
                 scoreText.setText(score);
+            }
+            if (stars.countActive(true) === 3) {
+                stars.children.iterate(function (child) {
+                    child.enableBody(true, child.x, child.y, true, true);
+                });
             }
         }
 
@@ -942,6 +936,12 @@ let Water = new Phaser.Class({
                 ball.setBounce(0.8)
                 ball.setCollideWorldBounds(true)
         }
+        game.events.on('blur', () => {
+            timer.paused = true
+        })
+        game.events.on('focus', () => {
+            timer.paused = false
+        })
     },
 
     update: function () { 
@@ -974,130 +974,6 @@ let Water = new Phaser.Class({
             duck.setVelocityY(0)
             duck.anims.play('duckStop', true)
         }     
-    }
-})
-
-let Sand = new Phaser.Class({
-        Extends: Phaser.Scene,
-
-        initialize: 
-
-    function sandScene () { Phaser.Scene.call(this, { key: 'sand', active: false })},
-
-    preload: function () {
-        this.load.tilemapTiledJSON('drive', 'assets/maps/drive.json');
-        // this.load.image("roadEW", "assets/maps/roadEW.png")
-        // this.load.image("roadNE", "assets/maps/roadNE.png")
-        // this.load.image('tiles', 'assets/maps/tiles.png')
-        this.load.audio('ding', 'assets/sounds/ding.wav')
-        this.load.audio('engine', 'assets/sounds/engine.wav')
-        
-        // this.load.image('Serene_Village_48x48', 'assets/maps/Serene_Village_48x48.png')
-        // this.load.image('car', 'assets/maps/Daco_4361360.png')
-        // this.load.image('star', 'assets/star.png')
-    },
-
-    create: function () {
-        sandTimer = this.time.addEvent({
-            delay: 28500,
-            loop: false,
-            paused: true,
-            callback: () => {
-                this.cameras.main.fadeOut(100, 255, 255, 255)
-            }
-        })
-
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            console.log('sand firing')
-            this.sound.play('engine')
-            // carVelocity = 550
-            // carPosX = car.body.position.x,
-            // carPosY = car.body.position.y,
-            // carVelX = car.body.velocity.x,
-            // carVelY = car.body.velocity.y
-            // this.scene.start('sceneA')
-        })
-
-        this.physics.world.setBounds(0, 0, 3200, 1920);
-
-        const map = this.make.tilemap({key: 'drive'});   
-        const villageTiles = map.addTilesetImage('Serene_Village_48x48', 'Serene_Village_48x48')
-        
-        map.createLayer('Water Background', villageTiles)
-        RoadLayer = map.createLayer('Sand Road', villageTiles)
-        let CollisionLayer = map.createLayer('Sand Footpath', villageTiles)
-        let StarLayer = map.getObjectLayer('Sheep')['objects']
-
-        let stars = this.physics.add.group()
-          
-        StarLayer.forEach(object => {
-            let obj = stars.create(object.x, object.y, 'star')
-            obj.setOrigin(-1, 2)
-            obj.setSize(50, 50, true)
-        })
-
-        car = this.physics.add.image(300, 100, 'car').setScale(0.04)
-        car.setSize(1200, 1200, true)
-        car.angle = 180
-        
-        map.setCollisionBetween(0, 923, true, 'Footpath')
-        this.physics.add.collider(car, CollisionLayer)
-        this.physics.add.overlap(car, stars, hitStar, null, this)
-
-        this.cameras.main.setBounds(0, 0, 3200, 1920);
-        this.cameras.main.startFollow(car);
-        
-        car.setCollideWorldBounds(true);
-
-        cursors = this.input.keyboard.createCursorKeys();
-
-        scoreText = this.add.text(16, 16, `Score: ${score}`, { fontSize: '32px', fill: '#ffffff' });
-        scoreText.setScrollFactor(0)
-
-        function hitStar (car, star) {
-            this.sound.play('ding')
-            star.destroy()
-            score += 10;
-            scoreText.setText(`Score: ${score}`);
-        }
-    },
-
-    update: function () {
-        if (sandActive) {
-            sandTimer.paused = false
-        if (cursors.left.isDown && cursors.up.isDown) {
-            car.setVelocityX((carVelocity * -1))
-            car.setVelocityY((carVelocity * -1))
-            car.angle = 45
-        } else if (cursors.right.isDown && cursors.up.isDown) {
-            car.setVelocityX(carVelocity)
-            car.setVelocityY((carVelocity * -1))
-            car.angle = 135
-        } else if (cursors.right.isDown && cursors.down.isDown) {
-            car.setVelocityX(carVelocity)
-            car.setVelocityY(carVelocity)
-            car.angle = 225
-        } else if (cursors.left.isDown && cursors.down.isDown) {
-            car.setVelocityX((carVelocity * -1))
-            car.setVelocityY(carVelocity)
-            car.angle = 315
-        } else if (cursors.left.isDown) {
-            car.setVelocityX((carVelocity * -1))
-            car.angle = 0
-        } else if (cursors.right.isDown) {
-            car.setVelocityX(carVelocity)
-            car.angle = 180
-        } else if (cursors.up.isDown) {
-            car.setVelocityY((carVelocity * -1))
-            car.angle = 90
-        } else if (cursors.down.isDown) {
-            car.setVelocityY(carVelocity)
-            car.angle = 270
-        } else {
-            car.setVelocityX(0)
-            car.setVelocityY(0)
-        }     
-    }
     }
 })
 
@@ -1172,11 +1048,13 @@ let End = new Phaser.Class({
         finishItems.add(this.add.image(100, 450, 'pig'))
         finishItems.add(this.add.image(700, 450, 'chick'))
 
-        this.tweens.add({
-            targets: finishItems.children.entries,
-            props: {
-                y: {value: `+=${Phaser.Math.Between(-20, 20)}`, duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
-            }
+        finishItems.children.entries.forEach(object => {
+            this.tweens.add({
+                targets: object,
+                props: {
+                    y: {value: `+=${Phaser.Math.Between(-20, 20)}`, duration: 226, ease: 'Linear', yoyo: true, repeat: -1}
+                }
+            })
         })
         let camera = this.cameras.main;
         camera.setBackgroundColor('#8CB7F2')
@@ -1199,7 +1077,6 @@ var config = {
                 debug: false
             }
         },
-        // scene: [Water]
         scene: [White, End, Water, Cubicle, Village, City, Start]
     };
 
