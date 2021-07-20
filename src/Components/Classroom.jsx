@@ -81,7 +81,7 @@
       }
 
     return (
-      <div style={fadeOut}>
+    
       <div className='classroom-fade'>
         <div className="container">
           <Header setScene={setScene}/>
@@ -104,7 +104,6 @@
         
       </div>
       
-    </div>
   )
 }
 
