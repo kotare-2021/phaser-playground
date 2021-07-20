@@ -1,12 +1,13 @@
-import React, { useState, useEffect} from 'react'
+import React from 'react'
 
- export function Thoughts({fade, imgThought}) {
+ export function Thoughts({fade, imgThought, startDream}) {
 
   const oldfade = fade + 1
   return (
+    <>
     <div className={ typeof fade == 'number' ? `speechBubbleCount${oldfade} Visible${oldfade} VisbleMed${oldfade}`: 'speechBubbleCount'}>
     <div className='speechBubbleBig'>
-      <img className='dayDreamImg' src={`/assets/${imgThought}`} alt={imgThought}/> 
+      <img className='dayDreamImg' src={`/assets/${imgThought}`} alt={imgThought}/>
     </div>
     <div  className={ oldfade === 0 || 2 ? 'speechBubbleMedLeft Visible': 'speechBubbleCount' }>
     </div>
@@ -17,6 +18,8 @@ import React, { useState, useEffect} from 'react'
     <div className={ oldfade === 1 || 3 ? 'speechBubbleSmallLeft Visible': 'speechBubbleCount' }>
     </div>
   </div>
+  <div className={startDream && 'fadeOut'}></div>
+  </>
   )
 }
 

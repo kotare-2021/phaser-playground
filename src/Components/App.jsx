@@ -8,6 +8,7 @@ import Dream from './Dream'
 const App = (props) => {
   const [scene, setScene] = useState('landing')
   const [dream, setDream] = useState('')
+
   return (
     <>
       {scene === 'landing' &&
@@ -17,7 +18,7 @@ const App = (props) => {
         <Classroom setScene={setScene} setDream={setDream}/>
       }
       {scene === 'dream' &&
-        <Dream dream={dream} setScene={setScene}/>
+        <Dream dream={dream} setScene={setScene} />
       }
     </>
   )
