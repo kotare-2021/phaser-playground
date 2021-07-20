@@ -5,6 +5,20 @@
   z-index: -1;
 }
 
+.cloudHeader1 {
+  position: absolute;
+  margin-top: .3rem;
+  padding-right: 7rem;
+  width: 200px;
+}
+
+.cloudHeader2 {
+  position: absolute;
+  margin-top: .3rem;
+  padding-left: 8rem;
+  width: 200px;
+}
+
 .cloud1 {
   top: 10rem;
   animation: 30s linear clouds -21s infinite;
