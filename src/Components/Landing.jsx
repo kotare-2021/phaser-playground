@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
-
-const harpyMusic = new Audio('/audio/harpMusicy.mp3')
-
 import Header from './Header'
 import Clouds from './Clouds'
 
+
+
+
 const Landing = ({ setScene }) => {
   const [fadeOut, setFadeOut] = useState(null)
+  const harpyMusic = new Audio('/audio/harpMusicy.mp3')
 
   useEffect(() => {
     harpyMusic.play()
