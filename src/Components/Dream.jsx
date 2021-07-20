@@ -35,11 +35,12 @@ const Dream = ({ dream, setScene }) => {
         </div>
         <Clouds />
       </div>
-    </div>
     <div>
       <Footer setScene={setScene}/>
     </div>
-    <div/>
+
+    </div>
+    
 
   )
 }
