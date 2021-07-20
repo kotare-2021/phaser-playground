@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import Header from './Header'
 import Clouds from './Clouds'
+import Footer from './Footer'
 
 const Dream = ({ dream, setScene }) => {
   const [removeFade, setRemoveFade] = useState(false)
@@ -35,6 +36,11 @@ const Dream = ({ dream, setScene }) => {
         <Clouds />
       </div>
     </div>
+    <div>
+      <Footer setScene={setScene}/>
+    </div>
+    <div/>
+
   )
 }
 
