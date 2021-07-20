@@ -81,13 +81,9 @@
 
     return (
       <>
+      <div className='classroom-fade'>
         <div className="container">
           <Header setScene={setScene}/>
-        </div>
-        <div className="container">
-          <div style={{position: 'relative'}}>
-            <span className='heading-small'>It's an afternoon lecture at Dev Academy and one of the students is starting to fall asleep.</span>
-          </div>
         </div>
         <div className="container">
           <span className='heading-small'> Click on the student who's dream you want to see...</span>
@@ -104,6 +100,7 @@
             <Thoughts fade={fade} imgThought={imgThought} startDream={startDream}/>      
           </div>
         </div>
+      </div>
       </>
   )
 }
