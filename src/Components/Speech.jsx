@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react'
 
-const Speech = (props) => {
+const Speech = () => {
   // set speech bubble content
   const [speechOne, setSpeechOne] = useState('')
   const [speechTwo, setSpeechTwo] = useState('')
@@ -67,6 +67,7 @@ const Speech = (props) => {
   const conversation = [
     'Have you heard of Batmna?',
     'Has anyone seen Poncho?',
+    'Whats an elevator?',
     'Man that teacher loves drones',
     'That Lucas guy asks a lot of questions',
     'Handlebars is amazing!',
@@ -76,7 +77,7 @@ const Speech = (props) => {
     'It\'s definitely not going to get any harder than this...',
     'The great thing about blockchain is',
     'I should really start my Trello Board...',
-    'Will be born who can swim faster than a shark?',
+    'Will a boy be born who can swim faster than a shark?',
     'I hate CSS',
     'Why doesn\'t Cleo love me?',
     'I wonder how big the baby is this week',
