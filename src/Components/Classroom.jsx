@@ -4,6 +4,7 @@
     import Clouds from './Clouds'
     import Speech from './Speech'
     import Thoughts from './Thoughts'
+    import Footer from './Footer'
 
     // const talkyTalkyPeople = new Audio('/audio/classguystalking.mp3')
     // const woosh = new Audio('/audio/woosh.wav')
@@ -80,7 +81,7 @@
       }
 
     return (
-      <>
+    
       <div className='classroom-fade'>
         <div className="container">
           <Header setScene={setScene}/>
@@ -100,8 +101,9 @@
             <Thoughts fade={fade} imgThought={imgThought} startDream={startDream}/>      
           </div>
         </div>
+        
       </div>
-      </>
+      
   )
 }
 
