@@ -1,0 +1,46 @@
+.container-footer {
+  background-color: transparent;
+  height: 14vh;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-button {
+  height: 5rem;
+  width: 10rem;
+  font-size: 2rem;
+  font-family: 'Chela One', cursive;
+  background-color: rgba(155, 226, 254, 0.8);
+  border-radius: 10px;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  box-shadow: 1px 1px 1px black,
+  -3px 2px 1px black,
+  -4px 3px 1px black
+  -5px 4px 1px black,
+  -6px 5px 1px black,
+  -7px 6px 1px black,
+  -8px 7px 1px black,
+  -9px 8px 1px black,
+  -10px 9px 1px black,
+  -11px 10px 1px black,
+
+}
+.span-text {
+  color: rgba(255, 255, 255, 1);
+  margin: 0px;
+  padding: 0px;
+  
+}
+
+.footer-button:hover {
+  cursor: pointer;
+  opacity: 1;
+  background-color: rgba(155, 226, 254, 1);
+
+}

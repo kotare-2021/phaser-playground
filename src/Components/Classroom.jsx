@@ -4,6 +4,7 @@
     import Clouds from './Clouds'
     import Speech from './Speech'
     import Thoughts from './Thoughts'
+    import Footer from './Footer'
 
     const talkyTalkyPeople = new Audio('/audio/classguystalking.mp3')
     const woosh = new Audio('/audio/woosh.wav')
@@ -115,7 +116,9 @@
           <Thoughts fade={fade} imgThought={imgThought} />      
 
         </div>
+        
       </div>
+      
     </div>
   )
 }

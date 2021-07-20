@@ -253,6 +253,7 @@
       if (stars.countActive(true) === 0) {
         if (100 < score < 300) {
           starScore = 10;
+          console.log(starScore)
         stars.children.iterate(function (child) {
           child.enableBody(true, child.x, Phaser.Math.FloatBetween(80, 1200), true, true);
         });
