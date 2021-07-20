@@ -1,119 +1,109 @@
-import React, { useState } from 'react'
+    import React, { useState, useEffect } from 'react'
 
-import Header from './Header'
-import Clouds from './Clouds'
-import Speech from './Speech'
+    import Header from './Header'
+    import Clouds from './Clouds'
+    import Speech from './Speech'
+    import Thoughts from './Thoughts'
 
-const Classroom = ({  setScene, setDream }) => {
-  // change dream scene
-  const [startDream, setStartDream] = useState(false)
+    // const talkyTalkyPeople = new Audio('/audio/classguystalking.mp3')
+    // const woosh = new Audio('/audio/woosh.wav')
+    const characters = [
+      { name: 'fred', style: { left: '3.3rem', top: '9rem' }, img: 'football.png' },
+      { name: 'drive', style: { left: '15rem', top: '9rem' }, img: 'sheep_walk.png',  },
+      { name: 'megan', style: { left: '3.3rem', top: '19rem' }, img: '', },
+      { name: 'ymmij', style: { left: '15rem', top: '19rem' }, img: 'Hamster_Dance.ico' },
+    ]
+    
+    const Classroom = ({  setScene, setDream }) => {
+      // change dream scene
+      const [startDream, setStartDream] = useState(false)
 
-  // fade out scene 
-  const [fadeOut, setFadeOut] = useState(null)
+      // fade out scene 
+      const [fade, changeFade] = useState('')
+      const [imgThought, changeImgThought] = useState('')
 
-  //variables for clickbox positioning
-  const charOneStyle = {
-    left: '3.3rem',
-    top: '9rem'
-}
-  const charTwoStyle = {
-    left: '15rem',
-    top: '9rem'
-  }
-  const charThreeStyle = {
-    left: '3.3rem',
-    top: '19rem'
-  }
-  const charFourStyle = {
-    left: '15rem',
-    top: '19rem'
-  }
+      // //play background music on load.
+      // useEffect(() => {
+      //   talkyTalkyPeople.play()
+      // }, [])
 
-  const [fade, changeFade] = useState('')
-  const [imgThought, changeImgThought] = useState('')
-  const [fadeVisNum, changefadeVisNum] = useState('')
+      function fadeInThought(num) {
+        changeImgThought(characters[num].img)
+        changeFade(num)
+      }
 
-  function imgDayDream(num) {
-    if(num === 1) {
-      changeImgThought('football.png')
-    }
-  }
+      function fadeOutThought() {
+        changeFade('')
+        changeImgThought('')
+      }
 
-  function fadeInThought(num) {
-    if (num === 1) {
-      changeImgThought('football.png')
-      changeFade(num)
-      changefadeVisNum(num)
-    } else if (num === 2) {
-      changeImgThought('sheep_walk.png')
-      changeFade(num)
-      changefadeVisNum(num)
-    } else if (num === 4) {
-      changeImgThought('Hamster_Dance.ico')
-      changeFade(num)
-      changefadeVisNum(num)
-    }
-  }
+      //On click select dream and render dream component
+      const handleClick = (string) => {
+        setStartDream(true)
+        setTimeout(() => {
+          setScene('dream')
+          setDream(string)
+        }, 2000)
 
-  function fadeOutThought() {
-    changeFade('')
-    changefadeVisNum('')
-    changeImgThought('')
-  }
+        // //ymmij audio stuff:
+        // let TalkingFadeIn = setInterval(() => {
+        //   talkyTalkyPeople.volume += 0.2
+        //   console.log(talkyTalkyPeople.volume)
+        //   if (talkyTalkyPeople.volume > 0.25 ) {
+        //     clearInterval(TalkingFadeIn)
+        //   }
+        // },1000);
+  
+        // let fadeVoices = setInterval(() => {
+        //   talkyTalkyPeople.volume -= 0.2
+        //   console.log(talkyTalkyPeople.volume)
+        //   if (talkyTalkyPeople.volume < 0.4) {
+        //     woosh.play()
+        //   }
+        //   if (talkyTalkyPeople.volume < 0.1 ) {
+        //     // talkyTalkyPeople.volume = 0
+        //     clearInterval(fadeVoices)
+        //   }
+        // },500);
+        // //end
+      }
 
-  //On click select dream and render dream component
-  const handleClick = (string) => {
-    setStartDream(true)
-    setFadeOut({
-      visibility: 'hidden',
-      opacity: 0,
-      transition: 'visibility 0s 2s, opacity 2s linear'
-    })
-    setTimeout(() => {
-      setScene('dream')
-      setDream(string)
-    }, 2000)
-  }
+      
+      const renderCharacter = (item, i) => {
+        return <div 
+          className="click-box" 
+          style={item.style} 
+          onClick={() => handleClick(item.name)}
+          onMouseEnter={() => fadeInThought(i)} 
+          onMouseLeave={() => fadeOutThought()}
+        />
+      }
 
-  return (
-    <div className='classroom-fade' style={fadeOut}>
-      <div className="container">
-        <Header setScene={setScene}/>
-      </div>
-      <div className="container">
-        <span className='heading-small'> Click on the student who's dream you want to see...</span>
-      </div>
-      <div className="container">
-        <div className="classroom">
+    return (
+      <>
+      <div className='classroom-fade'>
+        <div className="container">
+          <Header setScene={setScene}/>
+        </div>
+        <div className="container">
+          <span className='heading-small'> Click on the student who's dream you want to see...</span>
+        </div>
+        <div className="container">
+          <div className="classroom">
+            
+            <img src="/images/classroom_01.png" alt="a classrom"/>
+            <Clouds />
 
-          <Speech />
-          
-          <div className="click-box" style={charOneStyle} onClick={() => handleClick('fred')}onMouseEnter={() => fadeInThought(1)} onMouseLeave={() => fadeOutThought()}> </div>
-          <div className="click-box" style={charTwoStyle} onClick={() => handleClick('drive')}onMouseEnter={() => fadeInThought(2)} onMouseLeave={() => fadeOutThought()}></div>
-          <div className="click-box" style={charThreeStyle} onClick={() => handleClick('megan')}onMouseEnter={() => fadeInThought(3)} onMouseLeave={() => fadeOutThought()}></div>
-          <div className="click-box" style={charFourStyle} onClick={() => handleClick('ymmij')}onMouseEnter={() => fadeInThought(4)} onMouseLeave={() => fadeOutThought()}></div>
-
-          <img src="/images/classroom_01.png" alt="a classrom"/>
-
-          <Clouds />
-
-          <div className={ fade ? `speechBubbleCount${fade} Visible${fadeVisNum} VisbleMed${fadeVisNum}`: 'speechBubbleCount'}>
-            <div className='speechBubbleBig'>
-              <img className='dayDreamImg' src={`/assets/${imgThought}`} alt={imgThought}/> 
-            </div>
-            <div  className={ fade === 1 || 3 ? 'speechBubbleMedLeft Visible': 'speechBubbleCount' }>
-            </div>
-            <div className={ fade === 1 || 3 ? 'speechBubbleMedRight Visible': 'speechBubbleCount' }>
-            </div>
-            <div className={ fade === 2 || 4 ? 'speechBubbleSmallRight Visible': 'speechBubbleCount' }>
-            </div>
-            <div className={ fade === 2 || 4 ? 'speechBubbleSmallLeft Visible': 'speechBubbleCount' }>
-            </div>
+            {characters.map((item,i) => renderCharacter(item, i))}
+            
+            <Speech />
+            <Thoughts fade={fade} imgThought={imgThought} startDream={startDream}/>      
           </div>
         </div>
       </div>
-    </div>
+      </>
   )
 }
 
 export default Classroom
+  

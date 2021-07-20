@@ -5,8 +5,12 @@ import Clouds from './Clouds'
 const Landing = ({ setScene }) => {
   const [fadeOut, setFadeOut] = useState(null)
   const [display, setDisplay] = useState('logo')
+  
+  const harpyMusic = new Audio('/audio/harpMusicy.mp3')
     
     useEffect(() => {
+      harpyMusic.play()
+
       setTimeout(() => {
       setDisplay('ed')
     }, 3900)
@@ -16,9 +20,18 @@ const Landing = ({ setScene }) => {
     setTimeout(() => {
       setDisplay('instructions')
     }, 11700)
-}, [])
+    }, [])
 
   const handleClick = () => {
+
+    let harpMusicFade = setInterval(() => {
+      harpyMusic.volume -= 0.2
+      console.log(harpyMusic.volume)
+      if (harpyMusic.volume < 0.25 ) {
+        clearInterval(harpMusicFade)
+      }
+    },1000);
+
     setFadeOut({
       visibility: 'hidden',
       opacity: 0,
@@ -26,6 +39,7 @@ const Landing = ({ setScene }) => {
     })
     setTimeout(() => setScene('classroom'), 2000)
   }
+
   return (
   <>
       <div style={fadeOut} className="landing-container">

@@ -25,6 +25,35 @@ code {
     monospace;
 }
 
+.fadeOut {
+  animation-name: fadeToWhite;
+  animation-duration: 3s;
+  height: 100vh;
+  width: 100vw;
+  position:fixed;
+  padding:0;
+  margin:0;
+  top:0;
+  left:0;
+}
+
+.fadeIn {
+  animation-name: fadeFromWhite;
+  animation-duration: 3s;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  padding:0;
+  margin:0;
+  top:0;
+  left:0;
+}
+// .fadeIn::after {
+//   position: absolute;
+//   height: 0vh;
+//   width: 0vw;
+// }
+
 .container {
   text-align: center;
   display: flex;
