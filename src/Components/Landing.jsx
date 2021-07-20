@@ -1,10 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-import Header from './Header'
 import Clouds from './Clouds'
 
 const Landing = ({ setScene }) => {
   const [fadeOut, setFadeOut] = useState(null)
+  const [display, setDisplay] = useState('logo')
+    
+    useEffect(() => {
+      setTimeout(() => {
+      setDisplay('ed')
+    }, 3900)
+    setTimeout(() => {
+      setDisplay('always')
+    }, 7800)
+    setTimeout(() => {
+      setDisplay('instructions')
+    }, 11700)
+}, [])
 
   const handleClick = () => {
     setFadeOut({
@@ -15,15 +27,27 @@ const Landing = ({ setScene }) => {
     setTimeout(() => setScene('classroom'), 2000)
   }
   return (
-    <div style={fadeOut}>
+  <>
+      <div style={fadeOut} className="landing-container">
+      {display === 'logo' &&
+          <p className='landing-logo'>EDA</p>
+        }
+      {display === 'ed' &&
+          <p className='landing-header'>Everyone Dreams...</p>
+      }
+      {display === 'always' &&
+          <p className='landing-header'>ALWAYS</p>
+      }
+      {display === 'instructions' &&
       <div>
-        <Header setScene={setScene}/>
-        <div className="container">
-          <h4 onClick={handleClick} className='heading-sub clickable'>Everyone Dreams...<br />Always</h4>
-        </div>
+          <p className='landing-instr'>It's an afternoon lecture at Dev Academy and all of the students are starting to fall asleep.</p>
+          <p className='landing-instr'>Click on the student who's dream you want to see...</p>
+          <p onClick={handleClick} className='landing-instr'>Click Here to enter the classroom.</p>
+      </div>
+      }
       </div>
       <Clouds />
-    </div>
+  </>
   )
 }
 
