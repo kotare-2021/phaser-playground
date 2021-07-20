@@ -5,7 +5,7 @@ import Clouds from './Clouds'
 const Landing = ({ setScene }) => {
   const [fadeOut, setFadeOut] = useState(null)
   const [display, setDisplay] = useState('logo')
-  
+
   const harpyMusic = new Audio('/audio/harpMusicy.mp3')
     
     useEffect(() => {
@@ -20,6 +20,9 @@ const Landing = ({ setScene }) => {
     setTimeout(() => {
       setDisplay('instructions')
     }, 11700)
+    setTimeout(() => {
+      setScene('classroom')
+    }, 19600)
     }, [])
 
   const handleClick = () => {
@@ -54,9 +57,7 @@ const Landing = ({ setScene }) => {
       }
       {display === 'instructions' &&
       <div>
-          <p className='landing-instr'>It's an afternoon lecture at Dev Academy and all of the students are starting to fall asleep.</p>
-          <p className='landing-instr'>Click on the student who's dream you want to see...</p>
-          <p onClick={handleClick} className='landing-instr'>Click Here to enter the classroom.</p>
+          <p className='landing-instr'>Bren's teaching an afternoon lecture and some of the students are starting to fall asleep.</p>
       </div>
       }
       </div>
