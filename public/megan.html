@@ -7,7 +7,7 @@
 
   <script>
 
-    let CollisionLayer, BackgroundLayer,  sheeps, car, stars, scoreText, carPosX, dude, carPosY, carVelX, carVelY, starText, startActive, gameActive, endActive, gameOver, teacher, player, bombs, plane
+    let CollisionLayer, BackgroundLayer,  sheeps, car, stars, scoreText, carPosX, dude, carPosY, carVelX, carVelY, starText, startActive, gameActive, endActive, gameOver, teacher, player, bombs, plane, batarangs
     let hit = false
     let score = 0
     let starScore = 10
@@ -72,27 +72,25 @@
       function sceneB () { Phaser.Scene.call(this, { key: 'sceneB', active: true })},
       
       preload: function () {
-        this.load.tilemapTiledJSON('Library', 'assets/library1.json');
-        this.load.image("floor", "assets/floors.png")
-        this.load.image("desks3", "assets/desks.png")
-        this.load.image("bookshelves", "assets/class2.png")
-        // this.load.image("roadNE", "assets/maps/roadNE.png")
+        this.load.tilemapTiledJSON('Library', 'assets/megan/library1.json');
+        this.load.image("floor", "assets/megan/floors.png")
+        this.load.image("desks3", "assets/megan/desks.png")
+        this.load.image("bookshelves", "assets/megan/class2.png")
         this.load.image('star', 'assets/star.png')
         this.load.image('plane', 'assets/plane.png')
-        this.load.image('scoreboard', 'assets/chalkboard.png')
+        this.load.image('scoreboard', 'assets/megan/chalkboard.png')
         this.load.spritesheet('bomb', 
-        'assets/drone.png',
+        'assets/megan/drone.png',
         { frameWidth: 26, frameHeight: 20 }
         );
-        this.load.spritesheet('teacher', 
-        'assets/teacher.png',
-        { frameWidth: 100, frameHeight: 100 }
+        this.load.spritesheet('batarang', 
+        'assets/megan/batarang.png',
+        { frameWidth: 32, frameHeight: 32 }
         );
         this.load.spritesheet('dude', 
-        'assets/betty.png',
+        'assets/megan/betty.png',
         { frameWidth: 48, frameHeight: 48 }
         );
-        // var eightDirection = this.plugins.get('rexeightdirectionplugin').add(plane, config);
       },
       
       create: function () {
@@ -105,7 +103,6 @@
     const tileset2 = map.addTilesetImage('desks3', 'desks3')
     const tileset3 = map.addTilesetImage('bookshelves', 'bookshelves')
     const allTiles = [tileset3, tileset2]
-    // walls = map.createStaticLayer('walls', tileset2,400,400);
     
     BackgroundLayer = map.createLayer('floors', tileset1)
     CollisionLayer = map.createLayer('walls', allTiles, 0, 0)
@@ -156,7 +153,6 @@
     stars = this.physics.add.group()
     
     map.setCollisionBetween(0, 923, true, 'Tile Layer 1')
-    // this.physics.add.collider(dude, CollisionLayer)
 
     this.cameras.main.setBounds(0, 0, 1600, 1216);
 
@@ -176,12 +172,20 @@
 
     bombs.enableBody = true;
 
+    batarangs = this.physics.add.group();
+
+    batarangs.enableBody = true;
+
+    this.physics.add.collider(batarangs, CollisionLayer);
+
+    
     planes = this.physics.add.group();
-
+    
     planes.enableBody = true;
-
+    
     this.physics.add.collider(planes, CollisionLayer);
-
+    
+    this.physics.add.collider(player, batarangs, hitBatarang, null, this);
     this.physics.add.collider(player, bombs, hitBomb, null, this);
     this.physics.add.collider(player, planes, hitPlane, null, this);
 
@@ -233,6 +237,30 @@
         endActive = true
       })
     }
+    function hitBatarang (player, bomb) {
+      this.physics.pause();
+      
+      player.setTint(0xff0000);
+      
+      player.anims.play('turn');
+
+      gameOver = true;
+
+      if(gameOver = true) {
+        this.time.addEvent({
+          delay: 3000,
+          loop: false,
+          callback: () => {
+              this.cameras.main.fadeOut(100, 255, 255, 255)
+          }
+        })
+      }
+      this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
+        // this.sound.play('shutup')
+        this.scene.start('end')
+        endActive = true
+      })
+    }
 
 
 
@@ -249,36 +277,34 @@
         scoreText.setText('Score: ' + score);
         starScore -= 1;
         starScoreText.setText('Stars: ' + starScore);
-      
-      if (stars.countActive(true) === 0) {
-        if (100 < score < 300) {
-          starScore = 10;
-        stars.children.iterate(function (child) {
+        
+        if (stars.countActive(true) === 0) {
+          starScore = 10
+          starScoreText.setText('Stars: ' + starScore);
+          stars.children.iterate(function (child) {
           child.enableBody(true, child.x, Phaser.Math.FloatBetween(80, 1200), true, true);
         });
+        if (score > 90 && score < 280) {
         
         var x = (player.x < 800) ? Phaser.Math.Between(800, 1520) : Phaser.Math.Between(80, 800);
         
-        plane = planes.create(x, Phaser.Math.FloatBetween(80, 1200), 'plane');
+        plane = planes.create(x, Phaser.Math.FloatBetween(80, 1100), 'plane');
 
         plane.setBounce(1);
         plane.setSize(20, 20, true)
         plane.setScale(.20)
-        
-        var x = plane.x
-        var y = plane.y
         plane.setCollideWorldBounds(true);
 
         plane.setVelocity(Phaser.Math.Between(-200, 200), Phaser.Math.Between(-200, 200) ); 
       }
-      if (score > 300) {
-        stars.children.iterate(function (child) {
-          child.enableBody(true, child.x, Phaser.Math.FloatBetween(80, 1200), true, true);
-        });
+      else if (score > 280 && score < 580) {
+        // stars.children.iterate(function (child) {
+        //   child.enableBody(true, child.x, Phaser.Math.FloatBetween(80, 1200), true, true);
+        // });
         
         var x = (player.x < 800) ? Phaser.Math.Between(800, 1520) : Phaser.Math.Between(80, 800);
         
-        var bomb = bombs.create(x, Phaser.Math.FloatBetween(80, 1200), 'bomb');
+        var bomb = bombs.create(x, Phaser.Math.FloatBetween(80, 1100), 'bomb');
         
         this.anims.create({
           key: 'fly',
@@ -286,23 +312,46 @@
           frameRate: 10,
           repeat: -1
         });
+        
+          bomb.anims.play('fly')
+          bomb.setBounce(1);
+          bomb.setScale(1.5);
 
-        bomb.anims.play('fly')
+          bomb.setCollideWorldBounds(true);
+          bomb.setVelocity(Phaser.Math.Between(-200, 200), Phaser.Math.Between(-200, 200) );
 
-        bomb.setBounce(1);
-        bomb.setScale(1.5);
+      }
+      else if (score > 580 && score < 880) {
+        // stars.children.iterate(function (child) {
+        //   child.enableBody(true, child.x, Phaser.Math.FloatBetween(80, 1200), true, true);
+        // });
+        
+        var x = (player.x < 800) ? Phaser.Math.Between(800, 1520) : Phaser.Math.Between(80, 800);
+        
+        var batarang = batarangs.create(x, Phaser.Math.FloatBetween(80, 1100), 'batarang');
+        
+        this.anims.create({
+          key: 'spin',
+          frames: this.anims.generateFrameNumbers('batarang', { frames: [ 0, 1, 2, 3, 4, 5, 6 ] }),
+          frameRate: 10,
+          repeat: -1
+        });
+        
+          batarang.setSize(5, 5, true)
+          batarang.anims.play('spin')
+          batarang.setBounce(1);
+          batarang.setScale(2);
+          batarang.setCollideWorldBounds(true);
+          batarang.setVelocity(300);
 
-        bomb.setCollideWorldBounds(true);
-
-        bomb.setVelocity(Phaser.Math.Between(-200, 200), Phaser.Math.Between(-200, 200) ); 
       }
     }
       }
       
     }
-    scoreBoard = this.add.image(150, 26, 'scoreboard')
-    scoreText = this.add.text(30, 16, 'Score: 0', { fontSize: '20px', fill: '#fff' });
-    starScoreText = this.add.text(165, 16, 'Stars: 10', { fontSize: '20px', fill: '#fff' })
+    scoreBoard = this.add.image(150, 46, 'scoreboard')
+    scoreText = this.add.text(30, 36, 'Score: 0', { fontSize: '20px', fill: '#fff' });
+    starScoreText = this.add.text(165, 36, 'Stars: 10', { fontSize: '20px', fill: '#fff' })
     scoreText.setScrollFactor(0)
     starScoreText.setScrollFactor(0)
     scoreBoard.setScrollFactor(0)
@@ -378,22 +427,15 @@ let end = new Phaser.Class({
             families: [ 'Fredoka One' ]
         },
         active: function () {
-            add.text(245, 100, 'GAME OVER', { fontFamily: 'Fredoka One', fontSize: '48px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 6, offsetX: 3, color: 'white', fill: true} })
-            add.text(245, 250, `Your final score was: ${score}`, { fontFamily: 'Fredoka One', fontSize: '32px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 4, offsetX: 2, color: 'white', fill: true} })
-            add.text(295, 500, 'press space to restart', { fontFamily: 'Fredoka One', fontSize: '24px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 4, offsetX: 2, color: 'white', fill: true} })
+          if (score > 0) {
+            add.text(195, 150, 'Time to wake up!', { fontFamily: 'Fredoka One', fontSize: '48px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 6, offsetX: 3, color: 'white', fill: true} })
+            add.text(195, 350, `Your final score was: ${score}`, { fontFamily: 'Fredoka One', fontSize: '32px', fill: '#545F66', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 4, offsetX: 2, color: 'white', fill: true} })
+          }
         }
     });
         
         var camera = this.cameras.main;
-        camera.setBackgroundColor('#FFF')
-
-        if (endActive){ this.input.keyboard.once('keydown-SPACE', () => {
-            this.cameras.main.fadeOut(100, 255, 255, 255)
-        })
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            score = 0
-            this.scene.start('SceneB')
-        })}
+        camera.setBackgroundColor('9be2fe')
     },
     
     update: function () {
@@ -412,7 +454,7 @@ let end = new Phaser.Class({
         physics: {
             default: 'arcade',
             arcade: {
-                debug: true
+                debug: false
             }
         },
         scene: [end, SceneB]

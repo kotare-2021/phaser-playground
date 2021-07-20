@@ -3,6 +3,7 @@
     import Header from './Header'
     import Speech from './Speech'
     import Thoughts from './Thoughts'
+    import Footer from './Footer'
 
     const characters = [
       { name: 'fred', style: { left: '3.3rem', top: '9rem' }, img: 'fred/football.png' },
@@ -37,7 +38,7 @@
         setTimeout(() => {
           setScene('dream')
           setDream(string)
-        }, 4000)
+        }, 2000)
       }
 
       const renderCharacter = (item, i) => {
@@ -52,7 +53,7 @@
       }
 
     return (
-      <>
+    
       <div className='classroom-fade'>
         <div className="container">
           <Header setScene={setScene}/>
@@ -71,8 +72,9 @@
             <Thoughts fade={fade} imgThought={imgThought} startDream={startDream}/>      
           </div>
         </div>
+        
       </div>
-      </>
+      
   )
 }
 
