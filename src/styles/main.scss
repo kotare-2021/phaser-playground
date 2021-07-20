@@ -117,14 +117,26 @@ code {
 // 	-moz-border-radius: 200px;
 // }
 
+.headerdiv {
+  position:relative;
+}
+
 .heading-logo {
 	height: 80%;
 	width: auto;
 }
 
 .heading-main {
+  position: relative;
+  margin-top: .3rem;
+  margin-bottom: -.1rem;
+  letter-spacing: -12px;
   font-size: 7rem;
-  margin: 1rem;
+  text-shadow:
+  //   /* White glow */
+    0 0 2px rgb(164, 207, 247),
+    0 0 6px rgb(164, 207, 247),
+    0 0 10px rgb(164, 207, 247)
 }
 
 
@@ -159,6 +171,12 @@ code {
   animation-iteration-count: 2;
   animation-direction: alternate;
   margin-top: 40vh;
+  text-shadow:
+  //   /* White glow */
+    0 0 2px rgb(164, 207, 247),
+    0 0 6px rgb(164, 207, 247),
+    0 0 10px rgb(164, 207, 247),
+  /* Green glow */
 }
 
 .landing-header {
@@ -190,6 +208,10 @@ code {
 @keyframes fade-landing-in {
   from {opacity: 0};
   to {opacity: 1}
+}
+
+.dreamscene {
+  padding-top: 2.5rem;
 }
 
 .cloud-img-small {

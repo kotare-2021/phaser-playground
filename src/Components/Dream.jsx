@@ -26,9 +26,9 @@ const Dream = ({ dream, setScene }) => {
   return (
     <div style={fadeOut}>
       <div onClick={handleClick}>
-      <Header setScene={setScene}/>
+        <Header setScene={setScene}/>
       </div>
-      <div className="container">
+      <div className="container dreamscene">
         <div className="scene">
           <iframe src={`./${dream}.html`} title={dream} className='game-frame' frameBorder='0'></iframe>
         <div className={!removeFade && 'fadeIn'}></div>
