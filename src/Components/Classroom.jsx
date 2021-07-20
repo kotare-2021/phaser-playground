@@ -8,9 +8,9 @@
     // const talkyTalkyPeople = new Audio('/audio/classguystalking.mp3')
     // const woosh = new Audio('/audio/woosh.wav')
     const characters = [
-      { name: 'fred', style: { left: '3.3rem', top: '9rem' }, img: 'football.png' },
+      { name: 'fred', style: { left: '3.3rem', top: '9rem' }, img: 'fred/football.png' },
       { name: 'drive', style: { left: '15rem', top: '9rem' }, img: 'sheep_walk.png',  },
-      { name: 'megan', style: { left: '3.3rem', top: '19rem' }, img: '', },
+      { name: 'megan', style: { left: '3.3rem', top: '19rem' }, img: 'plane.png', },
       { name: 'ymmij', style: { left: '15rem', top: '19rem' }, img: 'Hamster_Dance.ico' },
     ]
     
