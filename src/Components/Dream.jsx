@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import Header from './Header'
 
-const Dream = ({ dream, setScene, fadeOut, setFadeOut }) => {
+const Dream = ({ dream, setScene }) => {
   const [removeFade, setRemoveFade] = useState(false)
 
   useEffect(() => {

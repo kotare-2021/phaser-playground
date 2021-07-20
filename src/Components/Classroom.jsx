@@ -11,8 +11,7 @@
       { name: 'ymmij', style: { left: '15rem', top: '19rem' }, img: 'Hamster_Dance.ico' },
     ]
     
-    const Classroom = ({  setScene, setDream, talkyTalkyPeople }) => {
-      const woosh = new Audio('/audio/woosh.wav')
+    const Classroom = ({  setScene, setDream, fadeTalking }) => {
       // change dream scene
       const [startDream, setStartDream] = useState(false)
 
@@ -33,10 +32,11 @@
       //On click select dream and render dream component
       const handleClick = (string) => {
         setStartDream(true)
+
         setTimeout(() => {
           setScene('dream')
           setDream(string)
-        }, 2000)
+        }, 4000)
       }
 
       const renderCharacter = (item, i) => {
