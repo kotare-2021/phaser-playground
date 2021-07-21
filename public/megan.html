@@ -12,7 +12,6 @@
     let score = 0
     let starScore = 10
     gameActive = true
-
     
 // start screen
 
@@ -72,6 +71,8 @@
       function sceneB () { Phaser.Scene.call(this, { key: 'sceneB', active: true })},
       
       preload: function () {
+        this.load.audio('catchStar', 'audio/zapsplat_fantasy_magic_wand_ping_bright_001_68677.mp3');
+        this.load.audio('loseGame', 'audio/zapsplat_multimedia_game_sound_fun_arcade_organ_short_negative_fail_lose_003_54276.mp3');
         this.load.tilemapTiledJSON('Library', 'assets/megan/library1.json');
         this.load.image("floor", "assets/megan/floors.png")
         this.load.image("desks3", "assets/megan/desks.png")
@@ -117,6 +118,12 @@
     player.setSize(30, 30, true)
     player.setScale(.8)
 
+    this.anims.create({
+      key: 'lose',
+      frames: this.anims.generateFrameNumbers('dude', { frames: [ 0, 1, 2, 3 ] }),
+      frameRate: 10,
+      repeat: -1
+    });
     this.anims.create({
       key: 'left',
       frames: this.anims.generateFrameNumbers('dude', { frames: [ 1, 5, 9, 13 ] }),
@@ -191,10 +198,11 @@
 
     function hitBomb (player, bomb) {
       this.physics.pause();
+      this.sound.play('loseGame')
       
       player.setTint(0xff0000);
       
-      player.anims.play('turn');
+      player.anims.play('lose');
 
       gameOver = true;
 
@@ -214,15 +222,16 @@
       })
     }
     function hitPlane (player, Plane) {
-      this.physics.pause();
+      this.sound.play('loseGame');
       
       player.setTint(0xff0000);
       
-      player.anims.play('turn');
-
+      player.anims.play('lose');
+      
       gameOver = true;
-
+      
       if(gameOver = true) {
+        this.physics.pause();
         this.time.addEvent({
           // delay: 3000,
           loop: false,
@@ -239,10 +248,11 @@
     }
     function hitBatarang (player, bomb) {
       this.physics.pause();
+      this.sound.play('loseGame');
       
       player.setTint(0xff0000);
       
-      player.anims.play('turn');
+      player.anims.play('lose');
 
       gameOver = true;
 
@@ -273,6 +283,7 @@
     function collectStar (player, star) {
       if (gameActive) {
         star.disableBody(true, true);
+        this.sound.play('catchStar')
         score += 10;
         scoreText.setText('Score: ' + score);
         starScore -= 1;
@@ -321,7 +332,7 @@
           bomb.setVelocity(Phaser.Math.Between(-200, 200), Phaser.Math.Between(-200, 200) );
 
       }
-      else if (score > 580 && score < 880) {
+      else if (score > 580) {
         // stars.children.iterate(function (child) {
         //   child.enableBody(true, child.x, Phaser.Math.FloatBetween(80, 1200), true, true);
         // });
