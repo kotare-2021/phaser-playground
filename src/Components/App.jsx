@@ -53,14 +53,13 @@ const App = (props) => {
     setTimeout(() => {
       //fade out talking
       let voicesFadeOut = setInterval(() => {
-        talking.volume -= 0.05
-        if (talking.volume < 0.1) {
+        talking.volume -= 0.01
+        if (talking.volume < 0.02) {
           clearInterval(voicesFadeOut)
           talking.pause()
         }
-      }, 500)
-    }, 20000)
-
+      }, 30)
+    }, 19000) 
   } // end of handleStart
 
   return (
