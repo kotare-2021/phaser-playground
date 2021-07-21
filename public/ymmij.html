@@ -72,16 +72,42 @@
        this.load.image('gummyworms', 'assets/ymmijs/gummyworms.png')
        this.load.image('milkyway', 'assets/ymmijs/ridethemilkyway.png')
        this.load.image('broccolli', 'assets/ymmijs/broccolli.png')
-       this.load.image('bomb', 'assets/ymmijs/bomb.png');
+       this.load.image('bomb', 'assets/ymmijs/bomb.png')
+      //  this.load.image('skittles', 'assets/ymmijs/skittles.png')
+       this.load.image('skittles', 'assets/ymmijs/pngegg.png');
+       this.load.image('rainbow', 'assets/ymmijs/rainbow.png');
+
        this.load.audio('mario', ['assets/ymmijs/audio/mario-1-up.mp3'])
+
        this.load.audio('themusic', ['assets/ymmijs/audio/hampyster.mp3'])
        this.load.spritesheet('dude', 'assets/ymmijs/doggy.png',{ frameWidth: 32, frameHeight: 32 });
+       this.load.spritesheet('explosion', 'assets/ymmijs/explosion.png', { frameWidth: 240, frameHeight: 150})
+       this.load.spritesheet('guy', 'assets/ymmijs/guy.png', { frameWidth: 380, frameHeight: 750})
+       this.load.image('gameover', 'assets/ymmijs/gameover.png');
+
 
        
        // this.load.spritesheet('dog1', '')
        //kill the dogs off
        this.load.spritesheet('joker', 'assets/ymmijs/joker.png', { frameWidth: 66, frameHeight: 99});
-       this.load.spritesheet('dog2', 'assets/ymmijs/dog2.png', { frameWidth: 32, frameHeight: 32});
+      //  this.load.spritesheet('dog2', 'assets/ymmijs/dog2.png', { frameWidth: 32, frameHeight: 32});
+
+      this.load.spritesheet('dog3', 'assets/ymmijs/dog3.png', { frameWidth: 64.5, frameHeight: 43});
+      this.load.spritesheet('dog4', 'assets/ymmijs/dog4.png', { frameWidth: 64.3, frameHeight: 56});
+      this.load.spritesheet('dog5', 'assets/ymmijs/dog5.png', { frameWidth: 64.3, frameHeight: 55});
+      this.load.spritesheet('dog6', 'assets/ymmijs/dog6.png', { frameWidth: 64.1, frameHeight: 58});
+      this.load.spritesheet('dog7', 'assets/ymmijs/dog7.png', { frameWidth: 64.2, frameHeight: 51});
+      this.load.spritesheet('dog8', 'assets/ymmijs/dog8.png', { frameWidth: 64.2, frameHeight: 52});
+      this.load.spritesheet('dog9', 'assets/ymmijs/dog9.png', { frameWidth: 64.3, frameHeight: 57});
+      this.load.spritesheet('dog10', 'assets/ymmijs/dog10.png', { frameWidth: 64.3, frameHeight: 53});
+     
+
+
+
+
+
+
+
        this.load.audio('notif', ['assets/ymmijs/audio/notif.wav'])
        this.load.audio('drum1', ['assets/ymmijs/audio/drums/drum1.wav'])
        this.load.audio('bassdrum', ['assets/ymmijs/audio/drums/bassdrum.mp3'])
@@ -187,19 +213,16 @@ var floor;
  
        cursors = this.input.keyboard.createCursorKeys();
      
- 
-   //  sky= this.add.tileSprite(0, 0, 800, 600, 'sky')
-   // .setOrigin(0)
-   // .setScrollFactor(0,1);
+
       
    //dynamic groups
    
       milkybarwee = this.add.image(2500, 300, 'milkyway');
-      // milkybarwee.anchor.setTo(0.5, 0.5);
+
  
 
 
-      
+
 
 
    //static groups
@@ -294,8 +317,96 @@ var floor;
        // platforms.create(50, 250, 'ground');
        // platforms.create(750, 220, 'ground');
        player = this.physics.add.sprite(0, 0, 'dude');
-       dog2 = this.physics.add.sprite(7400, 150, 'dog2') //6990 when the beat drops
-        
+      //  dog2 = this.physics.add.sprite(100, 150, 'dog2')
+       
+       dog3 = this.physics.add.sprite(8350, 20, 'dog3')//6990 when the beat drops
+       dog4 = this.physics.add.sprite(8400, 40, 'dog4')
+       dog5 = this.physics.add.sprite(8450, 60, 'dog5')
+       dog6 = this.physics.add.sprite(8500, 80, 'dog6')
+       dog7 = this.physics.add.sprite(8550, 100, 'dog7')
+       dog8 = this.physics.add.sprite(8600, 120, 'dog8')
+       dog9 = this.physics.add.sprite(8650, 140, 'dog9')
+       dog10 = this.physics.add.sprite(8700, 160, 'dog10')
+
+       dog3.visible = false
+       dog4.visible = false
+       dog5.visible = false
+       dog6.visible = false
+       dog7.visible = false
+       dog8.visible = false
+       dog9.visible = false
+       dog10.visible = false
+
+
+      
+
+   
+
+
+
+
+
+
+
+      dog3.flipX = true
+      dog3.setGravityY(-300)
+      dog4.flipX = true
+      dog4.setGravityY(-300)
+      dog5.flipX = true
+      dog5.setGravityY(-300)
+      dog6.flipX = true
+      dog6.setGravityY(-300)
+      dog7.flipX = true
+      dog7.setGravityY(-300)
+      dog8.flipX = true
+      dog8.setGravityY(-300)
+      dog9.flipX = true
+      dog9.setGravityY(-300)
+      dog10.flipX = true
+      dog10.setGravityY(-300)
+
+
+
+
+
+
+
+
+       explosion = this.physics.add.sprite(10360, -50, 'explosion')
+       explosion2 = this.physics.add.sprite(10420, -50, 'explosion')
+       explosion3 = this.physics.add.sprite(10490, -50, 'explosion')
+       explosion4 = this.physics.add.sprite(10560, -50, 'explosion')
+       explosion5 = this.physics.add.sprite(10630, -50, 'explosion')
+       explosion6 = this.physics.add.sprite(10700, -50, 'explosion')
+
+       explosion7 = this.physics.add.sprite(10770, -50, 'explosion')
+       explosion8 = this.physics.add.sprite(10840, -50, 'explosion')
+       explosion9 = this.physics.add.sprite(10910, -50, 'explosion')
+       explosion10 = this.physics.add.sprite(10980, -50, 'explosion')
+       explosion11= this.physics.add.sprite(11050, -50, 'explosion')
+       explosion12= this.physics.add.sprite(11120, -50, 'explosion')
+       explosion13= this.physics.add.sprite(11190, -50, 'explosion')
+
+       explosion.visible = false
+       explosion2.visible = false
+       explosion3.visible = false
+       explosion4.visible = false
+       explosion5.visible = false
+       explosion6.visible = false
+
+       explosion7.visible = false
+       explosion8.visible = false
+       explosion9.visible = false
+
+       explosion10.visible = false
+       explosion11.visible = false
+       explosion12.visible = false
+       explosion13.visible = false
+      
+
+       
+
+
       
          //
          joker9 = this.physics.add.sprite(3900,-200, 'joker')
@@ -318,13 +429,17 @@ var floor;
 //50 apart
 //start at 3000?
 
+guy = this.physics.add.sprite(7500, 150, 'guy').setScale(0.9)
+       guy.setGravityY(-300)
+       guy.setVelocityX(0)
+       guy.visible = false
 
 
 
 
 
 
-      dog2.body.setGravityY(-300)
+      // dog2.body.setGravityY(-300)
        //need to figure out how to actually add the dog in. might only need 1 anim.create.
       
        //6990 when the beat drops
@@ -336,8 +451,79 @@ var floor;
        // player.setCollideWorldBounds(true);
        player.body.setGravityY(300)
 
+       
+       
+       
+       
+       this.anims.create({
+   key: 'guywalk',
+   frames: this.anims.generateFrameNumbers('guy', { start: 1, end: 8 }),
+   frameRate: 6,
+         repeat: -1
+})
+
+       //-----dogs---------//
+this.anims.create({
+   key: 'dogrun3',
+   frames: this.anims.generateFrameNumbers('dog3', { start: 1, end: 8 }),
+   frameRate: 15,
+         repeat: -1
+})
+
+this.anims.create({
+   key: 'dogrun4',
+   frames: this.anims.generateFrameNumbers('dog4', { start: 1, end: 8 }),
+   frameRate: 10,
+         repeat: -1
+})
+this.anims.create({
+   key: 'dogrun5',
+   frames: this.anims.generateFrameNumbers('dog5', { start: 1, end: 8 }),
+   frameRate: 20,
+         repeat: -1
+})
+this.anims.create({
+   key: 'dogrun6',
+   frames: this.anims.generateFrameNumbers('dog6', { start: 1, end: 8 }),
+   frameRate: 12,
+         repeat: -1
+})
+this.anims.create({
+   key: 'dogrun7',
+   frames: this.anims.generateFrameNumbers('dog7', { start: 1, end: 8 }),
+   frameRate: 25,
+         repeat: -1
+})
+this.anims.create({
+   key: 'dogrun8',
+   frames: this.anims.generateFrameNumbers('dog8', { start: 1, end: 8 }),
+   frameRate: 10,
+         repeat: -1
+})
+this.anims.create({
+   key: 'dogrun9',
+   frames: this.anims.generateFrameNumbers('dog9', { start: 1, end: 8 }),
+   frameRate: 30,
+         repeat: -1
+})
+this.anims.create({
+   key: 'dogrun10',
+   frames: this.anims.generateFrameNumbers('dog10', { start: 1, end: 8 }),
+   frameRate: 100,
+         repeat: -1
+})
 
 
+
+
+      //-----explosion-----//
+      this.anims.create({
+         key: 'explode',
+         frames: this.anims.generateFrameNumbers('explosion', { start: 1, end: 20 }),
+         frameRate: 30,
+         repeat: -1
+      });
+      //---------------------//
 
        //----Joker--------------//
 
@@ -352,12 +538,12 @@ var floor;
 
 
        //dog2-------------//
-       this.anims.create({
-           key: 'dog2run',
-           frames: this.anims.generateFrameNumbers('dog2', { start: 32, end: 34}),
-           frameRate: 10,
-           repeat: -1
-       });
+      //  this.anims.create({
+      //      key: 'dog2run',
+      //      frames: this.anims.generateFrameNumbers('dog2', { start: 32, end: 34}),
+      //      frameRate: 10,
+      //      repeat: -1
+      //  });
        //----------------//
     
 this.anims.create({
@@ -388,7 +574,23 @@ this.anims.create({
  
        this.physics.add.collider(player, platforms);
        this.physics.add.collider(joker, platforms);
- 
+       this.physics.add.collider(explosion, platforms);
+       this.physics.add.collider(explosion2, platforms);
+       this.physics.add.collider(explosion3, platforms);
+       this.physics.add.collider(explosion4, platforms);
+       this.physics.add.collider(explosion5, platforms);
+       this.physics.add.collider(explosion6, platforms);
+       this.physics.add.collider(explosion7, platforms);
+
+
+       this.physics.add.collider(explosion8, platforms);
+       this.physics.add.collider(explosion9, platforms);
+       this.physics.add.collider(explosion10, platforms);
+       this.physics.add.collider(explosion11, platforms);
+       this.physics.add.collider(explosion12, platforms);
+       this.physics.add.collider(explosion13, platforms);
+
+   
        this.physics.add.collider(joker2, platforms);
        this.physics.add.collider(joker3, platforms);
        this.physics.add.collider(joker4, platforms);
@@ -429,16 +631,19 @@ this.anims.create({
            stars.create(10225, -100, 'star'),
            stars.create(5080, -100, 'star'),
            stars.create(900, -100, 'star'),
+         //   stars.create(10386, -100, 'skittles').setScale(0.5),
 
            stars.create(8422, -100, 'star'),
            stars.create(8729, -100, 'star'),
          //   stars.create(900, -100, 'star'),
 
          stars.create(5629, -100, 'star').setScale(4),
-           stars.create(5100, 10, 'jerky').setScale(0.1),
-           stars.create(7000, 10, 'gummyworms').setScale(0.2),
+           stars.create(5000, 10, 'jerky').setScale(0.1),
+           stars.create(6180, -100, 'gummyworms').setScale(0.4),
            stars.create(12000, 10, 'broccolli').setScale(0.5),
            stars.create(12200, 10, 'broccolli').setScale(0.5),
+           stars.create(6885, -100, 'skittles').setScale(0.3),
+         
        ]
 
 //if player.x === wherever {
@@ -446,7 +651,7 @@ this.anims.create({
 //}
 
 
- this.physics.add.collider(dog2, platforms)
+//  this.physics.add.collider(dog2, platforms)
    //for each star in the array try to match the sound with the sound in the sound array.
  
 
@@ -469,7 +674,10 @@ var score = 0;
 
  scoreText = this.add.text(160, 450, 'How much doggy loves you: 0', { fontSize: '32px', fill: 'white' }).setScrollFactor(0);;
 // console.log (scoreText.y)
-///if key is broccoli go -1000 for score and say you fed the doggo broccolli and it died, game over.
+
+endingMessage = this.add.image(0,0, 'gameover').setScrollFactor(0)
+  endingMessage.setOrigin(0,0);
+  endingMessage.visible = false
  
 // milkyway.rotation += 0.01;
 // if the star
@@ -486,8 +694,9 @@ function collectStar (player, star)
 
    if (star.texture.key === 'jerky') {
       
-      player.setScale(8).setY(100)
-      player.setVelocityX(700)
+      player.setScale(8)
+      player.setVelocityX(1000)
+      console.log(player.velocity)
      
    }    if (star.texture.key === 'gummyworms') {
       
@@ -501,16 +710,17 @@ function collectStar (player, star)
        player.setTint(0xff0000);
        gameOver = true;
        scoreText.setText('How much doggy loves you: -1000');
-      
+       endingMessage.visible = true
       //  player.angle += 0.2
       //  console.log(player.angle)
        //change dogs animation
        //set tilesprites velocity to nothing.
        //make screen text visible
-
-
    
-   }
+   }     
+  
+
+
 
  
  
@@ -526,7 +736,7 @@ function collectStar (player, star)
 
  
 
- 
+ //dog 3 = 64.5 x 43
 
  
  
@@ -550,19 +760,163 @@ this.cameras.main.startFollow(player);
 }
  
 //end of create function
- 
+
 var flipflop;
    function update() {
+
+      if(player.x > 7884){
+       
+         guy.visible = true
+         guy.anims.play('guywalk', true)
+         guy.setVelocityX(400)
+      }
+      
+
+      if (player.x > 8700 && player.x < 9941) {
+       dog3.visible = true
+       dog4.visible = true
+       dog5.visible = true
+       dog6.visible = true
+       dog7.visible = true
+       dog8.visible = true
+       dog9.visible = true
+       dog10.visible = true
+
+      dog3.anims.play('dogrun3', true)
+      dog4.anims.play('dogrun4', true)
+      dog5.anims.play('dogrun5', true)
+      dog6.anims.play('dogrun6', true)
+      dog7.anims.play('dogrun7', true)
+      dog8.anims.play('dogrun8', true)
+      dog9.anims.play('dogrun9', true)
+      dog10.anims.play('dogrun10', true)
+
+      dog3.setX(player.x - 400)
+      dog4.setX(player.x - 350)
+      dog5.setX(player.x - 300)
+      dog6.setX(player.x - 250)
+      dog7.setX(player.x - 200)
+      dog8.setX(player.x - 150)
+      dog9.setX(player.x - 100)
+      dog10.setX(player.x - 50)
+
+         
+
+
+}
+
+if (player.x > 9941) {
+         dog3.setTint(0xff0000);
+         dog4.setTint(0xff0000);
+         dog5.setTint(0xff0000);
+         dog6.setTint(0xff0000);
+         dog7.setTint(0xff0000);
+         dog8.setTint(0xff0000);
+         dog9.setTint(0xff0000);
+         dog10.setTint(0xff0000);
+
+      }
+
+      if (player.x > explosion.x -30) {
+         explosion.anims.play('explode', true)
+         explosion.visible = true }
+
+      if (player.x > explosion2.x -30) {
+      explosion2.visible = true
+      explosion2.anims.play('explode', true)
+   }
+
+      if (player.x > explosion3.x-30) {
+      explosion3.visible = true
+      explosion3.anims.play('explode', true)
+   }
+
+      if (player.x > explosion4.x -30) {
+      explosion4.visible = true
+      explosion4.anims.play('explode', true)
+   }
+
+      if (player.x > explosion5.x -30) {
+      explosion5.visible = true
+      explosion5.anims.play('explode', true)
+   }
+
+
+      if (player.x > explosion6.x -30) {
+      explosion6.visible = true
+      explosion6.anims.play('explode', true)
+   }
+
+   if (player.x > explosion7.x -30) {
+      explosion7.visible = true
+      explosion7.anims.play('explode', true)
+   }
+
+   if (player.x > explosion8.x -30) {
+      explosion8.visible = true
+      explosion8.anims.play('explode', true)
+   }
+
+   if (player.x > explosion9.x -30) {
+      explosion9.visible = true
+      explosion9.anims.play('explode', true)
+   }
+
+   if (player.x > explosion10.x -30) {
+      explosion10.visible = true
+      explosion10.anims.play('explode', true)
+   }
+
+   if (player.x > explosion11.x -30) {
+      explosion11.visible = true
+      explosion11.anims.play('explode', true)
+   }
+
+   if (player.x > explosion12.x -30) {
+      explosion6.visible = true
+      explosion6.anims.play('explode', true)
+   }
+
+   if (player.x > explosion13.x -30) {
+      explosion6.visible = true
+      explosion6.anims.play('explode', true)
+   }
+
+
+
+     
+      
+
+    
+
+
      milkybarwee.rotation += 0.01;
 
 
       scoreText.fixedToCamera = true
 
-      if (player.x > 7400) {
-      dog2.anims.play('dog2run', true);
-      dog2.setVelocityX(160)
+
+  if (player.x > 6895 && player.x < 11000) {
+    
+      this.add.image(player.x - 15, player.y + 4, 'rainbow').setScale(0.2)
+
+
+   }
+
+   //at 11327 add in dogs or something.
+   //stop the rainbow
+
+
+         // dog2.anims.play('dog2run', true);
+      // dog2.setVelocityX(160)
  
-      } if(player.x > 10) {
+    if(player.y > 400) {
+       player.y =  -100
+       player.x += 100
+       
+    }
+ 
+     if(player.x > 10) {
        
          joker.anims.play('jokerdance', true)
          joker2.anims.play('jokerdance', true)
