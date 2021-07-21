@@ -12,7 +12,7 @@
       { name: 'ymmij', style: { left: '15rem', top: '19rem' }, img: 'Hamster_Dance.ico' },
     ]
     
-    const Classroom = ({  setScene, setDream, handleStop }) => {
+    const Classroom = ({  setScene, setDream }) => {
       // change dream scene
       const [startDream, setStartDream] = useState(false)
 
