@@ -4,6 +4,7 @@
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
 </head>
 <body>
+  
   <script>
     var config = {
       type: Phaser.Auto,
@@ -29,14 +30,15 @@
 
       this.load.image('stadium', 'assets/stadium.png')
       this.load.image('ground', 'assets/platform.png')
-      this.load.image('ball', 'assets/football.png')
-      this.load.image('goalOne', 'assets/goal.png')
-      this.load.image('goalTwo', 'assets/goalTwo.png')
-      this.load.spritesheet('secondPlayer', 'assets/secondPlayer.png', {
-        frameWidth: 137, frameHeight: 137
+      this.load.image('ball', 'assets/fred/football.png')
+      this.load.image('goalOne', 'assets/fred/goal.png')
+      this.load.image('goalTwo', 'assets/fred/goalTwo.png')
+      this.load.audio('audio', ['assets/fred/WORLDCUP.mp3'])
+      this.load.spritesheet('secondPlayer', 'assets/fred/greenNight.png', {
+        frameWidth: 75, frameHeight: 103.75
       });
-      this.load.spritesheet('dude', 'assets/test-sprite.png',{
-        frameWidth: 108, frameHeight: 140
+      this.load.spritesheet('dude', 'assets/fred/nightGold.png',{
+        frameWidth: 73.33333, frameHeight: 103.75
       });
       
 
@@ -50,7 +52,7 @@
     {
       
       
-
+      
       this.add.image(400, 300, 'stadium');
       
       //this sets the physics characteristic for the platrom (ground)
@@ -67,6 +69,7 @@
       keys = this.input.keyboard.addKeys('W,A,S,D,F,G,N,M')
       
       floor.setVisible(false)
+      floor2.setVisible(false)
       crossBarTwo.setVisible(false)
       crossBarOne.setVisible(false)
       player = this.physics.add.sprite(600, 450, 'dude');
@@ -85,18 +88,18 @@
 //player
       this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', {start: 8, end: 16}),
+        frames: this.anims.generateFrameNumbers('dude', {start: 3, end: 5}),
         frameRate: 10, 
         repeat: -1
       });
       this.anims.create({
         key: 'turn',
-        frames: [{key: 'dude', frame: 4}],
+        frames: [{key: 'dude', frame: 1}],
         frameRate: 20
       })
       this.anims.create({
         key: 'right',
-        frames: this.anims.generateFrameNumbers('dude', {start: 0, end: 8}),
+        frames: this.anims.generateFrameNumbers('dude', {start: 6, end: 8}),
         frameRate: 10,
         repeat: -1
       })
@@ -105,18 +108,18 @@
 //player 2
       this.anims.create({
         key: 'left2',
-        frames: this.anims.generateFrameNumbers('secondPlayer', {start: 8, end: 16}),
+        frames: this.anims.generateFrameNumbers('secondPlayer', {start: 3, end: 5}),
         frameRate: 10, 
         repeat: -1
       });
       this.anims.create({
         key: 'turn2',
-        frames: [{key: 'secondPlayer', frame: 4}],
+        frames: [{key: 'secondPlayer', frame: 1}],
         frameRate: 20
       })
       this.anims.create({
         key: 'right2',
-        frames: this.anims.generateFrameNumbers('secondPlayer', {start: 0, end: 8}),
+        frames: this.anims.generateFrameNumbers('secondPlayer', {start: 6, end: 8}),
         frameRate: 10,
         repeat: -1
       })
@@ -170,36 +173,37 @@
       var score2 = 0; 
       var scoreText1
       var scoreText2
-      scoreText2 = this.add.text(16, 50, 'score: 0', {fontSize: '32px', fill: '#000'})
-      scoreText1 = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+      scoreText2 = this.add.text(16, 50, 'Green: 0', {fontSize: '32px', fill: '#000'})
+      scoreText1 = this.add.text(16, 16, 'Gold: 0', { fontSize: '32px', fill: '#000' });
       
       function goalScoreOne (player, goalOne)
        {
 
            score1 += 1;
-           scoreText1.setText('Score: ' + score1);
+           scoreText1.setText('Gold: ' + score1);
         }
 
       function goalScoreTwo(player, goalTwo) 
        {
           score2 += 1;
-          scoreText2.setText('Score: ' + score2)
+          scoreText2.setText('Green: ' + score2)
        }
-
        
+       music = this.sound.add('audio', {loop: true})
+       music.play()
     }
 function update() {
-
+  
   //player
   if (cursors.left.isDown)
 {
-    player.setVelocityX(-120);
-
+    player.setVelocityX(-200);
+   
     player.anims.play('left', true);
 }
 else if (cursors.right.isDown)
 {
-    player.setVelocityX(120);
+    player.setVelocityX(200);
 
     player.anims.play('right', true);
 }
@@ -215,8 +219,10 @@ if (cursors.up.isDown)
     player.setVelocityY(-330);
 } else if(keys.N.isDown) {
   player.setVelocityX(-500)
+  player.anims.play('left', true)
 } else if(keys.M.isDown) {
   player.setVelocityX(500)
+  player.anims.play('right', true)
 }  else if(cursors.down.isDown) {
   player.setVelocityY(300)
 } 
@@ -226,13 +232,13 @@ if (cursors.up.isDown)
 //player 2
 if (keys.D.isDown)
 {
-    player2.setVelocityX(120);
+    player2.setVelocityX(200);
 
     player2.anims.play('right2', true);
 }
 else if (keys.A.isDown)
 {
-    player2.setVelocityX(-120);
+    player2.setVelocityX(-200);
 
     player2.anims.play('left2', true);
 } else {
@@ -246,8 +252,10 @@ if (keys.W.isDown)
     player2.setVelocityY(-330);
 } else if(keys.F.isDown) {
   player2.setVelocityX(-500)
+  player2.anims.play('left2', true)
 } else if(keys.G.isDown) {
   player2.setVelocityX(500)
+  player2.anims.play('right2', true)
 }  else if(keys.S.isDown) {
   player2.setVelocityY(300)
 } 
