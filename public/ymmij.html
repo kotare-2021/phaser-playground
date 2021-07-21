@@ -51,20 +51,37 @@
    var game = new Phaser.Game(config);
    var tilesprite;
    var cursors;
+   var scoreText;
  
    function preload ()
    { //unzip music junk and add button sound effects all to workspace audio file. then play around with the sounds n stuff.
       
-       this.load.image('starfield', 'assets/ymmijs/starsky.png');
+       this.load.image('starfield', 'assets/ymmijs/yaysky.png');
+       this.load.image('starry', 'assets/ymmijs/realStars.png')
+       this.load.image('milkywaystars', 'assets/ymmijs/milkywaystars.png')
+       this.load.image('otherstars', 'assets/ymmijs/otherstars.png')
+
+
+       this.load.image('mount', 'assets/ymmijs/purpl.png')
+       this.load.image('moon', 'assets/ymmijs/moon].png')
+
        // this.load.image('sky', 'assets/ymmijs/back.png');
        this.load.image('ground', 'assets/ymmijs/clouds1.png');
-       this.load.image('star', 'assets/ymmijs/star.png');
+       this.load.image('star', 'assets/ymmijs/choc.png');
+       this.load.image('jerky', 'assets/ymmijs/jacklinks.png');
+       this.load.image('gummyworms', 'assets/ymmijs/gummyworms.png')
+       this.load.image('milkyway', 'assets/ymmijs/ridethemilkyway.png')
+       this.load.image('broccolli', 'assets/ymmijs/broccolli.png')
        this.load.image('bomb', 'assets/ymmijs/bomb.png');
        this.load.audio('mario', ['assets/ymmijs/audio/mario-1-up.mp3'])
        this.load.audio('themusic', ['assets/ymmijs/audio/hampyster.mp3'])
        this.load.spritesheet('dude', 'assets/ymmijs/doggy.png',{ frameWidth: 32, frameHeight: 32 });
+
+       
        // this.load.spritesheet('dog1', '')
-       // this.load.spritesheet('dog2', 'assets/ymmijs/dog-run', { frameWidth: 330, frameHeight: 66});
+       //kill the dogs off
+       this.load.spritesheet('joker', 'assets/ymmijs/joker.png', { frameWidth: 66, frameHeight: 99});
+       this.load.spritesheet('dog2', 'assets/ymmijs/dog2.png', { frameWidth: 32, frameHeight: 32});
        this.load.audio('notif', ['assets/ymmijs/audio/notif.wav'])
        this.load.audio('drum1', ['assets/ymmijs/audio/drums/drum1.wav'])
        this.load.audio('bassdrum', ['assets/ymmijs/audio/drums/bassdrum.mp3'])
@@ -88,29 +105,76 @@
    }
 var floor;
    function create ()
- 
- 
    {
+
      
+
        //infinite scrolling background:
        tileSprite = this.add.tileSprite(0, 0, 800, 600, 'starfield');
        tileSprite.setOrigin(0,0);
        tileSprite.setScrollFactor(0);
+
+       tileStars = this.add.tileSprite(0, 0, 800, 600, 'starry');
+       tileStars.setOrigin(0,0);
+       tileStars.setScrollFactor(0);
+
+       tileMoon = this.add.tileSprite(0, 0, 1600, 600, 'moon');
+       tileMoon.setOrigin(0,0);
+       tileMoon.setScrollFactor(0);
+
+       milkySprite = this.add.tileSprite(0, 0, 1600, 600, 'milkywaystars');
+       milkySprite.setOrigin(0,0);
+       milkySprite.setScrollFactor(0);
+
+       otherStarsSprite = this.add.tileSprite(0, 0, 1600, 600, 'otherstars');
+       otherStarsSprite.setOrigin(0,0);
+       otherStarsSprite.setScrollFactor(0);
+
+       tileMount = this.add.tileSprite(0, 10, 800, 600, 'mount');
+       tileMount.setOrigin(0,0);
+       tileMount.setScrollFactor(0);
     //backG music
        themusic = this.sound.add('themusic', {loop: true});
    //sounds here
    soundsArray = ['placeholderforzero',
        kiss = this.sound.add('kiss', { loop: false }),
        notif = this.sound.add('notif', {loop:false}),
-       drum1 = this.sound.add('drum1', {loop:false}),
        kiss = this.sound.add('kiss', {loop:false}),
+       drum1 = this.sound.add('drum1', {loop:false}),
        spunk = this.sound.add('spunk', {loop:false}),
        bark = this.sound.add('bark', {loop:false}),
        bark = this.sound.add('bark', {loop:false}),
+       bark = this.sound.add('bark', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       bark = this.sound.add('bark', {loop:false}),
+       bark = this.sound.add('bark', {loop:false}),
+       bark = this.sound.add('bark', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+       kiss = this.sound.add('kiss', {loop:false}),
+
       
    ]
  
-     
+     //add multiple sprites in (3000,0) x 4
+     //add platform at (3000, 150) and add sprites x3 onto platform.
       
  
  
@@ -118,6 +182,7 @@ var floor;
  
  
        // tileSprite.fixedToCamera = true; //
+
  
  
        cursors = this.input.keyboard.createCursorKeys();
@@ -127,23 +192,86 @@ var floor;
    // .setOrigin(0)
    // .setScrollFactor(0,1);
       
+   //dynamic groups
    
+      milkybarwee = this.add.image(2500, 300, 'milkyway');
+      // milkybarwee.anchor.setTo(0.5, 0.5);
+ 
+
+
+      
+
+
+   //static groups
        platforms = this.physics.add.staticGroup();
        doggihome = this.physics.add.staticGroup();
  
        doggihome.create(-300, 250, 'home').setScale(0.2)
+
+       
  
        floor = platforms.create(0, 300, 'ground').refreshBody();
        const poo = floor.width - 100 //which is always 400.
-       const wee = floor.x
+       const wee = floor.x 
        platforms.create(wee + poo , 300, 'ground')
        pp = platforms.create(wee + poo * 2, 300, 'ground')
-       console.log(pp.x)
-       console.log(poo)
+   
  
        platforms.create(wee + poo  * 2,300, 'ground')
        platforms.create(wee + poo * 3, 300, 'ground')
        platforms.create(wee + poo * 4,300, 'ground')
+       platforms.create(wee + poo * 4,300, 'ground')
+       //
+       platforms.create(100 + wee + poo * 5,200, 'ground')
+       platforms.create(100 + wee + poo * 6,100, 'ground')
+       platforms.create(100 + wee + poo * 7,300, 'ground')
+       platforms.create(100 + wee + poo * 8,300, 'ground')
+       platforms.create( + wee + poo * 9,300, 'ground')
+       platforms.create( + wee + poo * 10,300, 'ground')
+       platforms.create(+ wee + poo * 11,300, 'ground')
+       platforms.create( wee + poo * 12,300, 'ground')
+       platforms.create( wee + poo * 13,300, 'ground')
+       platforms.create( wee + poo * 14,300, 'ground')
+       platforms.create(wee + poo * 15,300, 'ground')
+       platforms.create(wee + poo * 16,300, 'ground')
+       platforms.create(wee + poo * 17,300, 'ground')
+       platforms.create(wee + poo * 18,300, 'ground')
+       platforms.create(wee + poo * 19,300, 'ground')
+       platforms.create(wee + poo * 20,300, 'ground')
+       platforms.create(wee + poo * 21,200, 'ground')
+       platforms.create(wee + poo * 22,100, 'ground')
+       platforms.create(wee + poo * 23,300, 'ground')
+       platforms.create(wee + poo * 24,200, 'ground')
+       platforms.create(wee + poo * 25,300, 'ground')
+       platforms.create(wee + poo * 26,300, 'ground')
+       platforms.create(wee + poo * 27,200, 'ground')
+       platforms.create(wee + poo * 28,300, 'ground')
+
+       platforms.create(wee + poo * 29,200, 'ground')
+       platforms.create(wee + poo * 30,300, 'ground')
+       platforms.create(wee + poo * 31,300, 'ground')
+       platforms.create(wee + poo * 32,200, 'ground')
+       platforms.create(wee + poo * 33,100, 'ground')
+       platforms.create(wee + poo * 34,300, 'ground')
+       platforms.create(wee + poo * 35,300, 'ground')
+       platforms.create(wee + poo * 36,300, 'ground')
+       platforms.create(wee + poo * 37,300, 'ground')
+       platforms.create(wee + poo * 38,300, 'ground')
+       platforms.create(wee + poo * 39,200, 'ground')
+       platforms.create(wee + poo * 40,300, 'ground')
+       platforms.create(wee + poo * 41,300, 'ground')
+
+
+
+
+
+
+
+       //joker platform:
+       platforms.create(4000,180, 'ground')
+
+    
+   
  
    
       //stars.create(700, 10, 'star')
@@ -166,13 +294,71 @@ var floor;
        // platforms.create(50, 250, 'ground');
        // platforms.create(750, 220, 'ground');
        player = this.physics.add.sprite(0, 0, 'dude');
-       dog1 = this.physics.add.sprite('console log the co-ordinates')
+       dog2 = this.physics.add.sprite(7400, 150, 'dog2') //6990 when the beat drops
+        
+      
+         //
+         joker9 = this.physics.add.sprite(3900,-200, 'joker')
+         joker10 = this.physics.add.sprite(3950,-200, 'joker')
+         joker11 = this.physics.add.sprite(4000,-200, 'joker')
+         joker6 = this.physics.add.sprite(4050,-200, 'joker')
+         joker7 = this.physics.add.sprite(4100,-200, 'joker')
+         joker8 = this.physics.add.sprite(4150,-200, 'joker')
+      
+
+         //
+       
+         joker2 = this.physics.add.sprite(3950,200, 'joker')
+         joker3 = this.physics.add.sprite(4000,200, 'joker')
+         joker4 = this.physics.add.sprite(4050,200, 'joker')
+         joker5 = this.physics.add.sprite(4100,200, 'joker')
+         joker = this.physics.add.sprite(4150,20, 'joker')
+
+
+//50 apart
+//start at 3000?
+
+
+
+
+
+
+
+      dog2.body.setGravityY(-300)
        //need to figure out how to actually add the dog in. might only need 1 anim.create.
- 
+      
+       //6990 when the beat drops
+
+
+
        // player.fixedToCamera = true;
        player.setBounce(0.2);
        // player.setCollideWorldBounds(true);
        player.body.setGravityY(300)
+
+
+
+
+       //----Joker--------------//
+
+       this.anims.create({
+          key: 'jokerdance',
+          frames: this.anims.generateFrameNumbers('joker', { start: 1, end: 4}),
+          frameRate: 6,
+           repeat: -1
+       })
+
+       //--------------------//
+
+
+       //dog2-------------//
+       this.anims.create({
+           key: 'dog2run',
+           frames: this.anims.generateFrameNumbers('dog2', { start: 32, end: 34}),
+           frameRate: 10,
+           repeat: -1
+       });
+       //----------------//
     
 this.anims.create({
    key: 'starting',
@@ -201,6 +387,18 @@ this.anims.create({
        });
  
        this.physics.add.collider(player, platforms);
+       this.physics.add.collider(joker, platforms);
+ 
+       this.physics.add.collider(joker2, platforms);
+       this.physics.add.collider(joker3, platforms);
+       this.physics.add.collider(joker4, platforms);
+       this.physics.add.collider(joker5, platforms);
+       this.physics.add.collider(joker6, platforms);
+       this.physics.add.collider(joker7, platforms);
+       this.physics.add.collider(joker8, platforms);
+       this.physics.add.collider(joker9, platforms);
+       this.physics.add.collider(joker10, platforms);
+       this.physics.add.collider(joker11, platforms);
       
     //when player touches them they disappear.
     // they each make their own individual noise
@@ -208,17 +406,50 @@ this.anims.create({
  
        stars = this.physics.add.group()
        starsArray = [
-           stars.create(400, 10, 'star'),
-           stars.create(900, 10, 'star'),
-           stars.create(1234, 10, 'star'),
-           stars.create(100, 10, 'star'),
-           stars.create(600, 10, 'star'),
-           stars.create(700, 10, 'star'),
+           stars.create(500, 10, 'star'),
+           stars.create(800, 10, 'star'),
+           stars.create(1100, -20, 'star'),
+           stars.create(1500, 10, 'star'),
+           stars.create(1600, 10, 'star'),
+           stars.create(1700, 10, 'star'),
+           stars.create(1700, 10, 'star'),
+           stars.create(1700, 10, 'star'),
+           stars.create(2178, 100, 'star'),
+           stars.create(3198, 10, 'star'),
+           stars.create(3749, 10, 'star'),
+           stars.create(4269, 10, 'star'),
+           stars.create(3100, 10, 'star'),
+           stars.create(3100, 10, 'star'),
+
+
+           stars.create(11,417, 10, 'star'),
+           stars.create(9318, 10, 'star'),
+           stars.create(9526, -100, 'star'),
+           stars.create(9795, -100, 'star'),
+           stars.create(10225, -100, 'star'),
+           stars.create(5080, -100, 'star'),
+           stars.create(900, -100, 'star'),
+
+           stars.create(8422, -100, 'star'),
+           stars.create(8729, -100, 'star'),
+         //   stars.create(900, -100, 'star'),
+
+         stars.create(5629, -100, 'star').setScale(4),
+           stars.create(5100, 10, 'jerky').setScale(0.1),
+           stars.create(7000, 10, 'gummyworms').setScale(0.2),
+           stars.create(12000, 10, 'broccolli').setScale(0.5),
+           stars.create(12200, 10, 'broccolli').setScale(0.5),
        ]
- 
+
+//if player.x === wherever {
+   //release the dog sprites.
+//}
+
+
+ this.physics.add.collider(dog2, platforms)
    //for each star in the array try to match the sound with the sound in the sound array.
  
- 
+
  
    // stars.children.iterate(function (child) {
  
@@ -233,68 +464,79 @@ this.physics.add.overlap(player, starsArray, collectStar, null, this);
  
  
 var score = 0;
-var scoreText;
+
+
+
+ scoreText = this.add.text(160, 450, 'How much doggy loves you: 0', { fontSize: '32px', fill: 'white' }).setScrollFactor(0);;
+// console.log (scoreText.y)
+///if key is broccoli go -1000 for score and say you fed the doggo broccolli and it died, game over.
  
-scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
- 
-///
- 
- 
+// milkyway.rotation += 0.01;
 // if the star
  
 function collectStar (player, star)
 {
- 
+
    star.disableBody(true, true);
    score += 1;
-   scoreText.setText('Score: ' + score);
+   scoreText.setText('How much doggy loves you: ' + score);
    //score is a number.
    whichSong = soundsArray[score]
    whichSong.play();
-   // whichSong.play()
-  
+
+   if (star.texture.key === 'jerky') {
+      
+      player.setScale(8).setY(100)
+      player.setVelocityX(700)
+     
+   }    if (star.texture.key === 'gummyworms') {
+      
+      player.setScale(1).setVelocityX(160).setY(100)
+     
+   } if (star.texture.key === 'broccolli') {
+      
+      this.physics.pause();
+      flipflop = false
+      themusic.pause()
+       player.setTint(0xff0000);
+       gameOver = true;
+       scoreText.setText('How much doggy loves you: -1000');
+      
+      //  player.angle += 0.2
+      //  console.log(player.angle)
+       //change dogs animation
+       //set tilesprites velocity to nothing.
+       //make screen text visible
+
+
+   
+   }
+
  
  
-//
+
  
- 
- 
-   // if (stars.countActive(true) === 0)
-   // {
-   //     // stars.children.iterate(function (child) {
- 
-   //     //     child.enableBody(true, child.x, 0, true, true);
- 
-   //     // });
- 
-   //     var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
- 
-   //     var bomb = bombs.create(x, 16, 'bomb');
+
    //     bomb.setBounce(1);
    //     bomb.setCollideWorldBounds(true);
    //     bomb.setVelocity(Phaser.Math.Between(-200, 200), 20); }
 }
  
  
-bombs = this.physics.add.group();
+
  
-this.physics.add.collider(bombs, platforms);
+
  
-this.physics.add.collider(player, bombs);
+
  
  
  
-function hitBomb (player, bomb)
-{
+
    // this.physics.pause();
-   this.physics.play();
+   //this.physics.play();
  
-   // player.setTint(0xff0000);
+
  
-   player.anims.play('turn');
- 
-   // gameOver = true;
-}
  
 spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 rightStart = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -303,23 +545,57 @@ cursors = this.input.keyboard.createCursorKeys();
  
  
 this.cameras.main.startFollow(player);
- 
+
+
 }
  
 //end of create function
  
 var flipflop;
    function update() {
+     milkybarwee.rotation += 0.01;
+
+
+      scoreText.fixedToCamera = true
+
+      if (player.x > 7400) {
+      dog2.anims.play('dog2run', true);
+      dog2.setVelocityX(160)
  
+      } if(player.x > 10) {
+       
+         joker.anims.play('jokerdance', true)
+         joker2.anims.play('jokerdance', true)
+         joker3.anims.play('jokerdance', true)
+         joker4.anims.play('jokerdance', true)
+         joker5.anims.play('jokerdance', true)
+         joker6.anims.play('jokerdance', true)
+         joker7.anims.play('jokerdance', true)
+         joker8.anims.play('jokerdance', true)
+         joker9.anims.play('jokerdance', true)
+         joker10.anims.play('jokerdance', true)
+         joker11.anims.play('jokerdance', true)
+
+      }
+   
        //finds players co-ordiantes on screen:
-// console.log(player.x)
+// console.log(player.y)
   
-  
+// milkybarmove.rotation = 0.1
  
 if (flipflop === true) {
+
+   console.log( 'x: ' +  player.x + 'y: ' +  player.y)
+
+   tileMoon.tilePositionX +=3.5
+   milkySprite.tilePositionX +=2.5
+   otherStarsSprite.tilePositionX +=4.5
+   tileMount.tilePositionX+=2
    tileSprite.tilePositionX += 6;
+   tileStars.tilePositionX +=4;
    player.anims.play('right', true);
    player.setVelocityX(160)
+
  
  
 } else {
@@ -340,7 +616,7 @@ if (flipflop === true) {
    else if (cursors.left.isDown){
  
    player.setVelocityX(-160);
- 
+
    player.anims.play('left', true);
 } else if (cursors.up.isDown)
 {
@@ -369,6 +645,7 @@ if (Phaser.Input.Keyboard.JustDown(rightStart) &&  !themusic.isPlaying || Phaser
 if(themusic.isPaused === true) {
    flipflop = true;
    themusic.resume();
+  
  
    
   
