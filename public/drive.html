@@ -1027,6 +1027,9 @@ let Sewer = new Phaser.Class({
                 dragons.children.iterate(object => {
                     object.setVisible(true)
                 })
+                greenDragons.children.iterate(object => {
+                    object.setVisible(true)
+                })
             }
         })
 
@@ -1072,11 +1075,13 @@ let Sewer = new Phaser.Class({
 
         dragons = this.physics.add.group()
         dragonLayer.forEach(object => {
-            let obj = dragons.create(object.x, object.y, 'redDragon').setScale(1).setVelocity(50).setBounce(1).setVisible(false).setSize(10, 10).setAlpha(0.7)
+            dragons.create(object.x, object.y, 'redDragon').setScale(1).setVelocity(Phaser.Math.Between(-50, 50)).setBounce(1).setVisible(false).setSize(10, 10).setAlpha(0.7)
+            dragons.create(object.x, object.y, 'redDragon').setScale(1).setVelocity(Phaser.Math.Between(-100, 100)).setBounce(1).setVisible(false).setSize(10, 10).setAlpha(0.7)
         })
         greenDragons = this.physics.add.group()
         greenDragonLayer.forEach(object => {
-            let obj = greenDragons.create(object.x, object.y, 'greenDragon').setScale(1.2).setVelocity(50).setBounce(1).setVisible(true).setSize(10, 10).setAlpha(0.7)
+            greenDragons.create(object.x, object.y, 'greenDragon').setScale(1.2).setVelocity(Phaser.Math.Between(-50, 50)).setBounce(1).setVisible(false).setSize(10, 10).setAlpha(0.7)
+            greenDragons.create(object.x, object.y, 'greenDragon').setScale(1.2).setVelocity(Phaser.Math.Between(-100, 100)).setBounce(1).setVisible(false).setSize(10, 10).setAlpha(0.7)
         })
 
         let rats = this.physics.add.group()
@@ -1136,7 +1141,7 @@ let Sewer = new Phaser.Class({
         let speakersLeft = map.getObjectLayer('Speakers Left')['objects']
         speakers.forEach(object => { sewerItems.add(this.add.image(object.x, object.y, 'speaker')) })
         speakersLeft.forEach(object => { sewerItems.add(this.add.image(object.x, object.y, 'speakerLeft')) })
-        sewerItems.setOrigin(0, 1)
+        sewerItems.setOrigin(0, 1).setAlpha(0.7)
 
         sewerItems.children.entries.forEach(object => {
             this.tweens.add({
@@ -1215,7 +1220,7 @@ let Sewer = new Phaser.Class({
             this.tweens.add({
                 targets: object,
                 props: {
-                    y: {value: `+=${(Phaser.Math.RND.sign() * Phaser.Math.Between(5, 25))}`, duration: 226, ease: 'Cubic', yoyo: true, repeat: -1}
+                    y: {value: `+=${(Phaser.Math.RND.sign() * Phaser.Math.Between(10, 35))}`, duration: 226, ease: 'Cubic', yoyo: true, repeat: -1}
                 }
             })
         })
@@ -1224,7 +1229,7 @@ let Sewer = new Phaser.Class({
             this.tweens.add({
                 targets: object,
                 props: {
-                    y: {value: `+=${(Phaser.Math.RND.sign() * Phaser.Math.Between(5, 25))}`, duration: 226, ease: 'Cubic', yoyo: true, repeat: -1}
+                    y: {value: `+=${(Phaser.Math.RND.sign() * Phaser.Math.Between(10, 35))}`, duration: 226, ease: 'Cubic', yoyo: true, repeat: -1}
                 }
             })
         })
@@ -1325,6 +1330,13 @@ let Sewer = new Phaser.Class({
                 dragon.anims.play('dragondown', true)
             } else if (dragon.body.velocity.y < 0) {
                 dragon.anims.play('dragonup', true)
+            }
+        })
+        greenDragons.children.entries.forEach(dragon => {
+            if (dragon.body.velocity.x > 0) {
+                dragon.flipX = false
+            } else if (dragon.body.velocity.x < 0) {
+                dragon.flipX = true
             }
         })
     }
@@ -1688,7 +1700,7 @@ let Sky = new Phaser.Class({
         PlaneLayer.forEach(object => {
             let obj = planes.create(object.x, object.y, 'plane')
             obj.setOrigin(0, 1)
-            obj.setVelocity(400).setBounce(1)
+            obj.setVelocity(300).setBounce(1)
             obj.setSize(10, 10)
         })
         
@@ -1713,6 +1725,15 @@ let Sky = new Phaser.Class({
         car.anims.play('birdFlap', true)
 
         skyStuff.children.entries.forEach(object => {
+            this.tweens.add({
+                targets: object,
+                props: {
+                    y: {value: `+=${(Phaser.Math.RND.sign() * Phaser.Math.Between(5, 25))}`, duration: 226, ease: 'Cubic', yoyo: true, repeat: -1}
+                },
+            })
+        })
+
+        planes.children.entries.forEach(object => {
             this.tweens.add({
                 targets: object,
                 props: {
