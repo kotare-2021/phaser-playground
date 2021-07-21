@@ -1,6 +1,6 @@
 import React from 'react'
 
- export function Thoughts({fade, imgThought, startDream}) {
+ export function Thoughts({fade, imgThought }) {
 
   const oldfade = fade + 1
   return (
@@ -18,7 +18,6 @@ import React from 'react'
     <div className={ oldfade === 1 || 3 ? 'speechBubbleSmallLeft Visible': 'speechBubbleCount' }>
     </div>
   </div>
-  <div className={startDream ? 'fadeOut' : undefined}></div>
   </>
   )
 }
