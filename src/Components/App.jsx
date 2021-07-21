@@ -6,11 +6,12 @@ import Classroom from './Classroom'
 import Dream from './Dream'
 import Clouds from './Clouds'
 
+
 const App = (props) => {
   //state
   const [scene, setScene] = useState('')
   const [dream, setDream] = useState('')
-
+  
   // audio files
   const harpyMusic = new Audio('/audio/harpMusicy.mp3')
   const talking = new Audio('/audio/classguystalking.mp3')
@@ -37,6 +38,8 @@ const App = (props) => {
     setTimeout(() => {
       //fade in talking
       talking.volume = 0.05
+      // talking.play()
+
       talking.play()
 
       let voicesFadeIn = setInterval(() => {
@@ -47,17 +50,26 @@ const App = (props) => {
       }, 500)
     }, 13000)
 
-    setTimeout(() => {
-      //fade out talking
-      let voicesFadeOut = setInterval(() => {
-        talking.volume -= 0.05
-        if (talking.volume < 0.1) {
-          clearInterval(voicesFadeOut)
-          talking.pause()
-        }
-      }, 500)
-    }, 20000)
+    // setTimeout(() => {
+    //   //fade out talking
+    //   let voicesFadeOut = setInterval(() => {
+    //     talking.volume -= 0.05
+    //     if (talking.volume < 0.1) {
+    //       clearInterval(voicesFadeOut)
+    //       talking.pause()
+    //     }
+    //   }, 500)
+    // }, 20000)
+
+  } // end of handleStart
+
+  const handleStop = () => {
+    console.log('triggering')
+    console.log(talking)
+    // talking.pause()
   }
+
+
 
   return (
     <>
@@ -68,7 +80,7 @@ const App = (props) => {
         <Landing setScene={setScene} />
       }
       {scene === 'classroom' &&
-        <Classroom setScene={setScene} setDream={setDream} />
+        <Classroom setScene={setScene} setDream={setDream} handleStop={handleStop}/>
       }
       {scene === 'dream' &&
         <Dream dream={dream} setScene={setScene}/>
