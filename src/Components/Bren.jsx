@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
-const Bren = (props) => {
+const Bren = ({ startDream }) => {
 
-  const [visible, setVisible] = useState('hidden')
-  const [int, setInt] = useState(0)
+  const [visible, setVisible] = useState('visible')
+  const [speech, setSpeech] = useState('')
 
   const brenPos = {
     position: 'absolute',
@@ -21,6 +21,7 @@ const Bren = (props) => {
   }
 
   const brenQuotes = [
+    'Okie-Dokie where did we get to yesterday',
     'I can type...',
     'I\'ve got so many tabs open',
     'I talk really fast',
@@ -29,7 +30,6 @@ const Bren = (props) => {
     'Righty-ho',
     'This is a bit of a rabbit-hole',
     'This afternoon we are talking about testing!',
-    'Okie-Dokie where did we get to yesterday',
     'I\'ll just be a minute Fred',
     'Batmna',
     'I love inline styling...',
@@ -42,15 +42,25 @@ const Bren = (props) => {
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
   }
 
-  const mouseLeaveHandler = () => {
-    setVisible('hidden')
-    setInt(getRandomInt(0, brenQuotes.length))
-  }
+  useEffect(() => {
+    setSpeech(brenQuotes[0])
+  }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setVisible('visible')
+      setTimeout(() => {
+        setVisible('hidden')
+        setSpeech(brenQuotes[getRandomInt(0, brenQuotes.length)])
+      }, 4000)
+    }, getRandomInt(3000, 9000))
+  }, [speech])
 
   return (
     <>
-      <div style={brenPos} className='clickable' onMouseEnter={() => setVisible('visible')} onMouseLeave={mouseLeaveHandler}></div>
-      <div className='bubble mini left' style={brenSpeech}>{brenQuotes[int]}</div>
+      <div style={brenPos}></div>
+      <div className='bubble mini left' style={brenSpeech}>{speech}</div>
+      <div className={startDream ? 'fadeOut' : undefined}></div>
     </>
   )
 }

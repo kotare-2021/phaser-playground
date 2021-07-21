@@ -69,8 +69,8 @@
             {characters.map((item,i) => renderCharacter(item, i))}
             
             <Speech />
-            <Thoughts fade={fade} imgThought={imgThought} startDream={startDream}/>
-            <Bren />      
+            <Thoughts fade={fade} imgThought={imgThought} />
+            <Bren startDream={startDream}/>      
           </div>
         </div>
         
