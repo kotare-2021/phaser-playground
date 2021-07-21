@@ -1227,6 +1227,7 @@ let Desert = new Phaser.Class({
         this.load.image('smoke', 'assets/images/smoke-puff.png')
         this.load.image('rainbow', 'assets/images/rainbow.png')
         this.load.image('pyramid', 'assets/images/pyramid.png')
+        this.load.image('desertObjects', 'assets/images/desertObjects.png')
     },
 
     create: function () {
@@ -1271,6 +1272,7 @@ let Desert = new Phaser.Class({
         const map = this.make.tilemap({key: 'drive'}); 
 
         const desertTiles = map.addTilesetImage('desert', 'desert')
+        const desertObjects = map.addTilesetImage('desertObjects', 'desertObjects')
 
         const tileset = map.addTilesetImage('roadEW', 'roadEW')
         const tileset2 = map.addTilesetImage('roadNE', 'roadNE')
@@ -1280,16 +1282,21 @@ let Desert = new Phaser.Class({
         const pathLayer = map.createLayer('Desert Footpath', desertTiles)
 
         const roadLayer = map.createLayer('Desert Road', desertTiles)
-
-        let rainbowParticles = this.add.particles('rainbow')
+        
+        
+        map.createLayer('Desert Objects', desertObjects)
         let PyramidLayer = map.getObjectLayer('Desert Pyramids')['objects']
+        let rainbowParticles = this.add.particles('rainbow')
         let pyramids = this.physics.add.group()
         PyramidLayer.forEach(object => {
             let obj = pyramids.create(object.x, object.y, 'pyramid') 
             obj.setOrigin(0,1)  
         })
-
         map.createLayer('Desert Mask', desertTiles)
+        
+        car = this.physics.add.sprite(carPosX, carPosY, 'camel').setScale(1.5)
+        car.setSize(50, 50, true)
+        
 
         let DartLayer = map.getObjectLayer('Sheep')['objects']
         
@@ -1300,9 +1307,6 @@ let Desert = new Phaser.Class({
             obj.setScale(0.6)
             obj.setOrigin(0,1)
         })
-
-        car = this.physics.add.sprite(carPosX, carPosY, 'camel').setScale(1.5)
-        car.setSize(50, 50, true)
 
         this.anims.create({
             key: 'camelDown',
@@ -1792,8 +1796,8 @@ var config = {
                 debug: false
             }
         },
-        // scene: [Sewer]
-        scene: [White, End, Sky, Desert, Sewer, Water, Cubicle, Village, City, Start]
+        scene: [Sky]
+        // scene: [White, End, Sky, Desert, Sewer, Water, Cubicle, Village, City, Start]
     };
 
     var game = new Phaser.Game(config);
