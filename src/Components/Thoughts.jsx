@@ -6,10 +6,10 @@ import React from 'react'
   return (
     <>
     <div className={ typeof fade == 'number' ? `speechBubbleCount${oldfade} Visible${oldfade} VisbleMed${oldfade}`: 'speechBubbleCount'}>
-    <div className='speechBubbleBig'>
+    <div className='BubbleBig'>
       <img className='dayDreamImg' src={`/assets/${imgThought}`} alt={imgThought}/>
     </div>
-    <div  className={ oldfade === 0 || 2 ? 'speechBubbleMedLeft Visible': 'speechBubbleCount' }>
+    <div  className={ oldfade === 0 || 2 ? 'BubbleMedLeft Visible': 'speechBubbleCount' }>
     </div>
     <div className={ oldfade === 0 || 2 ? 'speechBubbleMedRight Visible': 'speechBubbleCount' }>
     </div>
