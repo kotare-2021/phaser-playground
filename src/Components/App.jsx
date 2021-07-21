@@ -6,11 +6,12 @@ import Classroom from './Classroom'
 import Dream from './Dream'
 import Clouds from './Clouds'
 
+
 const App = (props) => {
   //state
   const [scene, setScene] = useState('')
   const [dream, setDream] = useState('')
-
+  
   // audio files
   const harpyMusic = new Audio('/audio/harpMusicy.mp3')
   const talking = new Audio('/audio/classguystalking.mp3')
@@ -37,6 +38,8 @@ const App = (props) => {
     setTimeout(() => {
       //fade in talking
       talking.volume = 0.05
+      // talking.play()
+
       talking.play()
 
       let voicesFadeIn = setInterval(() => {
@@ -57,7 +60,8 @@ const App = (props) => {
         }
       }, 500)
     }, 20000)
-  }
+
+  } // end of handleStart
 
   return (
     <>
