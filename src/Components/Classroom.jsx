@@ -35,7 +35,7 @@
 
         setStartDream(true)
 
-        // handleStop()
+        handleStop()
 
         setTimeout(() => {
           setScene('dream')

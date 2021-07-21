@@ -13,9 +13,6 @@ const Speech = () => {
   const [speechDirectionOne, setSpeechDirectionOne] = useState(true)
   const [speechDirectionTwo, setSpeechDirectionTwo] = useState(true)
 
-  // override
-  const [dreaming, setDreaming] = useState(false)
-
   //speech positioning variables
   const speechOneStyle = {
     left: '6.4rem',
@@ -44,7 +41,6 @@ const Speech = () => {
 
   //Logic for repeating random speech boxes
   useEffect(() => {
-    if (!dreaming) {
       setTimeout(() => {
         setSpeechOneVisible('visible')
         setTimeout(() => {
@@ -53,11 +49,9 @@ const Speech = () => {
           setSpeechDirectionOne(!speechDirectionOne)
         }, 4000)
       }, getRandomInt(3000, 9000)) 
-    } else setSpeechDirectionOne('hidden')
   }, [speechOne])
 
   useEffect(() => {
-    if (!dreaming) {
       setTimeout(() => {
         setSpeechTwoVisible('visible')
         setTimeout(() => {
@@ -65,7 +59,6 @@ const Speech = () => {
           setSpeechTwo(conversation[getRandomInt(0, conversation.length)])
           setSpeechDirectionTwo(!speechDirectionTwo)
         }, 4000)
-    }
       }, getRandomInt(3000, 9000))
   }, [speechTwo])
 

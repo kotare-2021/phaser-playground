@@ -66,7 +66,7 @@ const App = (props) => {
   const handleStop = () => {
     console.log('triggering')
     console.log(talking)
-    // talking.pause()
+    talking.pause()
   }
 
 
