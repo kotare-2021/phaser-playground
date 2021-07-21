@@ -50,26 +50,18 @@ const App = (props) => {
       }, 500)
     }, 13000)
 
-    // setTimeout(() => {
-    //   //fade out talking
-    //   let voicesFadeOut = setInterval(() => {
-    //     talking.volume -= 0.05
-    //     if (talking.volume < 0.1) {
-    //       clearInterval(voicesFadeOut)
-    //       talking.pause()
-    //     }
-    //   }, 500)
-    // }, 20000)
+    setTimeout(() => {
+      //fade out talking
+      let voicesFadeOut = setInterval(() => {
+        talking.volume -= 0.05
+        if (talking.volume < 0.1) {
+          clearInterval(voicesFadeOut)
+          talking.pause()
+        }
+      }, 500)
+    }, 20000)
 
   } // end of handleStart
-
-  const handleStop = () => {
-    console.log('triggering')
-    console.log(talking)
-    talking.pause()
-  }
-
-
 
   return (
     <>
@@ -80,7 +72,7 @@ const App = (props) => {
         <Landing setScene={setScene} />
       }
       {scene === 'classroom' &&
-        <Classroom setScene={setScene} setDream={setDream} handleStop={handleStop}/>
+        <Classroom setScene={setScene} setDream={setDream} />
       }
       {scene === 'dream' &&
         <Dream dream={dream} setScene={setScene}/>
