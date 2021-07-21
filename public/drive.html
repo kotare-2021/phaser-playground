@@ -7,7 +7,7 @@
 
     <script>
 
-    let sheeps, car, duck, scoreText, carPosX, carPosY, carVelX, carVelY, particles, timer, vision, offsets, rainbowParticles, rainbowParticlesY, dragons, planes
+    let sheeps, car, duck, scoreText, carPosX, carPosY, carVelX, carVelY, particles, timer, vision, offsets, rainbowParticles, rainbowParticlesY, planes, dragons, greenDragons
     let hit = false
     let score = 0
     let carVelocity = 300
@@ -1003,7 +1003,7 @@ let Sewer = new Phaser.Class({
         this.load.image('transparent', 'assets/images/transparent.png')
         this.load.image('SewerBackground', 'assets/images/SewerBackground.png')
         this.load.spritesheet('redDragon', 'assets/images/redDragon.png', { frameWidth: 191, frameHeight: 161 })
-        // this.load.spritesheet('spritesheet', 'assets/images/spritesheet.png', { frameWidth: 8, frameHeight: 10 })
+        this.load.spritesheet('greenDragon', 'assets/images/greenDragon.png', { frameWidth: 64, frameHeight: 64 })
     },
 
     create: function () {
@@ -1067,7 +1067,18 @@ let Sewer = new Phaser.Class({
         let RatLayer = map.getObjectLayer('Sheep')['objects']
         const backgroundLayer = map.createLayer('Sewer Background', backgroundTile)
         backgroundLayer.setAlpha(0.5)
-        
+        const dragonLayer = map.getObjectLayer('Dragons')['objects']
+        const greenDragonLayer = map.getObjectLayer('GreenDragons')['objects']
+
+        dragons = this.physics.add.group()
+        dragonLayer.forEach(object => {
+            let obj = dragons.create(object.x, object.y, 'redDragon').setScale(1).setVelocity(50).setBounce(1).setVisible(false).setSize(10, 10).setAlpha(0.7)
+        })
+        greenDragons = this.physics.add.group()
+        greenDragonLayer.forEach(object => {
+            let obj = greenDragons.create(object.x, object.y, 'greenDragon').setScale(1.2).setVelocity(50).setBounce(1).setVisible(true).setSize(10, 10).setAlpha(0.7)
+        })
+
         let rats = this.physics.add.group()
         RatLayer.forEach(object => {
             let obj = rats.create(object.x, object.y, 'rat')            
@@ -1076,6 +1087,7 @@ let Sewer = new Phaser.Class({
             obj.setOrigin(0,1)
         })
 
+        
         backgroundLayer.setPipeline('Light2D');
         this.lights.enable();
         this.lights.setAmbientColor('#2D313C');
@@ -1162,45 +1174,63 @@ let Sewer = new Phaser.Class({
 
         cursors = this.input.keyboard.createCursorKeys();
 
-        dragons = this.physics.add.group()
-
-        dragons.create(400, 300, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
-        dragons.create(1300, 330, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
-        dragons.create(2900, 400, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
-        dragons.create(1700, 750, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
-        dragons.create(1250, 1150, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
-        dragons.create(70, 1000, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
-        dragons.create(2000, 1700, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
-        dragons.create(3100, 1800, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
-        dragons.create(2500, 700, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
-
         this.physics.add.collider(dragons, CollisionLayer)
+        this.physics.add.collider(greenDragons, CollisionLayer)
         this.anims.create ({
             key: 'dragonup',
             frames: this.anims.generateFrameNumbers('redDragon', { start: 0, end: 2 }),
-            frameRate: 17.65,
+            frameRate: 8,
             repeat: -1
         })
 
         this.anims.create ({
             key: 'dragonright',
             frames: this.anims.generateFrameNumbers('redDragon', { start: 3, end: 5 }),
-            frameRate: 17.65,
+            frameRate: 8,
             repeat: -1
         })
 
         this.anims.create ({
             key: 'dragondown',
             frames: this.anims.generateFrameNumbers('redDragon', { start: 6, end: 8 }),
-            frameRate: 17.65,
+            frameRate: 8,
             repeat: -1
         })
 
         this.anims.create ({
             key: 'dragonleft',
             frames: this.anims.generateFrameNumbers('redDragon', { start: 9, end: 11 }),
-            frameRate: 17.65,
+            frameRate: 8,
             repeat: -1
+        })
+
+        this.anims.create ({
+            key: 'greenDragon',
+            frames: this.anims.generateFrameNumbers('greenDragon', { start: 0, end: 5 }),
+            frameRate: 8,
+            repeat: -1
+        })
+
+        dragons.children.entries.forEach(object => {
+            this.tweens.add({
+                targets: object,
+                props: {
+                    y: {value: `+=${(Phaser.Math.RND.sign() * Phaser.Math.Between(5, 25))}`, duration: 226, ease: 'Cubic', yoyo: true, repeat: -1}
+                }
+            })
+        })
+
+        greenDragons.children.entries.forEach(object => {
+            this.tweens.add({
+                targets: object,
+                props: {
+                    y: {value: `+=${(Phaser.Math.RND.sign() * Phaser.Math.Between(5, 25))}`, duration: 226, ease: 'Cubic', yoyo: true, repeat: -1}
+                }
+            })
+        })
+
+        greenDragons.children.entries.forEach(dragon => {
+                dragon.anims.play('greenDragon', true)
         })
 
         this.add.image(0, 10, 'scoreBackground').setScale(0.55, 0.65).setOrigin(0).setScrollFactor(0)
@@ -1215,8 +1245,12 @@ let Sewer = new Phaser.Class({
         }
     });
 
+    let winSound = this.sound.add('slurp', {
+        volume: 0.3,
+    })
+
         function hitRat (gator, rat) {
-            this.sound.play('slurp')
+            winSound.play()
             carVelocity += 20
             rat.disableBody(true, true)
             score += 10
@@ -1348,7 +1382,6 @@ let Desert = new Phaser.Class({
         })
 
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            // carVelocity = 250
             carPosX = car.body.position.x,
             carPosY = car.body.position.y,
             carVelX = car.body.velocity.x,
@@ -1438,7 +1471,6 @@ let Desert = new Phaser.Class({
                 props: {
                     y: {value: `+=${(Phaser.Math.RND.sign() * Phaser.Math.Between(5, 25))}`, duration: 226, ease: 'Cubic', yoyo: true, repeat: -1}
                 },
-                // delay: 14200,
             })
         })
 
@@ -1736,7 +1768,6 @@ let Sky = new Phaser.Class({
 
         function hitEgg (bird, egg) {
             winSound.play()
-            // this.sound.play('harp')
             carVelocity += 10
             egg.disableBody(true, true)
             score += 10
@@ -1748,11 +1779,10 @@ let Sky = new Phaser.Class({
 
         function crossPath (bird, path) {
             let tile = map.getTileAt(path.x, path.y, true, rainbowRoad)
-            // tile.setAlpha(0.5)
             this.tweens.add({
                 targets: tile,
                 props: {
-                    alpha: {value: 0.5, duration: 500, ease: 'Linear', yoyo: false, repeat: 0}
+                    alpha: {value: 0.5, duration: 300, ease: 'Linear', yoyo: false, repeat: 0}
                 },
             })
         }
@@ -1917,7 +1947,6 @@ var config = {
                 debug: false
             }
         },
-        // scene: [Sky]
         scene: [White, End, Sky, Desert, Sewer, Water, Cubicle, Village, City, Start]
     };
 
