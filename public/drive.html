@@ -7,7 +7,7 @@
 
     <script>
 
-    let sheeps, car, duck, scoreText, carPosX, carPosY, carVelX, carVelY, particles, timer, vision, offsets, rainbowParticles, rainbowParticlesY, dragons
+    let sheeps, car, duck, scoreText, carPosX, carPosY, carVelX, carVelY, particles, timer, vision, offsets, rainbowParticles, rainbowParticlesY, dragons, planes
     let hit = false
     let score = 0
     let carVelocity = 300
@@ -1105,8 +1105,6 @@ let Sewer = new Phaser.Class({
 
         this.lights.disable()
 
-        // offsets = [ 0.1, 0.3, 0.5, 0.7 ];
-
         const width = 3200
 	    const height = 1920
 
@@ -1166,17 +1164,15 @@ let Sewer = new Phaser.Class({
 
         dragons = this.physics.add.group()
 
-        dragons.create(400, 300, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false)
-        dragons.create(1300, 330, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false)
-        dragons.create(2900, 400, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false)
-        dragons.create(1700, 750, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false)
-        dragons.create(1250, 1150, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false)
-        dragons.create(70, 1000, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false)
-        dragons.create(2000, 1700, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false)
-        dragons.create(3000, 1800, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false)
-        dragons.create(2500, 700, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false)
-
-        // dragons.visible(false)
+        dragons.create(400, 300, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
+        dragons.create(1300, 330, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
+        dragons.create(2900, 400, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
+        dragons.create(1700, 750, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
+        dragons.create(1250, 1150, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
+        dragons.create(70, 1000, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
+        dragons.create(2000, 1700, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
+        dragons.create(3100, 1800, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
+        dragons.create(2500, 700, 'redDragon').setScale(1).setVelocity(200).setBounce(1).setVisible(false).setSize(10, 10)
 
         this.physics.add.collider(dragons, CollisionLayer)
         this.anims.create ({
@@ -1567,6 +1563,7 @@ let Sky = new Phaser.Class({
         this.load.image("roadEW", "assets/maps/roadEW.png")
         this.load.image("roadNE", "assets/maps/roadNE.png")
         this.load.spritesheet('bird', 'assets/images/skyBird.png', { frameWidth: 192, frameHeight: 174 } )
+        this.load.spritesheet('unicorn', 'assets/images/RobotUnicorn.png', { frameWidth: 205, frameHeight: 105 } )
         this.load.image('farground', 'assets/images/farground.png')
         this.load.image('foreground', 'assets/images/foreground.png')
         this.load.image('skyMid', 'assets/images/skyMid.png')
@@ -1575,6 +1572,13 @@ let Sky = new Phaser.Class({
         this.load.image('rainbowSectionY', 'assets/images/rainbowSectionY.png')
         this.load.image('rainbow', 'assets/images/rainbow.png')
         this.load.audio('harp', 'assets/sounds/harp.wav')
+        this.load.image('Rainbow Corner 1', 'assets/images/Rainbow Corner 1.png')
+        this.load.image('Rainbow Corner 2', 'assets/images/Rainbow Corner 2.png')
+        this.load.image('Seven-colors_(rainbow)', 'assets/images/Seven-colors_(rainbow).png')
+        this.load.image('jesus', 'assets/images/jesus.png')
+        this.load.image('plane', 'assets/images/plane.png')
+        this.load.image('spaceStation', 'assets/images/spaceStation.png')
+        this.load.image('gold', 'assets/images/gold.png')
     },
 
     create: function () {
@@ -1611,7 +1615,7 @@ let Sky = new Phaser.Class({
         this.add.image(800, 550, 'foreground').setScrollFactor(0.5, 0)
 
         this.physics.world.setBounds(0, 0, 3200, 1920);
-        const map = this.make.tilemap({key: 'drive'}); 
+        let map = this.make.tilemap({key: 'drive'}); 
         const skyTiles = map.addTilesetImage('clouds', 'clouds')
         rainbowParticles = this.add.particles('rainbowSection')
         rainbowParticlesY = this.add.particles('rainbowSectionY')
@@ -1620,8 +1624,41 @@ let Sky = new Phaser.Class({
         const tileset2 = map.addTilesetImage('roadNE', 'roadNE')
         const allTiles = [tileset, tileset2]
 
+        const rainbowStraight = map.addTilesetImage('Seven-colors_(rainbow)', 'Seven-colors_(rainbow)')
+        const rainbowCorner1 = map.addTilesetImage('Rainbow Corner 1', 'Rainbow Corner 1')
+        const rainbowCorner2 = map.addTilesetImage('Rainbow Corner 2', 'Rainbow Corner 2')
+        const rainbowTiles = [rainbowStraight, rainbowCorner1, rainbowCorner2]
+
+        rainbowRoad = map.createLayer('Sky Road', rainbowTiles)
+        rainbowRoad.forEachTile(tile => {
+            tile.alpha = 0
+        })
+
         const pathLayer = map.createLayer('Sky Path', skyTiles)
         let EggLayer = map.getObjectLayer('Sheep')['objects']
+        let SpaceStationLayer = map.getObjectLayer('SpaceStations')['objects']
+        let PlaneLayer = map.getObjectLayer('Planes')['objects']
+        let JesusLayer = map.getObjectLayer('Jesus')['objects']
+
+        let skyStuff = this.physics.add.group()
+        SpaceStationLayer.forEach(object => {
+            let obj = skyStuff.create(object.x, object.y, 'spaceStation')
+            obj.setOrigin(0, 1)
+            obj.setSize(10, 10)
+        })
+        JesusLayer.forEach(object => {
+            let obj = skyStuff.create(object.x, object.y, 'jesus')
+            obj.setOrigin(0, 1)
+            obj.setSize(10, 10)
+        })
+
+        planes = this.physics.add.group()
+        PlaneLayer.forEach(object => {
+            let obj = planes.create(object.x, object.y, 'plane')
+            obj.setOrigin(0, 1)
+            obj.setVelocity(400).setBounce(1)
+            obj.setSize(10, 10)
+        })
         
         let eggs = this.physics.add.group()
         EggLayer.forEach(object => {
@@ -1643,15 +1680,14 @@ let Sky = new Phaser.Class({
 
         car.anims.play('birdFlap', true)
 
-        // pyramids.children.entries.forEach(object => {
-        //     this.tweens.add({
-        //         targets: object,
-        //         props: {
-        //             y: {value: `+=${(Phaser.Math.RND.sign() * Phaser.Math.Between(5, 25))}`, duration: 226, ease: 'Cubic', yoyo: true, repeat: -1}
-        //         },
-        //         // delay: 14200,
-        //     })
-        // })
+        skyStuff.children.entries.forEach(object => {
+            this.tweens.add({
+                targets: object,
+                props: {
+                    y: {value: `+=${(Phaser.Math.RND.sign() * Phaser.Math.Between(5, 25))}`, duration: 226, ease: 'Cubic', yoyo: true, repeat: -1}
+                },
+            })
+        })
 
         let CollisionLayer = map.createLayer('Footpath', allTiles)
         CollisionLayer.setAlpha(0)
@@ -1659,7 +1695,10 @@ let Sky = new Phaser.Class({
         map.setCollisionBetween(0, 923, true, 'Footpath')
         this.physics.add.collider(car, CollisionLayer)
         this.physics.add.overlap(car, eggs, hitEgg, null, this)
-        
+
+        this.physics.add.overlap(car, rainbowRoad, crossPath, null, this)
+        this.physics.add.collider(planes, CollisionLayer)
+
         this.cameras.main.setBounds(0, 0, 3200, 1920);
         this.cameras.main.startFollow(car);
         
@@ -1667,56 +1706,17 @@ let Sky = new Phaser.Class({
 
         cursors = this.input.keyboard.createCursorKeys();
         
-        rainbowParticles.createEmitter({
-            lifespan: 5000,
-            quantity: 1,
-            speed: 0,
-            scale: { start: 0.35, end: 0.35},
-            alpha: { start: 0.5, end: 0 },
-            on: false,
-        })
-
-        rainbowParticlesY.createEmitter({
-            lifespan: 5000,
-            quantity: 1,
-            speed: 0,
-            scale: { start: 0.35, end: 0.35},
-            alpha: { start: 0.5, end: 0 },
-            on: false,
-            angle: 90
-        })
-        
-
-        let rainbowWin = this.add.particles('rainbow')
+        let rainbowWin = this.add.particles('gold')
         rainbowWin.createEmitter({
             lifespan: 5000,
             quantity: 10,
             speed: -1000,
-            // accelerationX: 200,
-            // accelerationY: 200,
             scale: { start: 0.1, end: 0.5},
-            alpha: { start: 0.3, end: 0 },
+            alpha: { start: 0.4, end: 0 },
             on: false,
             angle: { start: 0, end: 360, steps: 10 },
             rotate: { start: 0, end: 360, steps: 10 }
         })
-
-        // PyramidLayer.forEach(object => {
-        //     rainbowParticles.createEmitter({
-        //         x: object.x + 110,
-        //         y: object.y - 230,
-        //         lifespan: 2000,
-        //         quantity: 1,
-        //         scale: 0.2,
-        //         alpha: { start: 0.2, end: 0 },
-        //         speedY: -400,
-        //         rotate: 90,
-        //         frequency: 100,
-        //         active: true,
-        //         origin: {x: 0, y: 1}
-        //     })
-        // })
-        // rainbowParticles.pause()
         
         this.add.image(0, 10, 'scoreBackground').setScale(0.55, 0.65).setOrigin(0).setScrollFactor(0)
         this.add.image(40, 35, 'scoreCoin').setScale(0.6).setScrollFactor(0)
@@ -1729,9 +1729,14 @@ let Sky = new Phaser.Class({
             scoreText = add.text(70, 22, score, { fontFamily: 'Fredoka One', fontSize: '25px', fill: '#ff3333', stroke: '#ffffff', strokeThickness: 8, shadow: {offsetY: 4, offsetX: 2, color: 'white', fill: true} }).setScrollFactor(0)
         }
     });
+    
+    let winSound = this.sound.add('harp', {
+        volume: 0.2,
+    })
 
         function hitEgg (bird, egg) {
-            this.sound.play('harp')
+            winSound.play()
+            // this.sound.play('harp')
             carVelocity += 10
             egg.disableBody(true, true)
             score += 10
@@ -1739,6 +1744,17 @@ let Sky = new Phaser.Class({
             if (scoringActive) {
                 scoreText.setText(score);
             }
+        }
+
+        function crossPath (bird, path) {
+            let tile = map.getTileAt(path.x, path.y, true, rainbowRoad)
+            // tile.setAlpha(0.5)
+            this.tweens.add({
+                targets: tile,
+                props: {
+                    alpha: {value: 0.5, duration: 500, ease: 'Linear', yoyo: false, repeat: 0}
+                },
+            })
         }
 
         game.events.on('blur', () => {
@@ -1791,6 +1807,13 @@ let Sky = new Phaser.Class({
             car.setVelocityY(0)
             car.angle = 0
         } 
+        planes.children.entries.forEach(plane => {
+            if (plane.body.velocity.x > 0) {
+                plane.flipX = false
+            } else {
+                plane.flipX = true
+            }
+        })
     }
 })
 
@@ -1894,6 +1917,7 @@ var config = {
                 debug: false
             }
         },
+        // scene: [Sky]
         scene: [White, End, Sky, Desert, Sewer, Water, Cubicle, Village, City, Start]
     };
 
