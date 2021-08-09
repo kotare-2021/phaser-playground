@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# Phaser Playground
+
+Final group project for Tom, Fred, Megan, Ymmij and Casey
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
