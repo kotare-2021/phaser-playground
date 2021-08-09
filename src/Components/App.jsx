@@ -5,6 +5,7 @@ import Landing from './Landing'
 import Classroom from './Classroom'
 import Dream from './Dream'
 import Clouds from './Clouds'
+import Skip from './Skip'
 
 
 const App = (props) => {
@@ -65,10 +66,16 @@ const App = (props) => {
   return (
     <>
       {scene === '' &&
-        <Start setScene={setScene} handleStart={handleStart}/>
+        <div>
+          <Start setScene={setScene} handleStart={handleStart}/>
+          <Skip setScene={setScene}/>
+        </div>
       }
       {scene === 'landing' &&
-        <Landing setScene={setScene} />
+        <div>
+          <Landing setScene={setScene} />
+          <Skip setScene={setScene}/>
+        </div>
       }
       {scene === 'classroom' &&
         <Classroom setScene={setScene} setDream={setDream} />
